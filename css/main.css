@@ -1,0 +1,554 @@
+/* ─── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Variables ──────────────────────────────────────────── */
+:root {
+  --bg:           #0a0a0a;
+  --surface:      #111111;
+  --border:       #1e1e1e;
+  --border-hover: #2e2e2e;
+  --text:         #f0f0f0;
+  --muted:        #505050;
+  --font:         'Inter', sans-serif;
+  --max-w:        1320px;
+  --pad-x:        48px;
+  --section-pad:  120px;
+}
+
+/* ─── Base ───────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  animation: page-in 0.5s ease forwards;
+}
+
+@keyframes page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Container ──────────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+/* ─── Navigation ─────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px var(--pad-x);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.nav.scrolled {
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-name {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+
+  /* Layered background: soft glow + dot grid + base */
+  background:
+    radial-gradient(ellipse 55% 65% at 72% 50%, rgba(255, 255, 255, 0.022) 0%, transparent 70%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.065) 1px, transparent 1px) 0 0 / 28px 28px,
+    var(--bg);
+}
+
+/* Decorative arc — large outer ring */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Decorative arc — smaller inner ring */
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.032);
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-inner {
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  display: grid;
+  grid-template-columns: 48% 52%;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-left {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-top: 80px;
+}
+
+.hero-memoji {
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  display: block;
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 96%);
+  mask-image: linear-gradient(to bottom, black 65%, transparent 96%);
+  user-select: none;
+  pointer-events: none;
+}
+
+.hero-right {
+  display: flex;
+  align-items: center;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  padding-left: 40px;
+}
+
+.hero-content {
+  max-width: 500px;
+}
+
+.hero-name {
+  font-size: clamp(44px, 5.5vw, 84px);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-bottom: 20px;
+  letter-spacing: 0.01em;
+}
+
+.hero-tagline {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 44px;
+  max-width: 400px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ─── Buttons ────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+.btn-secondary:hover {
+  border-color: var(--text);
+}
+
+/* ─── Section ────────────────────────────────────────────── */
+.section {
+  padding: var(--section-pad) 0;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 48px;
+}
+
+/* ─── Projects Showcase ──────────────────────────────────── */
+.projects {
+  border-top: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.showcase-stage {
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  position: relative;
+}
+
+.showcase-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Showcase Arrows ────────────────────────────────────── */
+.showcase-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-hover);
+  background: rgba(17, 17, 17, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.showcase-arrow:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text);
+  background: rgba(30, 30, 30, 0.88);
+}
+
+.showcase-arrow--left  { left: 32px; }
+.showcase-arrow--right { right: 32px; }
+
+/* Cards: JS sets position:absolute on desktop. CSS defines visual style. */
+.showcase-card {
+  width: 340px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.35);
+  color: inherit;
+  cursor: pointer;
+  will-change: transform, opacity;
+  transform-origin: center center;
+  transition: border-color 0.35s ease;
+}
+
+.showcase-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.sc-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.sc-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.showcase-card:hover .sc-img img {
+  transform: scale(1.04);
+}
+
+.sc-info {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.sc-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.sc-role {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+
+/* ─── Resume ─────────────────────────────────────────────── */
+.resume {
+  border-top: 1px solid var(--border);
+}
+
+.resume-text {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 540px;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.resume-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 28px var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-name {
+  font-size: 13px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-link {
+  font-size: 12px;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--text);
+}
+
+.footer-dot {
+  font-size: 12px;
+  color: var(--border-hover);
+  user-select: none;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  :root {
+    --pad-x: 32px;
+    --section-pad: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --pad-x: 24px;
+    --section-pad: 80px;
+  }
+
+  .nav {
+    padding: 20px var(--pad-x);
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  /* Hero — stack vertically */
+  .hero-inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    padding-top: 80px;
+    padding-bottom: 60px;
+    min-height: 100vh;
+    gap: 0;
+  }
+
+  .hero-left {
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: -40px;
+  }
+
+  .hero-memoji {
+    max-width: 300px;
+  }
+
+  .hero-right {
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    align-items: flex-start;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  /* Projects — mobile: simple horizontal scroll */
+  .showcase-stage {
+    height: auto;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .showcase-stage::-webkit-scrollbar {
+    display: none;
+  }
+
+  .showcase-track {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: max-content;
+    height: auto;
+    padding: 32px 24px 48px;
+    position: static;
+  }
+
+  .showcase-card {
+    width: 272px;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    margin-left: 0 !important;
+  }
+
+  .showcase-arrow {
+    display: none;
+  }
+
+  /* Footer */
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .footer-contact {
+    gap: 8px;
+  }
+}

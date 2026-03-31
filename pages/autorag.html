@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoRAG — Rayan Al-Omaireeni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+
+  <div class="project-layout">
+
+    <!-- LEFT: Looping visuals -->
+    <div class="panel-left" id="loop-panel"></div>
+
+    <!-- RIGHT: Project info -->
+    <div class="panel-right">
+
+      <nav class="project-nav">
+        <a href="../index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back
+        </a>
+      </nav>
+
+      <div class="project-content">
+
+        <h1 class="project-title">AutoRAG (Graduation Project)</h1>
+        <hr class="project-divider">
+
+        <div class="project-meta">
+          <div class="meta-row">
+            <span class="meta-label">For</span>
+            <span class="meta-value">King Saud University</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Role</span>
+            <span class="meta-value">UI/UX · Frontend Developer</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Status</span>
+            <span class="meta-value">
+              <span class="status in-progress">In Progress</span>
+            </span>
+          </div>
+        </div>
+
+        <p class="overview-label">Overview</p>
+        <p class="overview-text">
+          AutoRAG is a user-friendly AI system that allows users to ask high-level questions
+          without technical knowledge. The system automatically selects the most suitable
+          RAG configuration to provide accurate and contextually relevant answers.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/loop.js"></script>
+  <script>
+    initLoopDynamic('#loop-panel', '../assets/autorag/');
+  </script>
+</body>
+</html>
