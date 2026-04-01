@@ -502,43 +502,22 @@ img {
     max-width: 100%;
   }
 
-  /* Projects — mobile: simple horizontal scroll */
+  /* Projects — mobile: centered transform carousel */
   .showcase-stage {
-    height: auto;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .showcase-stage::-webkit-scrollbar {
-    display: none;
-  }
-
-  .showcase-track {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    width: max-content;
-    height: auto;
-    padding: 32px 24px 48px;
-    position: static;
+    height: 420px;
+    overflow: hidden;
   }
 
   .showcase-card {
-    width: 272px;
-    flex-shrink: 0;
-    scroll-snap-align: center;
-    position: static !important;
-    transform: none !important;
-    opacity: 1 !important;
-    margin-left: 0 !important;
+    width: 280px;
   }
 
   .showcase-arrow {
-    display: none;
+    display: flex;
   }
+
+  .showcase-arrow--left  { left: 8px; }
+  .showcase-arrow--right { right: 8px; }
 
   /* Footer */
   .footer {

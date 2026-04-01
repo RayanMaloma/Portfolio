@@ -22,14 +22,102 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
   });
 });
 
-// ─── Project Showcase — Arc Carousel ──────────────────────
+// ─── Project Showcase — Carousel ──────────────────────────
 (function () {
   var stage = document.getElementById('showcase-stage');
   var track = document.getElementById('showcase-track');
   if (!stage || !track) return;
 
-  // Mobile: CSS handles layout, JS stays out
-  if (window.innerWidth <= 768) return;
+  var prevBtn = document.getElementById('showcase-prev');
+  var nextBtn = document.getElementById('showcase-next');
+  var cards   = Array.from(track.children);
+  var EASING  = 'cubic-bezier(0.37, 0, 0.63, 1)';
+
+  // ── Shared track setup ───────────────────────────────────
+  track.style.display  = 'block';
+  track.style.position = 'relative';
+  track.style.width    = '100%';
+  track.style.height   = '100%';
+
+  // ════════════════════════════════════════════════════════
+  // MOBILE — Centered 3-slot carousel (intentional navigation)
+  // ════════════════════════════════════════════════════════
+  if (window.innerWidth <= 768) {
+    var M_CARD_W    = 280;                              // matches mobile CSS
+    var M_PEEK_X    = Math.round(window.innerWidth * 0.695); // side card center offset
+    var M_DUR       = 480;                              // ms
+    var M_HALF      = Math.floor(cards.length / 2);
+    var mCurrent    = 0;
+    var mAnimating  = false;
+
+    cards.forEach(function (card) {
+      card.style.position   = 'absolute';
+      card.style.left       = '50%';
+      card.style.top        = '50%';
+      card.style.marginLeft = (-M_CARD_W / 2) + 'px';
+      card.style.width      = M_CARD_W + 'px';
+    });
+
+    function mSlot(offset) {
+      var abs = Math.abs(offset);
+      if (offset === 0)  return { x: 0,         s: 1.00, o: 1.00, z: 5 };
+      if (abs === 1)     return { x: offset * M_PEEK_X, s: 0.86, o: 0.42, z: 2 };
+      return               { x: offset * M_PEEK_X * 1.8, s: 0.75, o: 0,    z: 0 };
+    }
+
+    function mRender(animated) {
+      var n = cards.length;
+      cards.forEach(function (card, i) {
+        var offset = i - mCurrent;
+        // Wrap into range -(n/2) … +(n/2)
+        if (offset >  M_HALF) offset -= n;
+        if (offset <= -M_HALF) offset += n;
+
+        var slot = mSlot(offset);
+        card.style.transition = animated
+          ? 'transform ' + M_DUR + 'ms ' + EASING + ', opacity ' + M_DUR + 'ms ' + EASING
+          : 'none';
+        card.style.transform =
+          'translateX(' + slot.x + 'px) translateY(-50%) scale(' + slot.s + ')';
+        card.style.opacity = slot.o;
+        card.style.zIndex  = slot.z;
+        // Pointer events: only center card is clickable as a link
+        card.style.pointerEvents = offset === 0 ? '' : 'auto';
+      });
+    }
+
+    function mNavigate(dir) {
+      if (mAnimating) return;
+      mAnimating = true;
+      mCurrent = (mCurrent + dir + cards.length) % cards.length;
+      mRender(true);
+      setTimeout(function () { mAnimating = false; }, M_DUR + 50);
+    }
+
+    // Tapping a non-center card navigates instead of following the link
+    cards.forEach(function (card, i) {
+      card.addEventListener('click', function (e) {
+        var offset = i - mCurrent;
+        var n = cards.length;
+        if (offset >  M_HALF) offset -= n;
+        if (offset <= -M_HALF) offset += n;
+        if (offset !== 0) {
+          e.preventDefault();
+          mNavigate(offset > 0 ? 1 : -1);
+        }
+      });
+    });
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { mNavigate(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { mNavigate(1); });
+
+    mRender(false);
+    return;
+  }
+
+  // ════════════════════════════════════════════════════════
+  // DESKTOP — Arc carousel (auto-advancing)
+  // ════════════════════════════════════════════════════════
 
   // ── Slot definitions ────────────────────────────────────
   // x = horizontal offset from stage center (px)
@@ -47,18 +135,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
   var TRANS_DUR   = 800;   // ms — transition between positions
   var PAUSE_DUR   = 2600;  // ms — pause on center card after each step
-  var EASING      = 'cubic-bezier(0.37, 0, 0.63, 1)';
   var CARD_W      = 340;   // px — matches CSS
 
-  var cards       = Array.from(track.children);
   var timer       = null;  // auto-advance timeout handle
   var isAnimating = false; // lock during transition
-
-  // ── Prepare track and cards for absolute arc layout ─────
-  track.style.display  = 'block';
-  track.style.position = 'relative';
-  track.style.width    = '100%';
-  track.style.height   = '100%';
 
   cards.forEach(function (card) {
     card.style.position   = 'absolute';
@@ -153,10 +233,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       scheduleNext();
     }, TRANS_DUR + 80);
   }
-
-  // ── Arrow buttons ────────────────────────────────────────
-  var prevBtn = document.getElementById('showcase-prev');
-  var nextBtn = document.getElementById('showcase-next');
 
   if (prevBtn) prevBtn.addEventListener('click', function () {
     clearTimeout(timer);

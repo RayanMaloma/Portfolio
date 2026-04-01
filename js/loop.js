@@ -10,6 +10,32 @@ function initLoop(panelSelector, images) {
   var panel = document.querySelector(panelSelector);
   if (!panel) return;
 
+  // ── Mobile: static vertical gallery ─────────────────────
+  if (window.innerWidth <= 768) {
+    var sorted = images.slice().sort(function (a, b) {
+      function num(path) {
+        var base = path.split('/').pop().replace(/\.[^.]+$/, '');
+        var n    = parseInt(base, 10);
+        return isNaN(n) ? Infinity : n;
+      }
+      return num(a) - num(b);
+    });
+
+    var gallery = document.createElement('div');
+    gallery.className = 'mobile-gallery';
+
+    sorted.forEach(function (src) {
+      var img       = document.createElement('img');
+      img.src       = typeof src === 'string' ? src : src.src;
+      img.alt       = '';
+      img.draggable = false;
+      gallery.appendChild(img);
+    });
+
+    panel.appendChild(gallery);
+    return;
+  }
+
   // ── Numeric sort ────────────────────────────────────────
   // If every filename is purely numeric (e.g. 1.png, 7.png),
   // sort ascending. Otherwise preserve the order defined by the caller.
