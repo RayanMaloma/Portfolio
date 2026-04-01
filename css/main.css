@@ -504,12 +504,12 @@ img {
 
   /* Projects — mobile: centered transform carousel */
   .showcase-stage {
-    height: 420px;
+    height: 360px;
     overflow: hidden;
   }
 
   .showcase-card {
-    width: 280px;
+    width: 248px;
   }
 
   .showcase-arrow {

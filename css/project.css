@@ -244,6 +244,18 @@ img {
     overflow: visible;
   }
 
+  /* Info first, visuals second */
+  .panel-right { order: 1; }
+  .panel-left  { order: 2; }
+
+  .panel-right {
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+    overflow-y: visible;
+    padding: 0 24px;
+  }
+
   .panel-left {
     position: static;
     width: 100%;
@@ -253,6 +265,7 @@ img {
     overflow: visible;
     -webkit-mask-image: none;
     mask-image: none;
+    padding-bottom: 60px;
   }
 
   /* Static gallery rendered by JS on mobile */
@@ -266,14 +279,6 @@ img {
     width: 100%;
     height: auto;
     display: block;
-  }
-
-  .panel-right {
-    margin-left: 0;
-    width: 100%;
-    height: auto;
-    overflow-y: visible;
-    padding: 0 24px;
   }
 
   .project-nav {

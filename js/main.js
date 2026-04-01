@@ -43,12 +43,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
   // MOBILE — Centered 3-slot carousel (intentional navigation)
   // ════════════════════════════════════════════════════════
   if (window.innerWidth <= 768) {
-    var M_CARD_W    = 280;                              // matches mobile CSS
-    var M_PEEK_X    = Math.round(window.innerWidth * 0.695); // side card center offset
-    var M_DUR       = 480;                              // ms
-    var M_HALF      = Math.floor(cards.length / 2);
-    var mCurrent    = 0;
-    var mAnimating  = false;
+    var M_CARD_W   = 248;                                   // card width (px)
+    var M_PEEK_X   = Math.round(window.innerWidth * 0.70);  // side-card center offset
+    var M_DUR      = 460;                                   // transition duration (ms)
+    var M_HALF     = Math.floor(cards.length / 2);
+    var mCurrent   = 0;
+    var mAnimating = false;
 
     cards.forEach(function (card) {
       card.style.position   = 'absolute';
@@ -60,17 +60,16 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
     function mSlot(offset) {
       var abs = Math.abs(offset);
-      if (offset === 0)  return { x: 0,         s: 1.00, o: 1.00, z: 5 };
-      if (abs === 1)     return { x: offset * M_PEEK_X, s: 0.86, o: 0.42, z: 2 };
-      return               { x: offset * M_PEEK_X * 1.8, s: 0.75, o: 0,    z: 0 };
+      if (offset === 0) return { x: 0,                    s: 1.00, o: 1.00, z: 5 };
+      if (abs === 1)    return { x: offset * M_PEEK_X,    s: 0.86, o: 0.35, z: 2 };
+      return                   { x: offset * M_PEEK_X * 2, s: 0.75, o: 0,    z: 0 };
     }
 
     function mRender(animated) {
       var n = cards.length;
       cards.forEach(function (card, i) {
         var offset = i - mCurrent;
-        // Wrap into range -(n/2) … +(n/2)
-        if (offset >  M_HALF) offset -= n;
+        if (offset >   M_HALF) offset -= n;
         if (offset <= -M_HALF) offset += n;
 
         var slot = mSlot(offset);
@@ -81,8 +80,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
           'translateX(' + slot.x + 'px) translateY(-50%) scale(' + slot.s + ')';
         card.style.opacity = slot.o;
         card.style.zIndex  = slot.z;
-        // Pointer events: only center card is clickable as a link
-        card.style.pointerEvents = offset === 0 ? '' : 'auto';
       });
     }
 
@@ -94,12 +91,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       setTimeout(function () { mAnimating = false; }, M_DUR + 50);
     }
 
-    // Tapping a non-center card navigates instead of following the link
+    // Tapping a peek card navigates; center card opens its link normally
     cards.forEach(function (card, i) {
       card.addEventListener('click', function (e) {
+        var n      = cards.length;
         var offset = i - mCurrent;
-        var n = cards.length;
-        if (offset >  M_HALF) offset -= n;
+        if (offset >   M_HALF) offset -= n;
         if (offset <= -M_HALF) offset += n;
         if (offset !== 0) {
           e.preventDefault();
@@ -108,10 +105,31 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       });
     });
 
+    // Touch swipe
+    var touchX = 0;
+    var touchY = 0;
+    stage.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - touchX;
+      var dy = e.changedTouches[0].clientY - touchY;
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        mNavigate(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+
     if (prevBtn) prevBtn.addEventListener('click', function () { mNavigate(-1); });
     if (nextBtn) nextBtn.addEventListener('click', function () { mNavigate(1); });
 
+    // Paint initial positions, then unlock transitions
     mRender(false);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        cards.forEach(function (card) { card.style.transition = ''; });
+      });
+    });
     return;
   }
 
