@@ -127,9 +127,13 @@ function initLoop(panelSelector, images) {
 
     currentY += delta * 0.6;
 
-    // Wrap within [0, halfH) for seamless looping
-    if (currentY >= halfH) currentY -= halfH;
-    if (currentY < 0)      currentY += halfH;
+    // Manual inspection mode: clamp to the full original content range.
+    // Do NOT wrap — let the user scroll from the first image to the last
+    // without any jump. The auto-loop resumes cleanly from wherever
+    // currentY lands once the mouse leaves.
+    var maxScroll = Math.max(0, halfH - panel.clientHeight);
+    if (currentY < 0)          currentY = 0;
+    if (currentY > maxScroll)  currentY = maxScroll;
 
     applyY();
   }, { passive: false });
