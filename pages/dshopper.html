@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D Shopper — Rayan Al-Omaireeni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+
+  <div class="project-layout">
+
+    <!-- LEFT: Interactive iPhone -->
+    <div class="panel-left panel-left--phone">
+      <div class="phone-wrap">
+        <div class="phone-stage" id="phone-stage">
+
+          <button class="phone-arrow phone-arrow--left" aria-label="Previous screen">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 4L6 9L11 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="phone-frame">
+            <div class="phone-side-btn phone-side-btn--mute"></div>
+            <div class="phone-side-btn phone-side-btn--vol-up"></div>
+            <div class="phone-side-btn phone-side-btn--vol-down"></div>
+            <div class="phone-side-btn phone-side-btn--lock"></div>
+            <div class="phone-screen">
+              <div class="phone-notch"></div>
+              <div class="phone-track"></div>
+            </div>
+          </div>
+
+          <button class="phone-arrow phone-arrow--right" aria-label="Next screen">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 4L12 9L7 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+        </div>
+        <span class="phone-counter">01 / 28</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: Project info -->
+    <div class="panel-right">
+
+      <nav class="project-nav">
+        <a href="../index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back
+        </a>
+      </nav>
+
+      <div class="project-content">
+
+        <h1 class="project-title">D Shopper</h1>
+        <hr class="project-divider">
+
+        <div class="project-meta">
+          <div class="meta-row">
+            <span class="meta-label">For</span>
+            <span class="meta-value">Client</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Role</span>
+            <span class="meta-value">Product Designer</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Status</span>
+            <span class="meta-value">
+              <span class="status complete">Complete</span>
+            </span>
+          </div>
+        </div>
+
+        <p class="overview-label">Overview</p>
+        <p class="overview-text">
+          An app that collects Saudi brands and lets users order from Saudi and global brands.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/phone.js"></script>
+  <script>
+    initPhone('#phone-stage', [
+      '../assets/D%20Shopper/1.png',
+      '../assets/D%20Shopper/2.png',
+      '../assets/D%20Shopper/3.png',
+      '../assets/D%20Shopper/4.png',
+      '../assets/D%20Shopper/5.png',
+      '../assets/D%20Shopper/6.png',
+      '../assets/D%20Shopper/7.png',
+      '../assets/D%20Shopper/8.png',
+      '../assets/D%20Shopper/9.png',
+      '../assets/D%20Shopper/10.png',
+      '../assets/D%20Shopper/11.png',
+      '../assets/D%20Shopper/12.png',
+      '../assets/D%20Shopper/13.png',
+      '../assets/D%20Shopper/14.png',
+      '../assets/D%20Shopper/15.png',
+      '../assets/D%20Shopper/16.png',
+      '../assets/D%20Shopper/17.png',
+      '../assets/D%20Shopper/18.png',
+      '../assets/D%20Shopper/20.png',
+      '../assets/D%20Shopper/21.png',
+      '../assets/D%20Shopper/22.png',
+      '../assets/D%20Shopper/23.png',
+      '../assets/D%20Shopper/24.png',
+      '../assets/D%20Shopper/25.png',
+      '../assets/D%20Shopper/26.png',
+      '../assets/D%20Shopper/27.png',
+      '../assets/D%20Shopper/28.png',
+      '../assets/D%20Shopper/29.png',
+    ]);
+  </script>
+</body>
+</html>
