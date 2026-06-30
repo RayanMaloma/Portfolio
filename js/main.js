@@ -2,7 +2,7 @@
 
 var nav = document.querySelector('.nav');
 
-// Nav background on scroll
+// ─── Nav background on scroll ─────────────────────────────
 window.addEventListener('scroll', function () {
   if (window.scrollY > 40) {
     nav.classList.add('scrolled');
@@ -11,8 +11,53 @@ window.addEventListener('scroll', function () {
   }
 });
 
-// Smooth scroll for internal anchor links
-document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+// ─── Fullscreen overlay menu ──────────────────────────────
+(function () {
+  var menuBtn = document.getElementById('menu-btn');
+  var overlay = document.getElementById('overlay');
+  var closeBtn = document.getElementById('overlay-close');
+  var links = document.querySelectorAll('[data-overlay-link]');
+  if (!menuBtn || !overlay) return;
+
+  function open() {
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  menuBtn.addEventListener('click', open);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+
+  // Close + smooth-scroll to target on overlay link click
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var hash = link.getAttribute('href');
+      var target = hash && document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        close();
+        setTimeout(function () {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 200);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+  });
+})();
+
+// ─── Smooth scroll for in-page anchor links ───────────────
+document.querySelectorAll('a[href^="#"]:not([data-overlay-link])').forEach(function (link) {
   link.addEventListener('click', function (e) {
     var target = document.querySelector(this.getAttribute('href'));
     if (target) {
@@ -22,56 +67,39 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
   });
 });
 
-// ─── Projects Rail — hover/focus preview swap ─────────────
+// ─── Hero memoji parallax on scroll ───────────────────────
 (function () {
-  var preview = document.querySelector('.rail-preview-img');
-  var rail    = document.querySelector('.rail-list');
-  var links   = document.querySelectorAll('.rail-link');
-  if (!preview || !rail || !links.length) return;
+  var memoji = document.getElementById('hero-memoji');
+  if (!memoji) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.innerWidth <= 768) return;
 
-  var leaveTimer = null;
-
-  // Warm the cache so swaps are instant
-  links.forEach(function (link) {
-    var src = link.getAttribute('data-thumb');
-    if (src) {
-      var probe = new Image();
-      probe.src = src;
-    }
-  });
-
-  // src = null → fade the image out, revealing the illustration underneath.
-  function swap(src) {
-    if (!src) {
-      preview.style.opacity = '0';
-      return;
-    }
-    if (preview.getAttribute('src') === src) {
-      preview.style.opacity = '1';
-      return;
-    }
-    preview.style.opacity = '0';
-    setTimeout(function () {
-      preview.src = src;
-      preview.style.opacity = '1';
-    }, 200);
-  }
-
-  links.forEach(function (link) {
-    var src = link.getAttribute('data-thumb');
-    link.addEventListener('mouseenter', function () {
-      clearTimeout(leaveTimer);
-      swap(src);
-    });
-    link.addEventListener('focus', function () {
-      clearTimeout(leaveTimer);
-      swap(src);
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY;
+      if (y < window.innerHeight) {
+        memoji.style.transform = 'translateY(calc(-50% + ' + (y * 0.12) + 'px))';
+      }
+      ticking = false;
     });
   });
+})();
 
-  // Cursor leaves the list → fade back to the illustration
-  rail.addEventListener('mouseleave', function () {
-    clearTimeout(leaveTimer);
-    leaveTimer = setTimeout(function () { swap(null); }, 120);
+// ─── Page transition on project navigation ────────────────
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.querySelectorAll('.panel').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var href = link.getAttribute('href');
+      if (!href || href.charAt(0) === '#') return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return; // allow open-in-new-tab
+      e.preventDefault();
+      document.body.classList.add('is-leaving');
+      setTimeout(function () { window.location.href = href; }, 320);
+    });
   });
 })();

@@ -6,7 +6,7 @@
   <title>Rayan Al-Omaireeni — UI/UX Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body data-page-title="page.index">
@@ -14,169 +14,158 @@
   <!-- NAVIGATION -->
   <nav class="nav">
     <a href="#hero" class="nav-name">Rayan Al-Omaireeni</a>
-    <div class="nav-links">
-      <a href="#projects" data-i18n="nav.projects">Projects</a>
-      <a href="#resume" data-i18n="nav.resume">Resume</a>
+    <div class="nav-right">
+      <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">AR</button>
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+        <span data-i18n="nav.menu">Menu</span>
+        <span class="hamburger" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
     </div>
-    <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">AR</button>
   </nav>
+
+  <!-- FULLSCREEN MENU OVERLAY -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <button class="overlay-close" id="overlay-close" aria-label="Close menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5L17 17M17 5L5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <nav class="overlay-nav">
+      <a href="#projects" class="overlay-link" data-overlay-link><span data-i18n="nav.projects">Projects</span></a>
+      <a href="#contact"  class="overlay-link" data-overlay-link><span data-i18n="nav.contact">Contact</span></a>
+      <a href="#resume"   class="overlay-link" data-overlay-link><span data-i18n="nav.resume">Resume</span></a>
+    </nav>
+
+    <div class="overlay-footer">
+      <div class="overlay-socials">
+        <a href="https://www.linkedin.com/in/rayan-omaireeni/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wa.me/966565759145" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:rayanomaireeni@gmail.com">Email</a>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section class="hero" id="hero">
+    <img
+      src="assets/memoji/memoji.png"
+      alt="Rayan Al-Omaireeni"
+      class="hero-memoji"
+      id="hero-memoji"
+    >
+
     <div class="hero-inner">
-
-      <div class="hero-left">
-        <img
-          src="assets/memoji/memoji.png"
-          alt="Rayan Al-Omaireeni"
-          class="hero-memoji"
-        >
-      </div>
-
-      <div class="hero-right">
-        <div class="hero-content">
-          <h1 class="hero-name">Rayan<br>Al-Omaireeni</h1>
-          <p class="hero-title" data-i18n="hero.title">UI/UX Designer · Product Designer</p>
-          <p class="hero-tagline" data-i18n="hero.tagline">Focused on building intuitive, scalable, and visually sharp experiences — from concept to interface.</p>
-          <div class="hero-ctas">
-            <a href="#projects" class="btn btn-primary" data-i18n="hero.cta.projects">My Projects</a>
-            <a href="https://wa.me/966565759145" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="hero.cta.talk">Let's Talk</a>
-          </div>
-        </div>
-      </div>
-
+      <span class="hero-kicker" data-i18n="hero.kicker">Product Designer · UX / UI / AI</span>
+      <h1 class="hero-name" data-i18n="hero.name">Rayan Al-Omaireeni</h1>
+      <p class="hero-bio" data-i18n="hero.bio">I design products across UX, UI, and AI — turning complex ideas into clear, intuitive interfaces. I graduated in Computer Information Systems from the College of Computer &amp; Information Sciences at King Saud University.</p>
+      <a href="#projects" class="hero-scroll" data-i18n="hero.scroll">Scroll to work ↓</a>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section class="section projects" id="projects">
+  <!-- WORK -->
+  <section class="section work" id="projects">
     <div class="container">
-      <p class="section-label" data-i18n="projects.label">Rayan's Work</p>
+      <div class="section-head">
+        <p class="section-label" data-i18n="projects.label">Selected Work</p>
+        <p class="section-hint" data-i18n="projects.hint">Hover to explore · Click to open</p>
+      </div>
 
-      <div class="projects-rail">
-
-        <ul class="rail-list">
-          <li>
-            <a href="pages/autorag.html" class="rail-link" data-thumb="assets/thumbnails/AutoRAG.png">
-              <img class="rail-thumb" src="assets/thumbnails/AutoRAG.png" alt="">
-              <span class="rail-title" data-i18n="card.autorag.title">AutoRAG (Graduation Project)</span>
-              <span class="rail-role" data-i18n="card.autorag.role">UI/UX · Frontend</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/dshopper.html" class="rail-link" data-thumb="assets/thumbnails/DShopper.png">
-              <img class="rail-thumb" src="assets/thumbnails/DShopper.png" alt="">
-              <span class="rail-title" data-i18n="card.dshopper.title">D Shopper</span>
-              <span class="rail-role" data-i18n="card.dshopper.role">Product Design</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/csc.html" class="rail-link" data-thumb="assets/thumbnails/cscksu.png">
-              <img class="rail-thumb" src="assets/thumbnails/cscksu.png" alt="">
-              <span class="rail-title" data-i18n="card.csc.title">CSC Official Website</span>
-              <span class="rail-role" data-i18n="card.csc.role">UI/UX Design</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/rknh.html" class="rail-link" data-thumb="assets/thumbnails/rknh.png">
-              <img class="rail-thumb" src="assets/thumbnails/rknh.png" alt="">
-              <span class="rail-title" data-i18n="card.rknh.title">RKNH Identity</span>
-              <span class="rail-role" data-i18n="card.rknh.role">Brand Identity</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/routine.html" class="rail-link" data-thumb="assets/thumbnails/routine.png">
-              <img class="rail-thumb" src="assets/thumbnails/routine.png" alt="">
-              <span class="rail-title" data-i18n="card.routine.title">Routine</span>
-              <span class="rail-role" data-i18n="card.routine.role">Graphic Design</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/tamakan.html" class="rail-link" data-thumb="assets/thumbnails/tamakan.png">
-              <img class="rail-thumb" src="assets/thumbnails/tamakan.png" alt="">
-              <span class="rail-title" data-i18n="card.tamakan.title">Tamakan</span>
-              <span class="rail-role" data-i18n="card.tamakan.role">Graphic Design</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/mosbah.html" class="rail-link" data-thumb="assets/thumbnails/mosbahomar.png">
-              <img class="rail-thumb" src="assets/thumbnails/mosbahomar.png" alt="">
-              <span class="rail-title" data-i18n="card.mosbah.title">Mosbah Omar</span>
-              <span class="rail-role" data-i18n="card.mosbah.role">Graphic Design</span>
-              <span class="rail-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 8H12M12 8L8.5 4.5M12 8L8.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="rail-preview" aria-hidden="true">
-          <div class="rail-preview-frame">
-
-            <svg class="rail-illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-              <rect x="100" y="80" width="200" height="140"
-                    fill="none" stroke="rgba(240, 240, 240, 0.16)" stroke-width="1"/>
-              <rect class="ill-handle ill-handle--tl" x="96"  y="76"  width="8" height="8" fill="#0a0a0a" stroke="rgba(240, 240, 240, 0.32)" stroke-width="1"/>
-              <rect class="ill-handle ill-handle--tr" x="296" y="76"  width="8" height="8" fill="#0a0a0a" stroke="rgba(240, 240, 240, 0.32)" stroke-width="1"/>
-              <rect class="ill-handle ill-handle--br" x="296" y="216" width="8" height="8" fill="#0a0a0a" stroke="rgba(240, 240, 240, 0.32)" stroke-width="1"/>
-              <rect class="ill-handle ill-handle--bl" x="96"  y="216" width="8" height="8" fill="#0a0a0a" stroke="rgba(240, 240, 240, 0.32)" stroke-width="1"/>
-              <g class="ill-cursor">
-                <path d="M0 0 L0 14 L4 11 L6.5 16 L8.5 15 L6 10.5 L11 10.5 Z"
-                      fill="#f0f0f0" stroke="#000" stroke-width="0.5" stroke-linejoin="round"/>
-              </g>
-            </svg>
-
-            <img class="rail-preview-img" src="assets/thumbnails/AutoRAG.png" alt="">
-          </div>
-        </div>
-
+      <div class="accordion">
+        <a href="pages/autorag.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/AutoRAG.png" alt="">
+          <span class="panel-num">01</span>
+          <span class="panel-spine" data-i18n="card.autorag.title">AutoRAG (Graduation Project)</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.autorag.title">AutoRAG (Graduation Project)</span>
+            <span class="panel-role" data-i18n="card.autorag.role">UI/UX · Frontend</span>
+          </span>
+        </a>
+        <a href="pages/dshopper.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/DShopper.png" alt="">
+          <span class="panel-num">02</span>
+          <span class="panel-spine" data-i18n="card.dshopper.title">D Shopper</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.dshopper.title">D Shopper</span>
+            <span class="panel-role" data-i18n="card.dshopper.role">Product Design</span>
+          </span>
+        </a>
+        <a href="pages/csc.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/cscksu.png" alt="">
+          <span class="panel-num">03</span>
+          <span class="panel-spine" data-i18n="card.csc.title">CSC Official Website</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.csc.title">CSC Official Website</span>
+            <span class="panel-role" data-i18n="card.csc.role">UI/UX Design</span>
+          </span>
+        </a>
+        <a href="pages/rknh.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/rknh.png" alt="">
+          <span class="panel-num">04</span>
+          <span class="panel-spine" data-i18n="card.rknh.title">RKNH Identity</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.rknh.title">RKNH Identity</span>
+            <span class="panel-role" data-i18n="card.rknh.role">Brand Identity</span>
+          </span>
+        </a>
+        <a href="pages/routine.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/routine.png" alt="">
+          <span class="panel-num">05</span>
+          <span class="panel-spine" data-i18n="card.routine.title">Routine</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.routine.title">Routine</span>
+            <span class="panel-role" data-i18n="card.routine.role">Graphic Design</span>
+          </span>
+        </a>
+        <a href="pages/tamakan.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/tamakan.png" alt="">
+          <span class="panel-num">06</span>
+          <span class="panel-spine" data-i18n="card.tamakan.title">Tamakan</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.tamakan.title">Tamakan</span>
+            <span class="panel-role" data-i18n="card.tamakan.role">Graphic Design</span>
+          </span>
+        </a>
+        <a href="pages/mosbah.html" class="panel">
+          <img class="panel-img" src="assets/thumbnails/mosbahomar.png" alt="">
+          <span class="panel-num">07</span>
+          <span class="panel-spine" data-i18n="card.mosbah.title">Mosbah Omar</span>
+          <span class="panel-open">
+            <span class="panel-title" data-i18n="card.mosbah.title">Mosbah Omar</span>
+            <span class="panel-role" data-i18n="card.mosbah.role">Graphic Design</span>
+          </span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- RESUME -->
-  <section class="section resume" id="resume">
+  <!-- CONTACT -->
+  <section class="section contact" id="contact">
     <div class="container">
-      <p class="section-label" data-i18n="resume.label">Resume</p>
-      <p class="resume-text" data-i18n="resume.text">
-        UI/UX Designer with a background in graphic design, transitioning into product design.
-        Senior Computer Information Systems student at King Saud University.
-      </p>
-      <div class="resume-buttons">
-        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="resume.view">View Resume</a>
-        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" download="Rayan-Al-Omaireeni-CV.pdf" class="btn btn-secondary" data-i18n="resume.download">Download</a>
+      <p class="section-label" data-i18n="contact.label">Contact</p>
+      <h2 class="contact-headline" data-i18n="contact.headline">Let's build<br>something real.</h2>
+
+      <div class="contact-links">
+        <a href="mailto:rayanomaireeni@gmail.com" class="contact-link">
+          <span class="contact-link-text">rayanomaireeni@gmail.com</span>
+          <span class="contact-link-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="https://www.linkedin.com/in/rayan-omaireeni/" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-text">LinkedIn</span>
+          <span class="contact-link-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="https://wa.me/966565759145" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-text">WhatsApp</span>
+          <span class="contact-link-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- RESUME (integrated) -->
+      <div class="resume-line" id="resume">
+        <span class="resume-text" data-i18n="resume.line">Want the full picture? Download my resume</span>
+        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" target="_blank" rel="noopener" class="resume-link" data-i18n="resume.download">Resume ↓</a>
       </div>
     </div>
   </section>
@@ -184,31 +173,6 @@
   <!-- FOOTER -->
   <footer class="footer">
     <span class="footer-name">Rayan Al-Omaireeni</span>
-    <div class="footer-contact">
-      <a href="tel:+966565759145" class="footer-link">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 1h3l1.5 4-2 1.5a9 9 0 0 0 4 4L11 8.5l4 1.5v3a1 1 0 0 1-1 1C5.373 14 2 10.627 2 2a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        +966 565 759 145
-      </a>
-      <span class="footer-dot">·</span>
-      <a href="mailto:rayanmaloma@gmail.com" class="footer-link">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M1 4l7 5 7-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-        rayanmaloma@gmail.com
-      </a>
-      <span class="footer-dot">·</span>
-      <a href="https://www.linkedin.com/in/rayan-omaireeni/" target="_blank" rel="noopener" class="footer-link">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M4 6.5v5M4 4v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M7.5 11.5V9a1.5 1.5 0 0 1 3 0v2.5M7.5 6.5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        LinkedIn
-      </a>
-    </div>
     <span class="footer-copy">© 2026</span>
   </footer>
 

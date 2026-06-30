@@ -6,15 +6,63 @@
   <title>AutoRAG — Rayan Al-Omaireeni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/project.css">
+  <!-- Warm up the prototype origin without downloading it -->
+  <link rel="preconnect" href="https://benevolent-dieffenbachia-e21c30.netlify.app">
 </head>
 <body data-page-title="autorag.page.title">
 
   <div class="project-layout">
 
-    <!-- LEFT: Looping visuals -->
-    <div class="panel-left" id="loop-panel"></div>
+    <!-- LEFT: Live interactive prototype (lazy-loaded) -->
+    <div class="panel-left panel-left--live">
+      <div class="browser-frame">
+
+        <div class="browser-bar">
+          <span class="browser-dots" aria-hidden="true">
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+          </span>
+          <span class="browser-url">
+            <svg class="browser-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>autorag.app</span>
+            <span class="browser-live"><i></i><span data-i18n="autorag.demo.tag">Live Prototype</span></span>
+          </span>
+          <span class="browser-actions">
+            <button class="browser-btn" id="demo-fs" type="button" aria-label="Fullscreen" title="Fullscreen">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <a class="browser-btn" id="demo-newtab" href="https://benevolent-dieffenbachia-e21c30.netlify.app/" target="_blank" rel="noopener" aria-label="Open in new tab" title="Open in new tab">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="browser-viewport" id="demo-viewport">
+          <button class="demo-poster" id="demo-poster" type="button" aria-label="Launch interactive demo">
+            <span class="demo-poster__glow" aria-hidden="true"></span>
+            <span class="demo-wordmark">AutoRAG</span>
+            <span class="demo-play" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5.5v13l11-6.5L8 5.5Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="demo-launch" data-i18n="autorag.demo.launch">Launch interactive demo</span>
+            <span class="demo-hint" data-i18n="autorag.demo.hint">Real &amp; fully interactive — click to explore</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
 
     <!-- RIGHT: Project info -->
     <div class="panel-right">
@@ -58,24 +106,113 @@
           RAG configuration to provide accurate and contextually relevant answers.
         </p>
 
+        <p class="overview-label demo-explore-label" data-i18n="autorag.explore">What to explore</p>
+        <ul class="demo-highlights">
+          <li class="demo-highlight">
+            <span class="demo-highlight__num">01</span>
+            <span class="demo-highlight__body">
+              <span class="demo-highlight__t" data-i18n="autorag.h1.t">Guided RAG setup</span>
+              <span class="demo-highlight__d" data-i18n="autorag.h1.d">A no-code questionnaire configures the engine for you</span>
+            </span>
+          </li>
+          <li class="demo-highlight">
+            <span class="demo-highlight__num">02</span>
+            <span class="demo-highlight__body">
+              <span class="demo-highlight__t" data-i18n="autorag.h2.t">Natural-language chat</span>
+              <span class="demo-highlight__d" data-i18n="autorag.h2.d">Ask high-level questions, get sourced answers</span>
+            </span>
+          </li>
+          <li class="demo-highlight">
+            <span class="demo-highlight__num">03</span>
+            <span class="demo-highlight__body">
+              <span class="demo-highlight__t" data-i18n="autorag.h3.t">Document workspaces</span>
+              <span class="demo-highlight__d" data-i18n="autorag.h3.d">Upload, index and manage knowledge sources</span>
+            </span>
+          </li>
+          <li class="demo-highlight">
+            <span class="demo-highlight__num">04</span>
+            <span class="demo-highlight__body">
+              <span class="demo-highlight__t" data-i18n="autorag.h4.t">Team &amp; insights</span>
+              <span class="demo-highlight__d" data-i18n="autorag.h4.d">Members, roles and usage analytics</span>
+            </span>
+          </li>
+        </ul>
+
+        <div class="demo-actions">
+          <button class="btn-demo" id="demo-launch-cta" type="button">
+            <span data-i18n="autorag.demo.cta">Launch interactive demo</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <a class="btn-ghost" href="https://benevolent-dieffenbachia-e21c30.netlify.app/" target="_blank" rel="noopener">
+            <span data-i18n="autorag.demo.open">Open in new tab</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
       </div>
     </div>
   </div>
 
   <script src="../js/i18n.js"></script>
-  <script src="../js/loop.js"></script>
   <script>
-    initLoop('#loop-panel', [
-      '../assets/autorag/1.png',
-      '../assets/autorag/2.png',
-      '../assets/autorag/3.png',
-      '../assets/autorag/4.png',
-      '../assets/autorag/5.png',
-      '../assets/autorag/6.png',
-      '../assets/autorag/7.png',
-      '../assets/autorag/8.png',
-      '../assets/autorag/9.png',
-    ]);
+    (function () {
+      var PROTO    = 'https://benevolent-dieffenbachia-e21c30.netlify.app/';
+      var vp       = document.getElementById('demo-viewport');
+      var poster   = document.getElementById('demo-poster');
+      var loaded   = false;
+
+      function isMobile() { return window.matchMedia('(max-width: 768px)').matches; }
+
+      function loadDemo() {
+        if (loaded) return true;
+        loaded = true;
+
+        var skel = document.createElement('div');
+        skel.className = 'demo-skeleton';
+        vp.appendChild(skel);
+
+        var frame = document.createElement('iframe');
+        frame.className = 'demo-iframe';
+        frame.title = 'AutoRAG live prototype';
+        frame.setAttribute('loading', 'lazy');
+        frame.setAttribute('allow', 'clipboard-write; fullscreen');
+        frame.addEventListener('load', function () {
+          vp.classList.add('is-loaded');
+          if (poster) poster.setAttribute('hidden', '');
+          setTimeout(function () { if (skel.parentNode) skel.parentNode.removeChild(skel); }, 450);
+        });
+        frame.src = PROTO;
+        vp.appendChild(frame);
+        vp.classList.add('is-loading');
+        return true;
+      }
+
+      function launch() {
+        // On phones a desktop SaaS app is cramped inside a small frame —
+        // hand off to a real full tab instead.
+        if (isMobile()) { window.open(PROTO, '_blank', 'noopener'); return; }
+        loadDemo();
+      }
+
+      if (poster) poster.addEventListener('click', launch);
+
+      var cta = document.getElementById('demo-launch-cta');
+      if (cta) cta.addEventListener('click', function (e) { e.preventDefault(); launch(); });
+
+      var fsBtn = document.getElementById('demo-fs');
+      if (fsBtn) fsBtn.addEventListener('click', function () {
+        if (isMobile()) { window.open(PROTO, '_blank', 'noopener'); return; }
+        loadDemo();
+        var el = vp;
+        if (el.requestFullscreen)            el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else                                 window.open(PROTO, '_blank', 'noopener');
+      });
+    })();
   </script>
 </body>
 </html>

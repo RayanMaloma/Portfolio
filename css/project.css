@@ -7,12 +7,14 @@
 
 /* ─── Variables ──────────────────────────────────────────── */
 :root {
-  --bg:      #0a0a0a;
-  --surface: #111111;
-  --border:  #1e1e1e;
-  --text:    #f0f0f0;
-  --muted:   #505050;
+  --bg:      #080808;
+  --surface: #101010;
+  --border:  #1a1a1a;
+  --text:    #EBEBEB;
+  --muted:   #5a5a5a;
+  --accent:  #C9B99A;
   --font:    'Inter', sans-serif;
+  --display: 'Syne', sans-serif;
   --panel-w: 52%;
 }
 
@@ -29,12 +31,19 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
-  animation: page-in 0.4s ease forwards;
+  animation: page-in 0.45s ease forwards;
 }
 
 @keyframes page-in {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+/* Leaving transition (set by JS before navigating back) */
+body.is-leaving {
+  opacity: 0;
+  transform: translateY(-18px);
+  transition: opacity 0.32s ease, transform 0.32s ease;
 }
 
 a {
@@ -151,11 +160,30 @@ img {
 }
 
 .project-title {
+  font-family: var(--display);
   font-size: clamp(28px, 3.2vw, 52px);
-  font-weight: 300;
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
   margin-bottom: 40px;
+}
+
+/* Right panel slides in on load */
+.panel-right .project-content,
+.panel-right .project-nav {
+  animation: panel-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.panel-right .project-content { animation-delay: 0.08s; }
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-right .project-content,
+  .panel-right .project-nav { animation: none; }
 }
 
 .project-divider {
@@ -230,6 +258,301 @@ img {
   color: #b0b0b0;
   max-width: 460px;
 }
+
+/* ─── Live Prototype (AutoRAG) ───────────────────────────── */
+.panel-left--live {
+  -webkit-mask-image: none;
+  mask-image: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: radial-gradient(120% 90% at 30% 0%, #0e0e0e 0%, #080808 60%);
+}
+
+.browser-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid #1f1f1f;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 40px 90px rgba(0, 0, 0, 0.6),
+    0 12px 32px rgba(0, 0, 0, 0.45);
+  animation: panel-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .browser-frame { animation: none; }
+}
+
+/* ── Browser chrome bar ── */
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 42px;
+  padding: 0 14px;
+  flex-shrink: 0;
+  background: #0d0d0d;
+  border-bottom: 1px solid var(--border);
+}
+
+.browser-dots { display: inline-flex; gap: 7px; flex-shrink: 0; }
+.browser-dot  { width: 11px; height: 11px; border-radius: 50%; background: #2a2a2a; }
+
+.browser-url {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 7px;
+  background: #060606;
+  border: 1px solid #181818;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+.browser-url > span:not(.browser-live) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.browser-lock { flex-shrink: 0; opacity: 0.7; }
+
+.browser-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding-left: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.browser-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(201, 185, 154, 0.5);
+  animation: live-pulse 2s ease-out infinite;
+}
+@keyframes live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(201, 185, 154, 0.45); }
+  70%  { box-shadow: 0 0 0 7px rgba(201, 185, 154, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 185, 154, 0); }
+}
+
+.browser-actions { display: inline-flex; gap: 4px; flex-shrink: 0; }
+.browser-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.browser-btn:hover { color: var(--text); background: #1c1c1c; }
+
+/* ── Viewport (poster → iframe) ── */
+.browser-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  overflow: hidden;
+}
+
+.demo-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.browser-viewport.is-loaded .demo-iframe { opacity: 1; }
+
+/* Facade poster — no heavy assets, loads the prototype only on click */
+.demo-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: none;
+  cursor: pointer;
+  background:
+    radial-gradient(110% 70% at 50% 12%, #14233f 0%, #0b1322 45%, #070707 100%);
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
+}
+.demo-poster[hidden] { display: none; }
+
+.demo-poster__glow {
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  width: 460px;
+  height: 460px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(31, 100, 255, 0.28) 0%, rgba(31, 100, 255, 0) 65%);
+  pointer-events: none;
+}
+
+.demo-wordmark {
+  position: relative;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #eaf0ff;
+  margin-bottom: 6px;
+}
+
+.demo-play {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding-left: 4px;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.demo-play svg { transform: translateX(1px); }
+.demo-poster:hover .demo-play {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.demo-launch {
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f3f6ff;
+}
+.demo-hint {
+  position: relative;
+  font-size: 12px;
+  color: #8aa0c7;
+}
+
+/* Loading shimmer while the iframe boots */
+.demo-skeleton {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, #f1f5f9 30%, #ffffff 50%, #f1f5f9 70%);
+  background-size: 200% 100%;
+  animation: demo-shimmer 1.2s linear infinite;
+  z-index: 1;
+}
+.browser-viewport.is-loaded .demo-skeleton { opacity: 0; transition: opacity 0.4s ease; }
+@keyframes demo-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* ── Right-panel: explore guide + actions ── */
+.demo-explore-label { margin-top: 40px; }
+
+.demo-highlights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 36px;
+  max-width: 460px;
+}
+.demo-highlight {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+.demo-highlight__num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.demo-highlight__body { display: flex; flex-direction: column; gap: 3px; }
+.demo-highlight__t { font-size: 14px; font-weight: 500; color: var(--text); }
+.demo-highlight__d { font-size: 13px; line-height: 1.55; color: #8c8c8c; }
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #0b0b0b;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.btn-demo:hover {
+  background: #d8c9a9;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(201, 185, 154, 0.18);
+}
+.btn-demo svg { transition: transform 0.2s ease; }
+.btn-demo:hover svg { transform: translateX(3px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.btn-ghost:hover { color: var(--text); }
 
 /* ─── Phone Mockup ───────────────────────────────────────── */
 .panel-left--phone {
@@ -441,6 +764,32 @@ img {
   .phone-notch  { width: 66px; height: 18px; top: 8px; }
 }
 
+/* ─── Live Prototype — Mobile ────────────────────────────── */
+@media (max-width: 768px) {
+  .panel-left--live {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+    background: none;
+  }
+  .browser-frame { height: auto; }
+  .browser-viewport { aspect-ratio: 4 / 3; }
+  .browser-live { display: none; }
+  .demo-wordmark { font-size: 19px; }
+  .demo-play { width: 58px; height: 58px; }
+  .demo-highlights,
+  .demo-actions { max-width: 100%; }
+  .btn-demo { flex: 1; justify-content: center; }
+}
+
+/* ─── Live Prototype — RTL ───────────────────────────────── */
+[dir="rtl"] .browser-live { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .demo-highlight { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .demo-highlight__body { text-align: right; }
+[dir="rtl"] .demo-actions { flex-direction: row-reverse; }
+[dir="rtl"] .btn-demo:hover svg { transform: translateX(-3px); }
+
 /* ─── Lang Toggle (project pages) ───────────────────────── */
 .lang-toggle {
   background: none;
@@ -504,6 +853,21 @@ img {
 
 [dir="rtl"] .overview-label {
   text-align: right;
+}
+
+[dir="rtl"] .panel-right .project-content,
+[dir="rtl"] .panel-right .project-nav {
+  animation-name: panel-in-rtl;
+}
+
+@keyframes panel-in-rtl {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+[dir="rtl"] .project-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
