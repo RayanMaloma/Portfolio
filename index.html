@@ -6,18 +6,19 @@
   <title>Rayan Al-Omaireeni — UI/UX Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body data-page-title="page.index">
 
   <!-- NAVIGATION -->
   <nav class="nav">
     <a href="#hero" class="nav-name">Rayan Al-Omaireeni</a>
     <div class="nav-links">
-      <a href="#projects">Projects</a>
-      <a href="#resume">Resume</a>
+      <a href="#projects" data-i18n="nav.projects">Projects</a>
+      <a href="#resume" data-i18n="nav.resume">Resume</a>
     </div>
+    <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">AR</button>
   </nav>
 
   <!-- HERO -->
@@ -35,11 +36,11 @@
       <div class="hero-right">
         <div class="hero-content">
           <h1 class="hero-name">Rayan<br>Al-Omaireeni</h1>
-          <p class="hero-title">UI/UX Designer · Product Designer</p>
-          <p class="hero-tagline">Focused on building intuitive, scalable, and visually sharp experiences — from concept to interface.</p>
+          <p class="hero-title" data-i18n="hero.title">UI/UX Designer · Product Designer</p>
+          <p class="hero-tagline" data-i18n="hero.tagline">Focused on building intuitive, scalable, and visually sharp experiences — from concept to interface.</p>
           <div class="hero-ctas">
-            <a href="#projects" class="btn btn-primary">My Projects</a>
-            <a href="https://wa.me/966565759145" target="_blank" rel="noopener" class="btn btn-secondary">Let's Talk</a>
+            <a href="#projects" class="btn btn-primary" data-i18n="hero.cta.projects">My Projects</a>
+            <a href="https://wa.me/966565759145" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="hero.cta.talk">Let's Talk</a>
           </div>
         </div>
       </div>
@@ -50,7 +51,7 @@
   <!-- PROJECTS -->
   <section class="section projects" id="projects">
     <div class="container">
-      <p class="section-label">Rayan's Work</p>
+      <p class="section-label" data-i18n="projects.label">Rayan's Work</p>
     </div>
 
     <div class="showcase-stage" id="showcase-stage">
@@ -71,8 +72,8 @@
             <img src="assets/thumbnails/AutoRAG.png" alt="AutoRAG">
           </div>
           <div class="sc-info">
-            <span class="sc-title">AutoRAG (Graduation Project)</span>
-            <span class="sc-role">UI/UX · Frontend</span>
+            <span class="sc-title" data-i18n="card.autorag.title">AutoRAG (Graduation Project)</span>
+            <span class="sc-role" data-i18n="card.autorag.role">UI/UX · Frontend</span>
           </div>
         </a>
 
@@ -81,8 +82,8 @@
             <img src="assets/thumbnails/cscksu.png" alt="CSC Official Website">
           </div>
           <div class="sc-info">
-            <span class="sc-title">CSC Official Website</span>
-            <span class="sc-role">UI/UX Design</span>
+            <span class="sc-title" data-i18n="card.csc.title">CSC Official Website</span>
+            <span class="sc-role" data-i18n="card.csc.role">UI/UX Design</span>
           </div>
         </a>
 
@@ -91,8 +92,8 @@
             <img src="assets/thumbnails/rknh.png" alt="RKNH Identity">
           </div>
           <div class="sc-info">
-            <span class="sc-title">RKNH Identity</span>
-            <span class="sc-role">Brand Identity</span>
+            <span class="sc-title" data-i18n="card.rknh.title">RKNH Identity</span>
+            <span class="sc-role" data-i18n="card.rknh.role">Brand Identity</span>
           </div>
         </a>
 
@@ -101,8 +102,8 @@
             <img src="assets/thumbnails/routine.png" alt="Routine">
           </div>
           <div class="sc-info">
-            <span class="sc-title">Routine</span>
-            <span class="sc-role">Graphic Design</span>
+            <span class="sc-title" data-i18n="card.routine.title">Routine</span>
+            <span class="sc-role" data-i18n="card.routine.role">Graphic Design</span>
           </div>
         </a>
 
@@ -111,8 +112,8 @@
             <img src="assets/thumbnails/tamakan.png" alt="Tamakan">
           </div>
           <div class="sc-info">
-            <span class="sc-title">Tamakan</span>
-            <span class="sc-role">Graphic Design</span>
+            <span class="sc-title" data-i18n="card.tamakan.title">Tamakan</span>
+            <span class="sc-role" data-i18n="card.tamakan.role">Graphic Design</span>
           </div>
         </a>
 
@@ -121,8 +122,8 @@
             <img src="assets/thumbnails/mosbahomar.png" alt="Mosbah Omar">
           </div>
           <div class="sc-info">
-            <span class="sc-title">Mosbah Omar</span>
-            <span class="sc-role">Graphic Design</span>
+            <span class="sc-title" data-i18n="card.mosbah.title">Mosbah Omar</span>
+            <span class="sc-role" data-i18n="card.mosbah.role">Graphic Design</span>
           </div>
         </a>
 
@@ -133,14 +134,14 @@
   <!-- RESUME -->
   <section class="section resume" id="resume">
     <div class="container">
-      <p class="section-label">Resume</p>
-      <p class="resume-text">
+      <p class="section-label" data-i18n="resume.label">Resume</p>
+      <p class="resume-text" data-i18n="resume.text">
         UI/UX Designer with a background in graphic design, transitioning into product design.
         Senior Computer Information Systems student at King Saud University.
       </p>
       <div class="resume-buttons">
-        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" target="_blank" rel="noopener" class="btn btn-primary">View Resume</a>
-        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" download="Rayan-Al-Omaireeni-CV.pdf" class="btn btn-secondary">Download</a>
+        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="resume.view">View Resume</a>
+        <a href="assets/resume/rayan-al-omaireeni-cv.pdf" download="Rayan-Al-Omaireeni-CV.pdf" class="btn btn-secondary" data-i18n="resume.download">Download</a>
       </div>
     </div>
   </section>
@@ -176,6 +177,7 @@
     <span class="footer-copy">© 2026</span>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
   <script src="js/preload.js"></script>
 </body>

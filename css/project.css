@@ -295,3 +295,74 @@ img {
     max-width: 100%;
   }
 }
+
+/* ─── Lang Toggle (project pages) ───────────────────────── */
+.lang-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 5px 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  margin-left: auto;
+}
+
+.lang-toggle:hover {
+  color: var(--text);
+  border-color: #2e2e2e;
+}
+
+/* ─── RTL Support ────────────────────────────────────────── */
+[dir="rtl"] .panel-left {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .panel-right {
+  margin-left: 0;
+  margin-right: var(--panel-w);
+}
+
+[dir="rtl"] .project-nav {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .lang-toggle {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .back-link {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .back-link svg {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .back-link:hover svg {
+  transform: scaleX(-1) translateX(-3px);
+}
+
+[dir="rtl"] .meta-row {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir="rtl"] .overview-text {
+  text-align: right;
+}
+
+[dir="rtl"] .overview-label {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .panel-right {
+    margin-right: 0;
+  }
+}

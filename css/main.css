@@ -99,6 +99,25 @@ img {
   color: var(--text);
 }
 
+.lang-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 5px 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
 /* ─── Hero ───────────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
@@ -529,5 +548,61 @@ img {
 
   .footer-contact {
     gap: 8px;
+  }
+}
+
+/* ─── RTL Support ────────────────────────────────────────── */
+[dir="rtl"] .nav {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-links {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .hero-inner {
+  grid-template-columns: 52% 48%;
+}
+
+[dir="rtl"] .hero-right {
+  padding-left: 0;
+  padding-right: 40px;
+}
+
+[dir="rtl"] .hero-left {
+  order: 2;
+}
+
+[dir="rtl"] .hero-right {
+  order: 1;
+}
+
+[dir="rtl"] .hero::before {
+  right: auto;
+  left: -80px;
+}
+
+[dir="rtl"] .hero::after {
+  right: auto;
+  left: 80px;
+}
+
+[dir="rtl"] .section-label,
+[dir="rtl"] .resume-text {
+  text-align: right;
+}
+
+[dir="rtl"] .footer {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .hero-left,
+  [dir="rtl"] .hero-right {
+    order: unset;
+  }
+
+  [dir="rtl"] .hero-right {
+    padding-right: 0;
   }
 }

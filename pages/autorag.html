@@ -6,10 +6,10 @@
   <title>AutoRAG — Rayan Al-Omaireeni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cairo:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/project.css">
 </head>
-<body>
+<body data-page-title="autorag.page.title">
 
   <div class="project-layout">
 
@@ -24,34 +24,35 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Back
+          <span data-i18n="back">Back</span>
         </a>
+        <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">AR</button>
       </nav>
 
       <div class="project-content">
 
-        <h1 class="project-title">AutoRAG (Graduation Project)</h1>
+        <h1 class="project-title" data-i18n="autorag.title">AutoRAG (Graduation Project)</h1>
         <hr class="project-divider">
 
         <div class="project-meta">
           <div class="meta-row">
-            <span class="meta-label">For</span>
-            <span class="meta-value">King Saud University</span>
+            <span class="meta-label" data-i18n="meta.for">For</span>
+            <span class="meta-value" data-i18n="autorag.for">King Saud University</span>
           </div>
           <div class="meta-row">
-            <span class="meta-label">Role</span>
-            <span class="meta-value">UI/UX · Frontend Developer</span>
+            <span class="meta-label" data-i18n="meta.role">Role</span>
+            <span class="meta-value" data-i18n="autorag.role">UI/UX · Frontend Developer</span>
           </div>
           <div class="meta-row">
-            <span class="meta-label">Status</span>
+            <span class="meta-label" data-i18n="meta.status">Status</span>
             <span class="meta-value">
-              <span class="status in-progress">In Progress</span>
+              <span class="status in-progress" data-i18n="status.in-progress">In Progress</span>
             </span>
           </div>
         </div>
 
-        <p class="overview-label">Overview</p>
-        <p class="overview-text">
+        <p class="overview-label" data-i18n="overview">Overview</p>
+        <p class="overview-text" data-i18n="autorag.overview">
           AutoRAG is a user-friendly AI system that allows users to ask high-level questions
           without technical knowledge. The system automatically selects the most suitable
           RAG configuration to provide accurate and contextually relevant answers.
@@ -61,6 +62,7 @@
     </div>
   </div>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/loop.js"></script>
   <script>
     initLoop('#loop-panel', [
