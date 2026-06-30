@@ -686,6 +686,40 @@ img {
   flex-direction: row-reverse;
 }
 
+[dir="rtl"] .rail-link {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .rail-role {
+  text-align: left;
+}
+
+[dir="rtl"] .rail-arrow {
+  right: auto;
+  left: -28px;
+  transform: translateY(-50%) translateX(6px) scaleX(-1);
+}
+
+[dir="rtl"] .rail-link:hover .rail-arrow {
+  transform: translateY(-50%) translateX(0) scaleX(-1);
+}
+
+[dir="rtl"] .rail-link:hover {
+  padding-left: 0;
+  padding-right: 8px;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .hero-left,
+  [dir="rtl"] .hero-right {
+    order: unset;
+  }
+
+  [dir="rtl"] .hero-right {
+    padding-right: 0;
+  }
+}
+
 @media (max-width: 768px) {
   [dir="rtl"] .hero-left,
   [dir="rtl"] .hero-right {
