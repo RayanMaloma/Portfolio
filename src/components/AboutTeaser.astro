@@ -1,0 +1,111 @@
+---
+// About teaser (IA §3.7, approved). Coral-washed band; memoji as a die-cut
+// sticker (P5: memoji stays, secondary and controlled); story + fact chips.
+import ui from '../content/ui.json';
+---
+
+<section class="abt" aria-label="About preview">
+  <div class="container abt__grid">
+    <div class="abt__sticker-wrap">
+      <img
+        class="abt__sticker"
+        src="/assets/memoji.webp"
+        alt="Memoji of Rayan wearing a shemagh"
+        loading="lazy"
+        decoding="async"
+        width="220"
+        data-reveal
+      />
+    </div>
+
+    <div class="abt__body">
+      <p class="t-meta abt__label" data-reveal>{ui.aboutTeaser.label}</p>
+      <p class="abt__story" data-reveal>{ui.aboutTeaser.story}</p>
+      <ul class="abt__chips t-meta" data-reveal>
+        {ui.aboutTeaser.chips.map((c) => <li>{c}</li>)}
+      </ul>
+      <a class="abt__cta" href="/about/" data-reveal>
+        <span class="abt__cta-text">{ui.aboutTeaser.cta}</span>
+        <span class="abt__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .abt {
+    background: color-mix(in srgb, var(--coral-soft) 38%, var(--bg-base));
+    padding-block: var(--space-9);
+  }
+  .abt__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: center;
+  }
+
+  .abt__sticker-wrap { grid-column: 2 / span 3; display: flex; justify-content: center; }
+  .abt__sticker {
+    inline-size: clamp(140px, 16vw, 220px);
+    background: var(--surface);
+    border-radius: 50%;
+    border: 6px solid var(--surface);
+    box-shadow: var(--shadow-card);
+    transform: rotate(-4deg);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .abt:hover .abt__sticker { transform: rotate(0deg); }
+
+  .abt__body { grid-column: 6 / span 6; }
+  .abt__label { color: var(--coral-deep); }
+  .abt__story {
+    margin-block-start: var(--space-3);
+    font-size: var(--text-lead);
+    line-height: 1.5;
+    max-inline-size: 46ch;
+    color: var(--ink);
+  }
+  .abt__chips {
+    list-style: none;
+    display: flex;
+    gap: var(--space-2) var(--space-3);
+    flex-wrap: wrap;
+    padding: 0;
+    margin-block-start: var(--space-5);
+    color: var(--ink-soft);
+  }
+  .abt__chips li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: var(--space-1) var(--space-3);
+  }
+  .abt__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block-start: var(--space-5);
+    font-weight: 550;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .abt__cta-text {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1.5px;
+    transition: background-size var(--dur-2) var(--ease-out);
+    padding-block-end: 2px;
+  }
+  .abt__cta:hover .abt__cta-text, .abt__cta:focus-visible .abt__cta-text { background-size: 100% 1.5px; }
+  .abt__arrow { color: var(--coral-deep); transition: transform var(--dur-1) var(--ease-out); }
+  .abt__cta:hover .abt__arrow { transform: translateX(4px); }
+
+  @media (max-width: 1023px) {
+    .abt__grid { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+    .abt__sticker { inline-size: 140px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .abt__sticker { transition: none; transform: none; }
+  }
+</style>

@@ -24,7 +24,67 @@
     "casePending": "Full case study pending — content interview in progress.",
     "backHome": "← Back home"
   },
+  "positioning": {
+    "label": "What I do",
+    "statement": "I design products end-to-end — from ambiguous idea to shipped interface.",
+    "pillars": [
+      {
+        "num": "01",
+        "title": "Product Strategy & UX",
+        "line": "Understanding the problem before drawing the screen.",
+        "subs": ["User research & requirements analysis", "Flows & information architecture", "Wireframing & prototyping"]
+      },
+      {
+        "num": "02",
+        "title": "Interface & Design Systems",
+        "line": "Interfaces that scale past the first screen.",
+        "subs": ["UI design", "Design systems", "Responsive craft"]
+      },
+      {
+        "num": "03",
+        "title": "AI & Emerging Products",
+        "line": "Product design for AI-era software — grounded in a Computer Information Systems degree, not buzzwords.",
+        "subs": ["AI product patterns — AutoRAG", "Bridging users, business & technology", "Design-to-build collaboration"]
+      }
+    ]
+  },
+  "playground": {
+    "title": "Playground",
+    "teaserCaption": "Where I let the graphic designer out",
+    "pageIntro": "Identities, campaigns and visual systems — the graphic-design work that trained my eye before product design put it to work.",
+    "backHome": "← Back home"
+  },
+  "aboutTeaser": {
+    "label": "About",
+    "story": "I started in graphic design — identities, posters and campaigns for KSU clubs — and followed the questions into product design. Now I design products end-to-end, backed by a Computer Information Systems degree from King Saud University.",
+    "chips": ["CIS @ KSU · GPA 4.63", "Graphic → Product", "Riyadh"],
+    "cta": "More about me"
+  },
   "footer": {
+    "headline": "Let's build something people remember.",
+    "copyEmail": "Copy my email",
+    "copied": "Copied!",
+    "links": { "linkedin": "LinkedIn", "whatsapp": "WhatsApp", "resume": "Resume ↓" },
+    "credits": "Designed & built by Rayan — Astro · GSAP",
     "copyright": "© 2026 Rayan Al-Omaireeni"
+  },
+  "case": {
+    "back": "← All work",
+    "gist": "The gist",
+    "context": "Context & problem",
+    "process": "Process",
+    "decisions": "Key decisions",
+    "solution": "The solution",
+    "impact": "Impact & lessons",
+    "next": "Next case",
+    "livePrototype": "Live prototype",
+    "launchDemo": "Launch interactive demo",
+    "openNewTab": "Open in new tab",
+    "pendingSection": "[Pending case-study interview — structure in place, content to follow]"
+  },
+  "notFound": {
+    "title": "This corner is empty.",
+    "line": "The page you're after moved, or never existed.",
+    "cta": "Back to the homepage"
   }
 }

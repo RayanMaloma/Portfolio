@@ -1,0 +1,124 @@
+---
+// Playground teaser (IA §3.6, approved). Full-bleed marquee of curated
+// visual-work cards under an oversized outlined PLAYGROUND wordmark.
+// Desktop: CSS auto-marquee (duplicated track), pauses on hover.
+// Touch: native horizontal scroll-snap. Reduced motion: static 4-up strip.
+import ui from '../content/ui.json';
+
+const cards = [
+  { src: '/assets/playground/rknh-1-s.webp', alt: 'RKNH brand guidelines cover', r: -3 },
+  { src: '/assets/playground/routine-1-s.webp', alt: 'Routine App Store design preview', r: 2 },
+  { src: '/assets/playground/mosbah-1-s.webp', alt: 'Mosbah Omar calligraphic logo', r: -2 },
+  { src: '/assets/playground/tamakan-1-s.webp', alt: 'Tamakkan campaign poster', r: 3 },
+  { src: '/assets/playground/rknh-5-s.webp', alt: 'RKNH type specimen', r: 2 },
+  { src: '/assets/playground/routine-24-s.webp', alt: 'Routine coffee infographic', r: -2 },
+  { src: '/assets/playground/mosbah-3-s.webp', alt: 'Mosbah Omar packaging', r: 3 },
+  { src: '/assets/playground/tamakan-2-s.webp', alt: 'Tamakkan rollup banner', r: -3 },
+  { src: '/assets/playground/rknh-3-s.webp', alt: 'RKNH logo system', r: 2 },
+  { src: '/assets/playground/routine-8-s.webp', alt: 'Routine identity board', r: -2 },
+];
+---
+
+<section class="pgt" aria-label="Playground preview">
+  <a class="pgt__link" href="/playground/">
+    <h2 class="pgt__word t-display" aria-hidden="true">{ui.playground.title.toUpperCase()}</h2>
+    <div class="pgt__band" data-pgt-band>
+      <div class="pgt__track">
+        {[0, 1].map((dup) => (
+          <div class="pgt__group" aria-hidden={dup === 1 ? 'true' : undefined}>
+            {cards.map((c) => (
+              <figure class="pgt__card" style={`--r:${c.r}deg`}>
+                <img src={c.src} alt={dup === 0 ? c.alt : ''} loading="lazy" decoding="async" width="320" />
+              </figure>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+    <p class="pgt__caption">
+      <span class="pgt__caption-text">{ui.playground.teaserCaption}</span>
+      <span class="pgt__arrow" aria-hidden="true">→</span>
+    </p>
+  </a>
+</section>
+
+<style>
+  .pgt {
+    padding-block: var(--space-section);
+    background: var(--bg-tint);
+    overflow: hidden;
+  }
+  .pgt__link { display: block; text-decoration: none; color: inherit; }
+
+  .pgt__word {
+    font-size: clamp(3rem, 11vw, 10rem);
+    text-align: center;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+    line-height: 0.9;
+    margin-block-end: -0.35em; /* overlaps the band */
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .pgt__band { position: relative; z-index: 1; }
+  .pgt__track { display: flex; width: max-content; animation: pgt-scroll 28s linear infinite; }
+  .pgt__group { display: flex; gap: var(--space-5); padding-inline-end: var(--space-5); }
+  @keyframes pgt-scroll {
+    to { transform: translateX(-50%); }
+  }
+  .pgt__link:hover .pgt__track { animation-play-state: paused; }
+
+  .pgt__card {
+    margin: 0;
+    inline-size: clamp(180px, 22vw, 320px);
+    flex-shrink: 0;
+    border-radius: var(--r-m);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transform: rotate(var(--r));
+    transition: transform var(--dur-2) var(--ease-out);
+    margin-block: var(--space-6); /* room for rotation */
+  }
+  .pgt__card:hover { transform: rotate(0deg) translateY(-4px); }
+  .pgt__card img { inline-size: 100%; block-size: auto; display: block; }
+
+  .pgt__caption {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 550;
+    color: var(--ink);
+    margin-block-start: var(--space-5);
+  }
+  .pgt__caption-text {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1.5px;
+    transition: background-size var(--dur-2) var(--ease-out);
+    padding-block-end: 2px;
+  }
+  .pgt__link:hover .pgt__caption-text { background-size: 100% 1.5px; }
+  .pgt__arrow { transition: transform var(--dur-1) var(--ease-out); color: var(--coral-deep); }
+  .pgt__link:hover .pgt__arrow { transform: translateX(4px); }
+
+  /* Touch: native horizontal scroll instead of auto-marquee */
+  @media (hover: none) {
+    .pgt__band { overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+    .pgt__track { animation: none; width: max-content; }
+    .pgt__group[aria-hidden='true'] { display: none; }
+    .pgt__card { scroll-snap-align: center; }
+  }
+
+  /* Reduced motion: static strip, no duplication */
+  @media (prefers-reduced-motion: reduce) {
+    .pgt__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+    .pgt__group[aria-hidden='true'] { display: none; }
+    .pgt__card { transform: none; }
+  }
+</style>

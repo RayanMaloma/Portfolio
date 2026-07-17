@@ -1,0 +1,38 @@
+---
+// Branded 404 — small, playful; memoji cameo (P5 "small moments").
+import Base from '../layouts/Base.astro';
+import ui from '../content/ui.json';
+---
+
+<Base title="Not found — Rayan Al-Omaireeni" description="Page not found.">
+  <section class="nf">
+    <div class="container nf__box">
+      <img class="nf__memoji" src="/assets/memoji.webp" alt="" width="140" aria-hidden="true" />
+      <p class="nf__code t-display">404</p>
+      <h1 class="nf__title t-display">{ui.notFound.title}</h1>
+      <p class="nf__line">{ui.notFound.line}</p>
+      <a class="nf__cta" href="/">{ui.notFound.cta} →</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-block-size: 62svh; display: grid; place-items: center; background: var(--bg-tint); }
+  .nf__box { text-align: center; padding-block: var(--space-9); }
+  .nf__memoji { margin-inline: auto; transform: rotate(-6deg); }
+  .nf__code { font-size: var(--text-hero); color: var(--coral); line-height: 1; }
+  .nf__title { font-size: var(--text-h3); margin-block-start: var(--space-2); }
+  .nf__line { color: var(--ink-soft); margin-block-start: var(--space-3); }
+  .nf__cta {
+    display: inline-block;
+    margin-block-start: var(--space-6);
+    font-weight: 550;
+    color: var(--surface);
+    background: var(--ink);
+    border-radius: var(--r-pill);
+    padding: var(--space-3) var(--space-6);
+    text-decoration: none;
+    transition: background var(--dur-1);
+  }
+  .nf__cta:hover { background: var(--coral-deep); }
+</style>

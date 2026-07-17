@@ -24,6 +24,17 @@ const projects = defineCollection({
     media: z.array(z.string()).min(1), // browser: [primary, behind, front]; phone: [front, back-left, back-right]
     mediaAlt: z.string(),
     overlayAlt: z.string().optional(), // alt for the front supporting screen (browser frames)
+    // ── Case-study fields (optional; missing ones render labeled pending chips) ──
+    timeline: z.string().optional(),
+    team: z.string().optional(),
+    gist: z.array(z.string()).optional(),
+    context: z.string().optional(),
+    processNotes: z.array(z.string()).optional(),
+    decisions: z.array(z.object({ title: z.string(), what: z.string(), why: z.string() })).optional(),
+    features: z.array(z.object({ title: z.string(), desc: z.string() })).optional(),
+    impact: z.array(z.string()).optional(),
+    prototype: z.object({ url: z.string(), label: z.string() }).optional(),
+    gallery: z.array(z.object({ src: z.string(), alt: z.string() })).optional(),
   }),
 });
 
@@ -32,7 +43,12 @@ const playground = defineCollection({
   schema: z.object({
     order: z.number(),
     title: z.string(),
-    accent: z.string(),
+    kind: z.string(), // e.g. "Brand identity", "App campaign"
+    year: z.string().optional(),
+    intro: z.string(),
+    accent: z.string(), // from the actual brand's own palette
+    wash: z.string(),
+    images: z.array(z.object({ src: z.string(), alt: z.string() })).min(1),
   }),
 });
 

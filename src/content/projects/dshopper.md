@@ -16,4 +16,8 @@ media:
   - '/assets/work/dshopper-splash.webp'
   - '/assets/work/dshopper-map.webp'
 mediaAlt: 'D Shopper shopping app — product listing, splash screen, and location picker'
+gallery:
+  - { src: '/assets/work/dshopper-splash.webp', alt: 'Splash screen — Discover, Shop, Enjoy' }
+  - { src: '/assets/work/dshopper-products.webp', alt: 'Products list for a Saudi clothing shop' }
+  - { src: '/assets/work/dshopper-map.webp', alt: 'Pick-location screen with Riyadh map' }
 ---

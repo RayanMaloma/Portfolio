@@ -21,6 +21,11 @@
 
 | 15 | 2026-07-17 | **Selected Work revision (supersedes #13 colors)** | AutoRAG media = 3-screen story: documents workspace (primary, structure) · chat (front card, core interaction) · guided setup (behind, RAG workflow) — note: assets contain no dedicated "overview" screen, so documents takes the primary slot; chat no longer avoided for hero-repetition reasons. Colors: D Shopper → soft pink `#D95C84`/`#B83E68`/wash `#FCE8EF` (matches app branding; deep pink carries small text 4.6:1); CSC → warm gray `#62666D`/`#35383D`/wash `#ECEDEF` (institutional; interest from dark CSC screens, not saturation). Wash sequence: sand → cobalt → pink → gray → sand. Contrast fixes: muted/coral-deep replaced on washes by ink-soft/accent-deep. |
 
+| 16 | 2026-07-18 | **All remaining sections approved; full completion authorized** | P4 pillars = Product Strategy & UX / Interface & Design Systems / AI & Emerging Products (grounded in product design + CIS, never positioned as ML engineering). P5 memoji kept as controlled secondary character (About teaser, About, Playground header, 404). Playground teaser, About teaser, Contact/Footer approved. Rayan authorized end-to-end completion without further section approvals. |
+| 17 | 2026-07-18 | **Public email = rayanmaloma@gmail.com** (supersedes #8's address) | Given in Rayan's instruction and verified against the CV, which prints rayanmaloma@gmail.com. Old address remains only in git history. |
+| 18 | 2026-07-18 | Playground worlds use the actual brand palettes | RKNH deep green `#2E7D51`, Routine plum `#7A2260`, Tamakkan orange `#D95A25`, Mosbah gold `#B98045` — replacing VISUAL_DIRECTION's provisional set after inspecting the real assets. |
+| 19 | 2026-07-18 | V4 complete on `redesign/astro` | 7 routes, SEO layer, legacy redirects, QA passed (see QA_REPORT.md). Case-study process/decisions/impact sections ship as labeled pending chips until interviews. |
+
 ## Pending decisions (awaiting Rayan)
 - **P2:** Hero availability microline — include? exact text?
 - **P3:** Project accent colors — confirm/replace provisional D Shopper green + CSC teal; AutoRAG cobalt OK?

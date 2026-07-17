@@ -1,8 +1,9 @@
 ---
 import { SITE } from '../config/site';
-import ui from '../content/ui.json';
 import Nav from '../components/Nav.astro';
 import Loader from '../components/Loader.astro';
+import Footer from '../components/Footer.astro';
+import ui from '../content/ui.json';
 import '../styles/tokens.css';
 import '../styles/base.css';
 
@@ -24,6 +25,21 @@ const { title = `${SITE.name} — Product Designer`, description = SITE.descript
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {Astro.url.pathname === '/' && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: SITE.name,
+        jobTitle: 'Product Designer',
+        email: `mailto:${SITE.email}`,
+        address: { '@type': 'PostalAddress', addressLocality: 'Riyadh', addressCountry: 'SA' },
+        alumniOf: 'King Saud University',
+        sameAs: [SITE.links.linkedin],
+      })} />
+    )}
     <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeneralSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Loader gate: decide before first paint (first visit per session, motion-safe only) -->
@@ -46,38 +62,27 @@ const { title = `${SITE.name} — Product Designer`, description = SITE.descript
       <slot />
     </main>
 
-    <!-- Footer stub — full Contact/Footer section pending its own approval (IA §3.8) -->
-    <footer class="footer-stub">
-      <div class="container footer-stub__row">
-        <span class="t-meta">{ui.footer.copyright}</span>
-        <span class="footer-stub__links">
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          <a href={SITE.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-          <a href={SITE.links.resume} target="_blank" rel="noopener">Resume ↓</a>
-        </span>
-      </div>
-    </footer>
+    <Footer />
+
+    <script>
+      // Shared [data-reveal] driver — motion-safe users only; stagger via DOM order.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js-reveal');
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e, i) => {
+              if (e.isIntersecting) {
+                const el = e.target as HTMLElement;
+                el.style.transitionDelay = `${Math.min(i * 60, 300)}ms`;
+                el.classList.add('is-in');
+                io.unobserve(el);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px' }
+        );
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>
-
-<style>
-  .footer-stub {
-    border-block-start: 1px solid var(--border);
-    padding-block: var(--space-6);
-    background: var(--bg-tint);
-  }
-  .footer-stub__row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    align-items: center;
-    justify-content: space-between;
-    color: var(--ink-soft);
-  }
-  .footer-stub__links {
-    display: flex;
-    gap: var(--space-5);
-    font-size: var(--text-meta);
-  }
-  .footer-stub__links a { text-decoration-color: var(--coral); text-underline-offset: 3px; }
-</style>

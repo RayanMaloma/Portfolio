@@ -1,0 +1,122 @@
+---
+// Playground (IA §1 + approved teaser direction). Visual-design range,
+// deliberately NOT framed as case studies. Each project is an anchor section
+// (legacy redirects land on #rknh etc.) with its own accent from the actual
+// brand's palette. Memoji cameo in the header (P5: controlled, secondary).
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ui from '../content/ui.json';
+
+const items = (await getCollection('playground')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Playground — Rayan Al-Omaireeni"
+  description="Graphic design work by Rayan Al-Omaireeni: brand identities, campaigns and visual systems for RKNH, Routine, Tamakkan and Mosbah Omar."
+>
+  <header class="pg-head">
+    <div class="container">
+      <a class="pg-head__back t-meta" href="/">{ui.playground.backHome}</a>
+      <div class="pg-head__row">
+        <h1 class="pg-head__title t-display">{ui.playground.title.toUpperCase()}</h1>
+        <img
+          class="pg-head__memoji"
+          src="/assets/memoji.webp"
+          alt=""
+          width="96"
+          loading="eager"
+          aria-hidden="true"
+        />
+      </div>
+      <p class="pg-head__intro" data-reveal>{ui.playground.pageIntro}</p>
+    </div>
+  </header>
+
+  {items.map((item, i) => (
+    <section
+      class="pg-proj"
+      id={item.id}
+      aria-label={item.data.title}
+      style={`--accent:${item.data.accent}; --wash:${item.data.wash};`}
+    >
+      <div class="container">
+        <header class="pg-proj__head" data-reveal>
+          <span class="pg-proj__num t-display">{String(i + 1).padStart(2, '0')}</span>
+          <h2 class="pg-proj__title t-display">{item.data.title}</h2>
+          <p class="pg-proj__meta t-meta">
+            {item.data.kind}{item.data.year && ` · ${item.data.year}`}
+          </p>
+        </header>
+        <p class="pg-proj__intro" data-reveal>{item.data.intro}</p>
+        <div class="pg-proj__grid">
+          {item.data.images.map((img, j) => (
+            <figure class:list={['pg-proj__item', { 'pg-proj__item--wide': j === 0 }]} data-reveal>
+              <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+</Base>
+
+<style>
+  .pg-head {
+    padding-block: calc(var(--space-9) + 40px) var(--space-7);
+    background: var(--bg-tint);
+    overflow: hidden;
+  }
+  .pg-head__back { color: var(--ink-soft); text-decoration: none; }
+  .pg-head__back:hover { color: var(--coral-deep); }
+  .pg-head__row { display: flex; align-items: flex-end; gap: var(--space-4); }
+  .pg-head__title {
+    font-size: clamp(3rem, 12vw, 10rem);
+    line-height: 0.9;
+    margin-block-start: var(--space-6);
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+  }
+  .pg-head__memoji {
+    inline-size: clamp(56px, 7vw, 96px);
+    transform: rotate(8deg);
+    translate: 0 12%;
+  }
+  .pg-head__intro {
+    margin-block-start: var(--space-5);
+    max-inline-size: 58ch;
+    color: var(--ink-soft);
+    font-size: var(--text-lead);
+  }
+
+  .pg-proj { background: var(--wash); padding-block: var(--space-9); }
+  .pg-proj__head { display: flex; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; }
+  .pg-proj__num { font-size: var(--text-meta); color: var(--accent); font-weight: 600; }
+  .pg-proj__title { font-size: var(--text-display); }
+  .pg-proj__meta { color: var(--ink-soft); }
+  .pg-proj__intro {
+    margin-block-start: var(--space-3);
+    max-inline-size: 60ch;
+    color: var(--ink-soft);
+  }
+
+  .pg-proj__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gutter);
+    margin-block-start: var(--space-6);
+  }
+  .pg-proj__item {
+    margin: 0;
+    border-radius: var(--r-m);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .pg-proj__item--wide { grid-column: 1 / -1; }
+  .pg-proj__item img { inline-size: 100%; block-size: auto; display: block; }
+
+  @media (max-width: 767px) {
+    .pg-proj__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+// Contact + Footer (IA §3.8, approved). Giant closing wordmark cropped by the
+// viewport edge (Juan pattern), copy-email pill, direct links.
+import { SITE } from '../config/site';
+import ui from '../content/ui.json';
+---
+
+<footer class="footer" id="contact" data-footer>
+  <div class="container">
+    <h2 class="footer__headline t-display" data-footer-reveal>{ui.footer.headline}</h2>
+
+    <div class="footer__actions" data-footer-reveal>
+      <a class="footer__email" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <button class="footer__copy" type="button" data-copy-email data-copied-label={ui.footer.copied}>
+        {ui.footer.copyEmail}
+      </button>
+    </div>
+
+    <nav class="footer__links" aria-label="Contact links" data-footer-reveal>
+      <a href={SITE.links.linkedin} target="_blank" rel="noopener">{ui.footer.links.linkedin}</a>
+      <a href={SITE.links.whatsapp} target="_blank" rel="noopener">{ui.footer.links.whatsapp}</a>
+      <a href={SITE.links.resume} target="_blank" rel="noopener">{ui.footer.links.resume}</a>
+    </nav>
+
+    <div class="footer__meta t-meta">
+      <span>{ui.footer.copyright}</span>
+      <span>{ui.footer.credits}</span>
+    </div>
+  </div>
+
+  <div class="footer__wordmark t-display" aria-hidden="true" data-footer-wordmark>RAYAN</div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    background: var(--bg-deep);
+    border-block-start: 1px solid var(--border);
+    padding-block-start: var(--space-section);
+    overflow: hidden;
+  }
+
+  .footer__headline {
+    font-size: var(--text-display);
+    max-inline-size: 14ch;
+    text-wrap: balance;
+  }
+
+  .footer__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-block-start: var(--space-6);
+  }
+  .footer__email {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h3);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    border-block-end: 2px solid var(--coral);
+    transition: color var(--dur-1);
+  }
+  .footer__email:hover { color: var(--coral-deep); }
+  .footer__copy {
+    font: inherit;
+    font-size: var(--text-meta);
+    font-weight: 550;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    transition: background var(--dur-1), border-color var(--dur-1);
+  }
+  .footer__copy:hover { background: var(--coral-soft); border-color: var(--coral); }
+  .footer__copy.is-copied { background: var(--coral); color: var(--surface); border-color: var(--coral); }
+
+  .footer__links {
+    display: flex;
+    gap: var(--space-6);
+    margin-block-start: var(--space-7);
+    flex-wrap: wrap;
+  }
+  .footer__links a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-weight: 500;
+    border-block-end: 1px solid transparent;
+    transition: color var(--dur-1), border-color var(--dur-1);
+  }
+  .footer__links a:hover { color: var(--coral-deep); border-color: var(--coral-deep); }
+
+  .footer__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    color: var(--muted);
+    margin-block-start: var(--space-8);
+    padding-block-end: var(--space-4);
+  }
+
+  .footer__wordmark {
+    font-size: clamp(6rem, 24vw, 22rem);
+    line-height: 0.72;
+    text-align: center;
+    color: var(--coral);
+    opacity: 0.9;
+    margin-block-start: var(--space-4);
+    margin-block-end: -0.16em; /* cropped by the viewport edge on purpose */
+    user-select: none;
+  }
+
+  @media (max-width: 767px) {
+    .footer__meta { flex-direction: column; gap: var(--space-2); }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  if (btn) {
+    const label = btn.textContent;
+    btn.addEventListener('click', async () => {
+      const email = document.querySelector<HTMLAnchorElement>('.footer__email')?.textContent?.trim();
+      if (!email) return;
+      try {
+        await navigator.clipboard.writeText(email);
+        btn.classList.add('is-copied');
+        btn.textContent = btn.dataset.copiedLabel ?? 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.textContent = label;
+        }, 1600);
+      } catch {
+        location.href = `mailto:${email}`;
+      }
+    });
+  }
+
+  // Wordmark rises with the footer (motion-safe; CSS default = final position)
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
+    gsap.from('[data-footer-wordmark]', {
+      yPercent: 60,
+      ease: 'power4.out',
+      duration: 1.1,
+      scrollTrigger: { trigger: '[data-footer]', start: 'top 70%', once: true },
+    });
+    gsap.from('[data-footer-reveal]', {
+      opacity: 0,
+      y: 12,
+      duration: 0.5,
+      stagger: 0.08,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: '[data-footer]', start: 'top 78%', once: true },
+    });
+  });
+</script>

@@ -1,0 +1,108 @@
+---
+// Positioning — "What I do" (IA §3.5, approved pillars P4).
+// Kevin-style numbered rows; expand-on-hover reveals sub-capabilities
+// (always expanded on touch/mobile and for keyboard focus).
+import ui from '../content/ui.json';
+---
+
+<section class="pos" id="what-i-do" aria-label="What I do">
+  <div class="container pos__grid">
+    <div class="pos__intro">
+      <p class="t-meta pos__label" data-reveal>{ui.positioning.label}</p>
+      <p class="pos__statement" data-reveal>{ui.positioning.statement}</p>
+    </div>
+
+    <ul class="pos__pillars">
+      {ui.positioning.pillars.map((p) => (
+        <li class="pos__row" data-reveal tabindex="0">
+          <div class="pos__head">
+            <span class="pos__num t-display">{p.num}</span>
+            <h3 class="pos__title t-display">{p.title}</h3>
+          </div>
+          <p class="pos__line">{p.line}</p>
+          <ul class="pos__subs t-meta">
+            {p.subs.map((s) => <li>{s}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .pos { padding-block: var(--space-section); background: var(--bg-base); }
+  .pos__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: start;
+  }
+  .pos__intro { grid-column: 1 / span 4; position: sticky; inset-block-start: 120px; }
+  .pos__label { color: var(--coral-deep); }
+  .pos__statement {
+    margin-block-start: var(--space-4);
+    font-size: var(--text-lead);
+    line-height: 1.45;
+    color: var(--ink);
+    max-inline-size: 24ch;
+    text-wrap: balance;
+  }
+  .pos__pillars { grid-column: 6 / span 7; list-style: none; padding: 0; margin: 0; }
+
+  .pos__row {
+    border-block-start: 1px solid var(--border);
+    padding-block: var(--space-6);
+    transition: padding-inline-start var(--dur-2) var(--ease-out);
+  }
+  .pos__row:last-child { border-block-end: 1px solid var(--border); }
+  .pos__head { display: flex; align-items: baseline; gap: var(--space-5); }
+  .pos__num { font-size: var(--text-meta); color: var(--coral-deep); font-weight: 600; }
+  .pos__title { font-size: var(--text-h3); }
+  .pos__line { margin-block-start: var(--space-3); color: var(--ink-soft); max-inline-size: 52ch; }
+
+  .pos__subs {
+    list-style: none;
+    padding: 0;
+    margin-block-start: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    color: var(--ink-soft);
+  }
+  .pos__subs li {
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: var(--space-1) var(--space-3);
+    background: var(--surface);
+  }
+
+  /* Fine pointers: subs revealed on hover/focus; touch gets them always */
+  @media (hover: hover) and (pointer: fine) {
+    .pos__subs {
+      max-block-size: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-block-start: 0;
+      transition: max-block-size var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out),
+        margin-block-start var(--dur-2) var(--ease-out);
+    }
+    .pos__row:hover .pos__subs,
+    .pos__row:focus-visible .pos__subs,
+    .pos__row:focus-within .pos__subs {
+      max-block-size: 120px;
+      opacity: 1;
+      margin-block-start: var(--space-4);
+    }
+    .pos__row:hover { padding-inline-start: var(--space-3); }
+  }
+
+  @media (max-width: 1023px) {
+    .pos__grid { display: flex; flex-direction: column; }
+    .pos__intro { position: static; }
+    .pos__statement { max-inline-size: 40ch; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pos__row, .pos__subs { transition: none; }
+    .pos__subs { max-block-size: none; opacity: 1; margin-block-start: var(--space-4); }
+  }
+</style>

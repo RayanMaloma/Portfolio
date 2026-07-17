@@ -5,7 +5,8 @@ export const SITE = {
   role: 'Product Designer — UX · UI · AI',
   description:
     'Portfolio of Rayan Al-Omaireeni — product designer working across UX, UI and AI, turning complex ideas into clear, intuitive interfaces.',
-  email: 'rayanomaireeni@gmail.com',
+  // Confirmed 2026-07-18 (matches CV) — supersedes the earlier gmail address.
+  email: 'rayanmaloma@gmail.com',
   links: {
     linkedin: 'https://www.linkedin.com/in/rayan-omaireeni/',
     whatsapp: 'https://wa.me/966565759145',

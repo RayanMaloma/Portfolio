@@ -79,8 +79,15 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-/* Shared reveal primitive (motion.ts drives it; final state is the default) */
+/* Shared reveal primitive. Final state is the default (no-JS/reduced-motion
+   safe); html.js-reveal is set by Base only for motion-safe users. */
 [data-reveal] { opacity: 1; transform: none; }
+html.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+html.js-reveal [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* Reduced motion: kill smooth scrolling; scripts check the same query. */
 @media (prefers-reduced-motion: reduce) {

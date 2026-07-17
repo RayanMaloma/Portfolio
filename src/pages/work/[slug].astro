@@ -1,51 +1,360 @@
 ---
-// STUB case page — keeps /work/* links live before the case-study template
-// (implementation step 11) gets its own approval. Visibly labeled placeholder.
+// Case-study template (IA §4): hero → gist → context → process → decisions →
+// solution (+ live prototype for AutoRAG) → impact → next case.
+// Structured and credible; sections without interview content render the
+// labeled pending chip instead of invented copy.
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ui from '../../content/ui.json';
 import '../../styles/themes.css';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((p) => ({ params: { slug: p.id }, props: { project: p } }));
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, next: projects[(i + 1) % projects.length] },
+  }));
 }
 
-interface Props { project: CollectionEntry<'projects'> }
-const { project } = Astro.props;
+interface Props {
+  project: CollectionEntry<'projects'>;
+  next: CollectionEntry<'projects'>;
+}
+const { project, next } = Astro.props;
 const d = project.data;
+
+const pending = ui.case.pendingSection;
 ---
 
 <Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
-  <section class="case-stub" data-theme={project.id}>
-    <div class="container">
-      <a class="case-stub__back t-meta" href="/#work">{ui.work.backHome}</a>
-      <p class="t-meta case-stub__meta">{d.client} · {d.role} · {d.year}</p>
-      <h1 class="t-display case-stub__title">{d.title}</h1>
-      <p class="case-stub__summary">{d.summary}</p>
-      <p class="case-stub__pending">{ui.work.casePending}</p>
-    </div>
-  </section>
+  <article class="case" data-theme={project.id}>
+    <!-- Hero -->
+    <header class="case__hero">
+      <div class="container">
+        <a class="case__back t-meta" href="/#work">{ui.case.back}</a>
+        <h1 class="case__title t-display">{d.title}</h1>
+        <dl class="case__meta t-meta">
+          <div><dt>Client</dt><dd>{d.client}</dd></div>
+          <div><dt>Role</dt><dd>{d.role}</dd></div>
+          <div><dt>Timeline</dt><dd>{d.timeline ?? d.year}</dd></div>
+          <div><dt>Status</dt><dd>{d.status === 'in-progress' ? ui.work.inProgress : 'Shipped'}</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <!-- Gist -->
+    <section class="case__section" aria-label={ui.case.gist}>
+      <div class="container case__cols">
+        <h2 class="case__h t-meta">{ui.case.gist}</h2>
+        <div class="case__body">
+          {d.gist ? (
+            <ul class="case__gist">
+              {d.gist.map((g) => <li>{g}</li>)}
+            </ul>
+          ) : (
+            <p class="case__summary-lead">{d.summary}</p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Context & problem -->
+    <section class="case__section" aria-label={ui.case.context}>
+      <div class="container case__cols">
+        <h2 class="case__h t-meta">{ui.case.context}</h2>
+        <div class="case__body">
+          {d.context ? <p>{d.context}</p> : <p class="case__pending">{pending}</p>}
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="case__section" aria-label={ui.case.process}>
+      <div class="container case__cols">
+        <h2 class="case__h t-meta">{ui.case.process}</h2>
+        <div class="case__body">
+          {d.processNotes ? (
+            <ul class="case__gist">{d.processNotes.map((n) => <li>{n}</li>)}</ul>
+          ) : (
+            <p class="case__pending">{pending}</p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Key decisions -->
+    <section class="case__section" aria-label={ui.case.decisions}>
+      <div class="container case__cols">
+        <h2 class="case__h t-meta">{ui.case.decisions}</h2>
+        <div class="case__body">
+          {d.decisions ? (
+            <div class="case__decisions">
+              {d.decisions.map((dec) => (
+                <div class="case__decision">
+                  <h3>{dec.title}</h3>
+                  <p>{dec.what}</p>
+                  <p class="case__why">{dec.why}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p class="case__pending">{pending}</p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="case__section case__section--solution" aria-label={ui.case.solution}>
+      <div class="container">
+        <div class="case__cols">
+          <h2 class="case__h t-meta">{ui.case.solution}</h2>
+          <div class="case__body">
+            {d.features && (
+              <ol class="case__features">
+                {d.features.map((f, i) => (
+                  <li>
+                    <span class="case__feature-num">{String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                      <h3>{f.title}</h3>
+                      <p>{f.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        </div>
+
+        {d.prototype && (
+          <div class="case__proto" data-proto data-proto-url={d.prototype.url}>
+            <div class="case__proto-bar">
+              <span class="bf-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="case__proto-url t-meta">{d.frameLabel}</span>
+              <span class="case__proto-live t-meta"><i></i>{ui.case.livePrototype}</span>
+              <a class="case__proto-newtab t-meta" href={d.prototype.url} target="_blank" rel="noopener">
+                {ui.case.openNewTab} ↗
+              </a>
+            </div>
+            <div class="case__proto-viewport" data-proto-viewport>
+              <button class="case__proto-poster" type="button" data-proto-launch>
+                <span class="case__proto-word t-display">{d.title}</span>
+                <span class="case__proto-cta">{ui.case.launchDemo} →</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {d.gallery && (
+          <div class="case__gallery">
+            {d.gallery.map((g, i) => (
+              <figure class:list={['case__shot', { 'case__shot--wide': i === 0 }]} data-reveal>
+                <img src={g.src} alt={g.alt} loading="lazy" decoding="async" />
+                <figcaption class="t-meta">{g.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- Impact & lessons -->
+    <section class="case__section" aria-label={ui.case.impact}>
+      <div class="container case__cols">
+        <h2 class="case__h t-meta">{ui.case.impact}</h2>
+        <div class="case__body">
+          {d.impact ? (
+            <ul class="case__gist">{d.impact.map((n) => <li>{n}</li>)}</ul>
+          ) : (
+            <p class="case__pending">{pending}</p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Next case -->
+    <a class="case__next" href={`/work/${next.id}/`} data-theme={next.id}>
+      <div class="container">
+        <span class="t-meta case__next-label">{ui.case.next}</span>
+        <span class="case__next-title t-display">{next.data.title} →</span>
+      </div>
+    </a>
+  </article>
 </Base>
 
 <style>
-  .case-stub {
-    min-block-size: 70svh;
+  .case { background: var(--bg-base); }
+
+  .case__hero {
     background: var(--wash, var(--bg-tint));
-    padding-block: calc(var(--space-9) + 40px) var(--space-9);
+    padding-block: calc(var(--space-9) + 40px) var(--space-8);
   }
-  .case-stub__back { color: var(--ink-soft); text-decoration: none; }
-  .case-stub__back:hover { color: var(--accent-deep); }
-  .case-stub__meta { margin-block-start: var(--space-7); color: var(--ink-soft); }
-  .case-stub__title { font-size: var(--text-hero); color: var(--ink); margin-block-start: var(--space-3); }
-  .case-stub__summary { margin-block-start: var(--space-5); max-inline-size: 55ch; color: var(--ink-soft); font-size: var(--text-lead); }
-  .case-stub__pending {
-    display: inline-block;
+  .case__back { color: var(--ink-soft); text-decoration: none; }
+  .case__back:hover { color: var(--accent-deep); }
+  .case__title {
+    font-size: var(--text-hero);
+    margin-block-start: var(--space-6);
+    letter-spacing: -0.02em;
+  }
+  .case__meta {
+    display: flex;
+    gap: var(--space-7);
+    flex-wrap: wrap;
     margin-block-start: var(--space-7);
+    color: var(--ink-soft);
+  }
+  .case__meta dt { color: var(--muted); }
+  .case__meta dd { margin: var(--space-1) 0 0; color: var(--ink); font-weight: 550; }
+
+  .case__section { padding-block: var(--space-8); border-block-end: 1px solid var(--border); }
+  .case__cols { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); }
+  .case__h { grid-column: 1 / span 3; color: var(--accent-deep, var(--coral-deep)); }
+  .case__body { grid-column: 4 / span 8; font-size: var(--text-lead); line-height: 1.55; color: var(--ink); max-inline-size: 62ch; }
+
+  .case__gist { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--space-3); }
+  .case__summary-lead { margin: 0; }
+  .case__pending {
+    display: inline-block;
+    font-size: var(--text-body);
     color: var(--ink-soft);
     border: 1.5px dashed var(--accent-deep, var(--coral-deep));
     border-radius: var(--r-s);
+    background: var(--surface);
     padding: var(--space-2) var(--space-4);
+    margin: 0;
+  }
+
+  .case__decisions { display: grid; gap: var(--space-4); }
+  .case__decision {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    padding: var(--space-5);
+  }
+  .case__decision h3 { font-size: var(--text-body); }
+  .case__why { color: var(--ink-soft); font-size: var(--text-body); }
+
+  .case__features { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
+  .case__features li { display: flex; gap: var(--space-4); align-items: baseline; }
+  .case__feature-num { font-family: var(--font-display); font-weight: 600; color: var(--accent-deep); font-size: var(--text-meta); }
+  .case__features h3 { font-size: var(--text-body); font-weight: 600; }
+  .case__features p { font-size: var(--text-body); color: var(--ink-soft); margin-block-start: 2px; }
+
+  /* Live prototype (lazy; poster until clicked; new tab on touch) */
+  .case__proto {
+    margin-block-start: var(--space-7);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .case__proto-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--border);
+  }
+  .bf-dots { display: flex; gap: 5px; }
+  .bf-dots i { inline-size: 8px; block-size: 8px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 35%, var(--bg-tint)); }
+  .case__proto-url { color: var(--muted); background: var(--bg-tint); border-radius: var(--r-pill); padding: 2px var(--space-3); }
+  .case__proto-live { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-deep); }
+  .case__proto-live i { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .case__proto-newtab { margin-inline-start: auto; color: var(--ink-soft); text-decoration: none; }
+  .case__proto-newtab:hover { color: var(--accent-deep); }
+  .case__proto-viewport { position: relative; aspect-ratio: 16 / 9.6; }
+  .case__proto-viewport iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
+  .case__proto-poster {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    background: var(--wash);
+    border: 0;
+    cursor: pointer;
+  }
+  .case__proto-word { font-size: var(--text-display); color: var(--accent-deep); }
+  .case__proto-cta {
+    font-weight: 550;
+    color: var(--surface);
+    background: var(--accent-deep);
+    border-radius: var(--r-pill);
+    padding: var(--space-3) var(--space-5);
+  }
+  .case__proto-poster:hover .case__proto-cta { background: var(--ink); }
+
+  .case__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gutter);
+    margin-block-start: var(--space-7);
+  }
+  .case__shot { margin: 0; }
+  .case__shot--wide { grid-column: 1 / -1; }
+  .case__shot img {
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: var(--r-m);
+    border: 1px solid var(--border);
     background: var(--surface);
   }
+  .case__shot figcaption { margin-block-start: var(--space-2); color: var(--muted); }
+
+  .case__next {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--wash, var(--bg-tint));
+    padding-block: var(--space-8);
+    transition: background var(--dur-2);
+  }
+  .case__next-label { color: var(--accent-deep, var(--coral-deep)); }
+  .case__next-title {
+    display: block;
+    font-size: var(--text-display);
+    margin-block-start: var(--space-2);
+    transition: translate var(--dur-2) var(--ease-out);
+  }
+  .case__next:hover .case__next-title { translate: 8px 0; }
+
+  @media (max-width: 1023px) {
+    .case__cols { display: flex; flex-direction: column; gap: var(--space-3); }
+    .case__meta { gap: var(--space-5); }
+    .case__gallery { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case__proto-live i { animation: none; }
+    .case__next-title { transition: none; }
+  }
 </style>
+
+<script>
+  // Lazy prototype embed: iframe only on demand; touch devices open a real tab.
+  const proto = document.querySelector<HTMLElement>('[data-proto]');
+  if (proto) {
+    const url = proto.dataset.protoUrl!;
+    const vp = proto.querySelector<HTMLElement>('[data-proto-viewport]')!;
+    const poster = proto.querySelector<HTMLButtonElement>('[data-proto-launch]')!;
+    let loaded = false;
+    poster.addEventListener('click', () => {
+      if (matchMedia('(max-width: 768px)').matches) {
+        window.open(url, '_blank', 'noopener');
+        return;
+      }
+      if (loaded) return;
+      loaded = true;
+      const frame = document.createElement('iframe');
+      frame.title = 'Live prototype';
+      frame.setAttribute('allow', 'clipboard-write; fullscreen');
+      frame.src = url;
+      frame.addEventListener('load', () => poster.setAttribute('hidden', ''));
+      vp.appendChild(frame);
+    });
+  }
+</script>

@@ -1,0 +1,194 @@
+---
+// About — personal, colorful, credible (IA §1). All facts sourced from the
+// CV in assets/resume/ and approved copy; nothing invented.
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site';
+
+const experience = [
+  { role: 'Product Designer Intern', org: 'Nojom', period: '05/2026 — present · Riyadh',
+    note: 'Designing and iterating on product features with cross-functional teams — aligning business goals and user needs.' },
+  { role: 'Product Designer Intern', org: 'HudHud AI', period: '07/2021 — 10/2021',
+    note: 'User-centered landing pages and responsive interface components focused on usability and brand consistency.' },
+  { role: 'BSc Information Systems', org: 'King Saud University', period: '08/2022 — 06/2026 · GPA 4.63/5',
+    note: 'Computer Information Systems — the technical foundation under the design work.' },
+];
+
+const community = [
+  { role: 'Head of Media Committee', org: 'Cultural & Social Club — KSU' },
+  { role: 'Design Unit Leader', org: 'Electrical Engineering Club — KSU' },
+];
+
+const skills = [
+  'UX design', 'UI design', 'Design systems', 'Wireframing & prototyping',
+  'Requirements analysis', 'Figma', 'Adobe Creative Suite', 'Analytical thinking',
+];
+---
+
+<Base
+  title="About — Rayan Al-Omaireeni"
+  description="Product designer in Riyadh — graphic design roots, Computer Information Systems degree from King Saud University, and an AI-era product focus."
+>
+  <header class="ab-hero">
+    <div class="container ab-hero__grid">
+      <div class="ab-hero__text">
+        <p class="t-meta ab-hero__label" data-reveal>About</p>
+        <h1 class="ab-hero__title t-display" data-reveal>
+          Designer first.<br />Systems thinker underneath.
+        </h1>
+        <p class="ab-hero__story" data-reveal>
+          I started in graphic design — identities, posters and campaigns for KSU clubs — and followed
+          the questions into product design. Today I design products end-to-end: research, flows,
+          interfaces and the systems behind them, backed by a Computer Information Systems degree
+          from King Saud University.
+        </p>
+        <p class="ab-hero__story" data-reveal>
+          My graduation project, AutoRAG, put that mix to work — designing (and front-end building)
+          an AI platform that non-technical people can actually use.
+        </p>
+      </div>
+      <figure class="ab-hero__media" data-reveal>
+        <img src="/assets/about/portrait-traditional.webp" alt="Rayan in traditional Saudi dress" loading="eager" />
+        <figcaption class="t-meta">Riyadh, at a family occasion</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section class="ab-exp" aria-label="Experience">
+    <div class="container">
+      <h2 class="t-meta ab-exp__label" data-reveal>Experience</h2>
+      <ol class="ab-exp__list">
+        {experience.map((e) => (
+          <li class="ab-exp__row" data-reveal>
+            <div class="ab-exp__head">
+              <h3>{e.role}</h3>
+              <span class="ab-exp__org">{e.org}</span>
+            </div>
+            <span class="ab-exp__period t-meta">{e.period}</span>
+            <p class="ab-exp__note">{e.note}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="ab-exp__community" data-reveal>
+        {community.map((c) => (
+          <span class="ab-exp__chip t-meta">{c.role} · {c.org}</span>
+        ))}
+        <span class="ab-exp__chip t-meta">Google UX Design Foundations — certified</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-skills" aria-label="Skills">
+    <div class="container ab-skills__grid">
+      <h2 class="t-meta ab-skills__label" data-reveal>What I work with</h2>
+      <ul class="ab-skills__list">
+        {skills.map((s) => <li class="t-meta" data-reveal>{s}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="ab-personal" aria-label="Off duty">
+    <div class="container ab-personal__grid">
+      <figure class="ab-personal__photo" data-reveal>
+        <img src="/assets/about/campfire.webp" alt="Rayan by a campfire at night, wearing a fur hat" loading="lazy" />
+      </figure>
+      <div class="ab-personal__body">
+        <img class="ab-personal__memoji" src="/assets/memoji.webp" alt="" width="96" aria-hidden="true" data-reveal />
+        <p class="ab-personal__line" data-reveal>
+          Off duty: desert nights, too much coffee, and redesigning apps I have no business redesigning.
+        </p>
+        <a class="ab-personal__resume" href={SITE.links.resume} target="_blank" rel="noopener" data-reveal>
+          Download my resume ↓
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ab-hero { background: var(--bg-tint); padding-block: calc(var(--space-9) + 40px) var(--space-9); }
+  .ab-hero__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); align-items: center; }
+  .ab-hero__text { grid-column: 1 / span 7; }
+  .ab-hero__label { color: var(--coral-deep); }
+  .ab-hero__title { font-size: var(--text-display); margin-block-start: var(--space-4); }
+  .ab-hero__story { margin-block-start: var(--space-5); font-size: var(--text-lead); line-height: 1.55; max-inline-size: 58ch; color: var(--ink-soft); }
+  .ab-hero__media { grid-column: 9 / span 4; margin: 0; }
+  .ab-hero__media img {
+    inline-size: 100%;
+    border-radius: 999px 999px var(--r-l) var(--r-l); /* arch — Option 3 motif reused */
+    border: 4px solid var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .ab-hero__media figcaption { margin-block-start: var(--space-3); color: var(--muted); text-align: center; }
+
+  .ab-exp { padding-block: var(--space-9); }
+  .ab-exp__label { color: var(--coral-deep); }
+  .ab-exp__list { list-style: none; margin: var(--space-5) 0 0; padding: 0; }
+  .ab-exp__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2) var(--space-6);
+    border-block-start: 1px solid var(--border);
+    padding-block: var(--space-5);
+  }
+  .ab-exp__head { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
+  .ab-exp__head h3 { font-size: var(--text-h3); font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+  .ab-exp__org { color: var(--coral-deep); font-weight: 550; }
+  .ab-exp__period { color: var(--muted); align-self: center; }
+  .ab-exp__note { grid-column: 1 / -1; color: var(--ink-soft); max-inline-size: 62ch; }
+  .ab-exp__community { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-block-start: var(--space-6); }
+  .ab-exp__chip {
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--r-pill);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .ab-skills { background: var(--bg-tint); padding-block: var(--space-8); }
+  .ab-skills__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); }
+  .ab-skills__label { grid-column: 1 / span 3; color: var(--coral-deep); }
+  .ab-skills__list {
+    grid-column: 4 / span 9;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .ab-skills__list li {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--r-pill);
+    padding: var(--space-2) var(--space-4);
+    color: var(--ink);
+  }
+
+  .ab-personal { padding-block: var(--space-9); }
+  .ab-personal__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); align-items: center; }
+  .ab-personal__photo { grid-column: 1 / span 5; margin: 0; }
+  .ab-personal__photo img {
+    inline-size: 100%;
+    border-radius: var(--r-l);
+    border: 1px solid var(--border);
+    transform: rotate(-2deg);
+  }
+  .ab-personal__body { grid-column: 7 / span 5; }
+  .ab-personal__memoji { transform: rotate(6deg); }
+  .ab-personal__line { margin-block-start: var(--space-4); font-size: var(--text-lead); color: var(--ink); max-inline-size: 34ch; }
+  .ab-personal__resume {
+    display: inline-block;
+    margin-block-start: var(--space-5);
+    font-weight: 550;
+    color: var(--ink);
+    text-decoration-color: var(--coral);
+    text-underline-offset: 4px;
+  }
+  .ab-personal__resume:hover { color: var(--coral-deep); }
+
+  @media (max-width: 1023px) {
+    .ab-hero__grid, .ab-personal__grid, .ab-skills__grid { display: flex; flex-direction: column; align-items: stretch; }
+    .ab-hero__media { max-inline-size: 320px; }
+    .ab-exp__row { grid-template-columns: 1fr; }
+  }
+</style>
