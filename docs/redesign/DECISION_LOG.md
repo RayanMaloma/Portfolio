@@ -13,8 +13,10 @@
 | 9 | 2026-07-17 | **Deployment: host-agnostic static build** | Repo = github.com/RayanMaloma/Portfolio; GH Pages inactive at default URL; no Netlify/Vercel markers. Build prepared for Netlify (recommended) or GH Pages; configs documented in ASTRO_MIGRATION_PLAN.md §5; final host choice deferred, non-blocking. |
 | 10 | 2026-07-17 | CLAUDE.md supersession noted | Current CLAUDE.md (dark theme, no-libraries, old structure) is superseded by decisions 6–7; rewrite scheduled as part of implementation step 1. |
 
+| 11 | 2026-07-17 | **P1 resolved: Hero = Option 1 "Inline Interruption"** | Full-bleed environmental photo under coral wash + scrim, two-line bottom wordmark, AutoRAG UI card inline in line 1. Implemented with the AI-generated desk photo as a **visibly labeled temp asset** — final photo comes from the shoot brief (a real recreation of the desk scene is on the shoot list). |
+| 12 | 2026-07-17 | Implementation steps 1–6 built on `redesign/astro` | Astro 7 scaffold, tokens, self-hosted fonts, base layout, loader, nav, Option 1 hero. Legacy site moved to `legacy/`, AR dictionary archived, CLAUDE.md rewritten. Verified: build passes; desktop + mobile renders; reduced-motion = static final layout by construction. |
+
 ## Pending decisions (awaiting Rayan)
-- **P1:** Hero composition — Option 1 / 2 / 3.
 - **P2:** Hero availability microline — include? exact text?
 - **P3:** Project accent colors — confirm/replace provisional D Shopper green + CSC teal; AutoRAG cobalt OK?
 - **P4:** Positioning pillars — approve "Product & UX / Interface & Systems / AI-era design" framing.
