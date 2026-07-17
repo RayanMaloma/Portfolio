@@ -1,21 +1,23 @@
 /* ─────────────────────────────────────────────────────────────
-   Project color worlds (approved values, DECISION_LOG #13).
+   Project color worlds (revised + approved, DECISION_LOG #15).
    A [data-theme] scope overrides three tokens; the page background
    cross-fades between LIGHT WASHES only — never saturated accents.
    Text stays on the global warm ink tokens in every world.
+   Deep accents are the small-text/interaction layer (all ≥4.5:1
+   on their wash): links, borders, labels, arrows, numerals.
    ───────────────────────────────────────────────────────────── */
 [data-theme='autorag'] {
-  --accent: #2B4BF2;
-  --accent-deep: #1E36BC;
+  --accent: #2B4BF2; /* cobalt — strongest, most technical world */
+  --accent-deep: #1E36BC; /* 7.7:1 on wash */
   --wash: #E8ECFF;
 }
 [data-theme='dshopper'] {
-  --accent: #0E8F62; /* fresh emerald — must not drift toward teal */
-  --accent-deep: #0A6B4A;
-  --wash: #E2F4EB;
+  --accent: #D95C84; /* soft pink, matches the app's own branding */
+  --accent-deep: #B83E68; /* 4.6:1 on wash — carries small text */
+  --wash: #FCE8EF;
 }
 [data-theme='csc'] {
-  --accent: #0A6E93; /* visibly bluer + darker than D Shopper's green */
-  --accent-deep: #08526E;
-  --wash: #E1F0F4;
+  --accent: #62666D; /* institutional warm gray */
+  --accent-deep: #35383D; /* 10:1 on wash */
+  --wash: #ECEDEF;
 }

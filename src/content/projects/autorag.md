@@ -14,5 +14,8 @@ frame: 'browser'
 frameLabel: 'autorag.app'
 media:
   - '/assets/work/autorag-documents.webp'
-mediaAlt: 'AutoRAG document workspace with indexed knowledge sources'
+  - '/assets/work/autorag-setup.webp'
+  - '/assets/work/autorag-chat.webp'
+mediaAlt: 'AutoRAG document workspace showing the product structure — nav, indexed files, and file details'
+overlayAlt: 'AutoRAG chat answering a question with a sourced summary'
 ---

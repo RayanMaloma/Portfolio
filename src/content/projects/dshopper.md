@@ -7,9 +7,9 @@ year: '[Year pending confirmation]'
 status: 'shipped'
 summary: '[One-line project summary pending case-study interview]'
 theme:
-  accent: '#0E8F62'
-  accentDeep: '#0A6B4A'
-  wash: '#E2F4EB'
+  accent: '#D95C84'
+  accentDeep: '#B83E68'
+  wash: '#FCE8EF'
 frame: 'phone'
 media:
   - '/assets/work/dshopper-products.webp'

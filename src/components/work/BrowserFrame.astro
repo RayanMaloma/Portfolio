@@ -1,14 +1,17 @@
 ---
 // Minimal code-native browser chrome — belongs to the portfolio's system,
 // deliberately NOT a photorealistic mockup (approved media-frame direction).
-// media[1], when present, renders as a second screen layered behind.
+// Layer semantics: media[0] = primary screen inside the frame,
+// media[1] = supporting screen behind the frame, media[2] = supporting
+// screen in FRONT (e.g. AutoRAG's chat — the core-interaction card).
 interface Props {
   media: string[];
   alt: string;
   label?: string;
+  overlayAlt?: string;
 }
-const { media, alt, label = '' } = Astro.props;
-const [primary, backdrop] = media;
+const { media, alt, label = '', overlayAlt = '' } = Astro.props;
+const [primary, backdrop, overlay] = media;
 ---
 
 <div class="bf">
@@ -26,6 +29,11 @@ const [primary, backdrop] = media;
       <img src={primary} alt={alt} loading="lazy" decoding="async" />
     </div>
   </figure>
+  {overlay && (
+    <div class="bf__overlay">
+      <img src={overlay} alt={overlayAlt} loading="lazy" decoding="async" />
+    </div>
+  )}
 </div>
 
 <style>
@@ -81,13 +89,41 @@ const [primary, backdrop] = media;
   }
   .bf__backdrop img { inline-size: 100%; block-size: auto; }
 
-  /* Restrained hover: zoom primary, back screen drifts for depth */
+  /* Front supporting screen: the core-interaction card (bottom-anchored crop) */
+  .bf__overlay {
+    position: absolute;
+    z-index: 3;
+    inset-block-end: -8%;
+    inset-inline-end: -4%;
+    inline-size: 44%;
+    aspect-ratio: 5 / 4.6;
+    border-radius: var(--r-m);
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    transform: rotate(-2deg);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .bf__overlay img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: bottom; /* chat thread + input, not the empty scrollback */
+  }
+
+  /* Restrained hover: zoom primary, supporting screens drift for depth */
   :global(.pb:hover) .bf__viewport img { transform: scale(1.04); }
   :global(.pb:hover) .bf__backdrop { transform: rotate(3.5deg) translateY(-4px); }
+  :global(.pb:hover) .bf__overlay { transform: rotate(-2.8deg) translateY(-5px); }
 
   @media (max-width: 1023px) {
-    /* keep the layered screen inside the flow — no horizontal page overflow */
+    /* keep layered screens inside the flow — no horizontal page overflow */
     .bf__backdrop { inset-inline-end: 0; inset-block-start: -5%; inline-size: 48%; }
+    .bf__overlay { inset-inline-end: 0; inset-block-end: -6%; inline-size: 46%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bf__overlay { transition: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {

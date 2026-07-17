@@ -41,8 +41,10 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     border-block-end: 1px solid var(--border);
     padding-block-end: var(--space-4);
   }
-  .work__label { color: var(--coral-deep); }
-  .work__hint { color: var(--muted); }
+  /* On wash backgrounds coral-deep (3.5:1) and muted (3.1:1) fail 4.5:1 —
+     the label rides each world's deep accent; the hint uses ink-soft */
+  .work__label { color: var(--accent-deep, var(--coral-deep)); transition: color var(--dur-3) var(--ease-out); }
+  .work__hint { color: var(--ink-soft); }
   .work__list {
     display: flex;
     flex-direction: column;

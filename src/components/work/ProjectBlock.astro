@@ -24,7 +24,7 @@ const flip = index % 2 === 1; // 02 D Shopper: content left, media right
 >
   <div class="pb__media" data-block-media>
     {d.frame === 'browser' ? (
-      <BrowserFrame media={d.media} alt={d.mediaAlt} label={d.frameLabel} />
+      <BrowserFrame media={d.media} alt={d.mediaAlt} label={d.frameLabel} overlayAlt={d.overlayAlt} />
     ) : (
       <PhoneFrame media={d.media} alt={d.mediaAlt} />
     )}
@@ -86,7 +86,8 @@ const flip = index % 2 === 1; // 02 D Shopper: content left, media right
   .pb__title-mask { display: block; overflow: hidden; }
   .pb__title-text { display: block; }
 
-  .pb__client { margin-block-start: var(--space-2); color: var(--muted); }
+  /* ink-soft, not muted: muted is only ~3.1:1 on the wash backgrounds */
+  .pb__client { margin-block-start: var(--space-2); color: var(--ink-soft); }
   .pb__summary {
     margin-block-start: var(--space-4);
     color: var(--ink-soft);

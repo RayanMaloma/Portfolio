@@ -21,8 +21,9 @@ const projects = defineCollection({
     }),
     frame: z.enum(['browser', 'phone']),
     frameLabel: z.string().optional(), // browser url pill text
-    media: z.array(z.string()).min(1), // browser: [primary, optional backdrop]; phone: [front, back-left, back-right]
+    media: z.array(z.string()).min(1), // browser: [primary, behind, front]; phone: [front, back-left, back-right]
     mediaAlt: z.string(),
+    overlayAlt: z.string().optional(), // alt for the front supporting screen (browser frames)
   }),
 });
 

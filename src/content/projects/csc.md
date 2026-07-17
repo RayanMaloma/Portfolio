@@ -7,9 +7,9 @@ year: '[Year pending confirmation]'
 status: 'shipped'
 summary: 'A web platform representing the Cultural & Social Club — its identity, activities, and impact across the KSU community.'
 theme:
-  accent: '#0A6E93'
-  accentDeep: '#08526E'
-  wash: '#E1F0F4'
+  accent: '#62666D'
+  accentDeep: '#35383D'
+  wash: '#ECEDEF'
 frame: 'browser'
 frameLabel: 'csc-ksu.club'
 media:
