@@ -9,8 +9,9 @@ _Branch: `redesign/astro`. Order per ASTRO_MIGRATION_PLAN.md §4._
 | 4 | Global layout & grid | ✅ | `base.css` (logical properties, focus, reduced-motion), `Base.astro` (SEO head, loader gate, skip-link, footer **stub**) |
 | 5 | Navigation | ✅ | Pill nav, hide-on-scroll, mobile `R.A.` brand; magnetic hover deferred to motion refinement (⏳ recordings) |
 | 6 | Hero | ✅ | **Option 1** with labeled temp photo (`hero-scene-*.webp`, ~90KB total); scrim added for wordmark legibility; entrance + conservative parallax; mobile 3-line break, cue hidden on touch |
-| 7 | Selected Work | ⛔ awaiting section approval + P3 colors | Placeholder section with `#work` anchor shipped |
-| 8–18 | … | pending | per plan |
+| 7 | Selected Work | ✅ 2026-07-17 | Approved colors; content collection + themes.css + SelectedWork/ProjectBlock/BrowserFrame/PhoneFrame; discrete wash cross-fade (IO mid-band); /work/* labeled stubs. Verified desktop 1280 + narrow; images ~140KB total. D Shopper pink-vs-emerald tension flagged to Rayan. |
+| 8 | Positioning · Playground teaser · About teaser | ⛔ awaiting section approvals (IA §3.5–3.7) | P4 pillars decision feeds §3.5 |
+| 9–18 | … | pending | per plan |
 
 ## Verification notes (step 6)
 - `npm run build` passes (static, 1 page).

@@ -16,6 +16,9 @@
 | 11 | 2026-07-17 | **P1 resolved: Hero = Option 1 "Inline Interruption"** | Full-bleed environmental photo under coral wash + scrim, two-line bottom wordmark, AutoRAG UI card inline in line 1. Implemented with the AI-generated desk photo as a **visibly labeled temp asset** — final photo comes from the shoot brief (a real recreation of the desk scene is on the shoot list). |
 | 12 | 2026-07-17 | Implementation steps 1–6 built on `redesign/astro` | Astro 7 scaffold, tokens, self-hosted fonts, base layout, loader, nav, Option 1 hero. Legacy site moved to `legacy/`, AR dictionary archived, CLAUDE.md rewritten. Verified: build passes; desktop + mobile renders; reduced-motion = static final layout by construction. |
 
+| 13 | 2026-07-17 | **Selected Work approved + P3 resolved: project colors final** | AutoRAG `#2B4BF2`/wash `#E8ECFF`; D Shopper emerald `#0E8F62`/wash `#E2F4EB` (keep emerald, not teal); CSC `#0A6E93`/wash `#E1F0F4` (bluer + darker than D Shopper). Background transitions between LIGHT WASHES only, discrete cross-fades on block dominance, text stays on global ink. Alternating desktop composition; constant mobile order (media→meta→title→summary→link). Code-native frames only (no photorealistic mockups); D Shopper homepage shows 2–3 layered screens, not the 28-screen slider. Labeled factual placeholders where interview content missing. Hover timing provisional until Juan Work recording. |
+| 14 | 2026-07-17 | Step 7 implemented | Selected Work built + verified (desktop 1280 & narrow); /work/* labeled stub pages keep links live pre-template. Noted: D Shopper's own UI accents are pink/red while its approved world is emerald — flagged to Rayan, proceeding per approval. |
+
 ## Pending decisions (awaiting Rayan)
 - **P2:** Hero availability microline — include? exact text?
 - **P3:** Project accent colors — confirm/replace provisional D Shopper green + CSC teal; AutoRAG cobalt OK?
