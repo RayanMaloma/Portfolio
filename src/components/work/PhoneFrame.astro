@@ -1,0 +1,91 @@
+---
+// Code-native phone frame — minimal chrome, no photorealistic device asset.
+// Layered composition: front screen + up to two supporting screens fanned
+// behind (approved: 2–3 screens, subtle depth, NOT the 28-screen slider).
+interface Props {
+  media: string[]; // [front, back-left, back-right]
+  alt: string;
+}
+const { media, alt } = Astro.props;
+const [front, backLeft, backRight] = media;
+---
+
+<div class="pf">
+  {backLeft && (
+    <div class="pf__phone pf__phone--left" aria-hidden="true">
+      <img src={backLeft} alt="" loading="lazy" decoding="async" />
+    </div>
+  )}
+  {backRight && (
+    <div class="pf__phone pf__phone--right" aria-hidden="true">
+      <img src={backRight} alt="" loading="lazy" decoding="async" />
+    </div>
+  )}
+  <div class="pf__phone pf__phone--front">
+    <span class="pf__notch" aria-hidden="true"></span>
+    <img src={front} alt={alt} loading="lazy" decoding="async" />
+  </div>
+</div>
+
+<style>
+  .pf {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-block: var(--space-6);
+  }
+
+  .pf__phone {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: clamp(22px, 3vw, 34px);
+    overflow: hidden;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .pf__phone img { inline-size: 100%; block-size: auto; }
+
+  .pf__phone--front {
+    position: relative;
+    z-index: 3;
+    inline-size: min(46%, 300px);
+    border-width: 4px;
+    border-color: color-mix(in srgb, var(--ink) 82%, var(--accent, var(--coral)));
+    box-shadow: var(--shadow-card);
+  }
+  .pf__notch {
+    position: absolute;
+    inset-block-start: 8px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: 34%;
+    block-size: 9px;
+    border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--ink) 82%, var(--accent, var(--coral)));
+    z-index: 2;
+  }
+
+  .pf__phone--left,
+  .pf__phone--right {
+    position: absolute;
+    inline-size: min(38%, 240px);
+    inset-block-start: 0;
+    z-index: 1;
+  }
+  .pf__phone--left {
+    inset-inline-start: 4%;
+    transform: rotate(-7deg) translateY(6%);
+  }
+  .pf__phone--right {
+    inset-inline-end: 4%;
+    transform: rotate(7deg) translateY(10%);
+  }
+
+  /* Depth on hover: supporting screens fan out slightly */
+  :global(.pb:hover) .pf__phone--left { transform: rotate(-9deg) translateY(4%) translateX(-6px); }
+  :global(.pb:hover) .pf__phone--right { transform: rotate(9deg) translateY(8%) translateX(6px); }
+  :global(.pb:hover) .pf__phone--front { transform: translateY(-4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pf__phone { transition: none; }
+  }
+</style>

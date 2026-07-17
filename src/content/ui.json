@@ -16,6 +16,14 @@
   "loader": {
     "line": "warming up the coral"
   },
+  "work": {
+    "label": "Selected Work",
+    "hint": "Three projects, three worlds",
+    "viewCase": "View case",
+    "inProgress": "In progress",
+    "casePending": "Full case study pending — content interview in progress.",
+    "backHome": "← Back home"
+  },
   "footer": {
     "copyright": "© 2026 Rayan Al-Omaireeni"
   }

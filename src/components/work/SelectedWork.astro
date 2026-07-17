@@ -1,0 +1,116 @@
+---
+// Selected Work (IA §3.4, approved). Three flagship blocks; the section
+// background cross-fades between light project WASHES when a block becomes
+// dominant in the viewport — discrete transitions, no per-pixel interpolation.
+import { getCollection } from 'astro:content';
+import ProjectBlock from './ProjectBlock.astro';
+import ui from '../../content/ui.json';
+import '../../styles/themes.css';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="work" id="work" data-work aria-label="Selected work">
+  <div class="container">
+    <header class="work__head">
+      <p class="t-meta work__label" data-block-reveal>{ui.work.label} (01–{String(projects.length).padStart(2, '0')})</p>
+      <p class="t-meta work__hint" data-block-reveal>{ui.work.hint}</p>
+    </header>
+
+    <div class="work__list">
+      {projects.map((p, i) => <ProjectBlock project={p} index={i} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    /* Wash cross-fade surface: --wash is set by the active [data-theme] scope */
+    background: var(--wash, var(--bg-base));
+    transition: background-color var(--dur-3) var(--ease-out);
+    padding-block: var(--space-section);
+    overflow-x: clip; /* decorative frame overhangs must never scroll the page */
+  }
+  .work__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    color: var(--ink-soft);
+    border-block-end: 1px solid var(--border);
+    padding-block-end: var(--space-4);
+  }
+  .work__label { color: var(--coral-deep); }
+  .work__hint { color: var(--muted); }
+  .work__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+    margin-block-start: var(--space-8);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .work { transition: none; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-work]');
+  const blocks = gsap.utils.toArray<HTMLElement>('[data-work-block]');
+
+  // ── Wash cross-fade: discrete theme swap when a block dominates ──
+  // Reduced-motion users get it too (it's information, transition is CSS-gated).
+  if (section && blocks.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            section.dataset.theme = (e.target as HTMLElement).dataset.project ?? '';
+          }
+        }
+      },
+      // "Dominant" = block crosses the middle band of the viewport
+      { rootMargin: '-45% 0px -45% 0px' }
+    );
+    blocks.forEach((b) => io.observe(b));
+
+    // Back to the base ground when the whole section leaves view
+    const reset = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (!e.isIntersecting) delete section.dataset.theme; }),
+      { threshold: 0 }
+    );
+    reset.observe(section);
+  }
+
+  // ── Entrance choreography (motion-safe only; CSS default = final state) ──
+  const mm = gsap.matchMedia();
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    blocks.forEach((block) => {
+      const media = block.querySelector('[data-block-media]');
+      const title = block.querySelector('[data-block-title]');
+      const rest = block.querySelectorAll('[data-block-reveal]');
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power4.out' },
+        scrollTrigger: { trigger: block, start: 'top 72%', once: true },
+      });
+      tl.from(media, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8 }, 0)
+        .from(title, { yPercent: 110, duration: 0.7 }, 0.15)
+        .from(rest, { opacity: 0, y: 10, duration: 0.45, stagger: 0.06 }, 0.3);
+    });
+
+    // Section header reveal
+    gsap.from('.work__head [data-block-reveal]', {
+      opacity: 0,
+      y: 10,
+      duration: 0.45,
+      stagger: 0.08,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: '.work__head', start: 'top 85%', once: true },
+    });
+  });
+</script>

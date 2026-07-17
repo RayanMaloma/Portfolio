@@ -1,0 +1,96 @@
+---
+// Minimal code-native browser chrome — belongs to the portfolio's system,
+// deliberately NOT a photorealistic mockup (approved media-frame direction).
+// media[1], when present, renders as a second screen layered behind.
+interface Props {
+  media: string[];
+  alt: string;
+  label?: string;
+}
+const { media, alt, label = '' } = Astro.props;
+const [primary, backdrop] = media;
+---
+
+<div class="bf">
+  {backdrop && (
+    <div class="bf__backdrop" aria-hidden="true">
+      <img src={backdrop} alt="" loading="lazy" decoding="async" />
+    </div>
+  )}
+  <figure class="bf__window">
+    <figcaption class="bf__bar">
+      <span class="bf__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      {label && <span class="bf__url">{label}</span>}
+    </figcaption>
+    <div class="bf__viewport">
+      <img src={primary} alt={alt} loading="lazy" decoding="async" />
+    </div>
+  </figure>
+</div>
+
+<style>
+  .bf { position: relative; }
+
+  .bf__window {
+    position: relative;
+    z-index: 2;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .bf__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--border);
+  }
+  .bf__dots { display: flex; gap: 5px; }
+  .bf__dots i {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent, var(--coral)) 35%, var(--bg-tint));
+  }
+  .bf__url {
+    font-size: var(--text-meta);
+    color: var(--muted);
+    background: var(--bg-tint);
+    border-radius: var(--r-pill);
+    padding: 2px var(--space-3);
+  }
+  .bf__viewport img {
+    inline-size: 100%;
+    block-size: auto;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .bf__backdrop {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: -7%;
+    inset-inline-end: -6%;
+    inline-size: 62%;
+    border-radius: var(--r-m);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transform: rotate(2.5deg);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .bf__backdrop img { inline-size: 100%; block-size: auto; }
+
+  /* Restrained hover: zoom primary, back screen drifts for depth */
+  :global(.pb:hover) .bf__viewport img { transform: scale(1.04); }
+  :global(.pb:hover) .bf__backdrop { transform: rotate(3.5deg) translateY(-4px); }
+
+  @media (max-width: 1023px) {
+    /* keep the layered screen inside the flow — no horizontal page overflow */
+    .bf__backdrop { inset-inline-end: 0; inset-block-start: -5%; inline-size: 48%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bf__viewport img, .bf__backdrop { transition: none; }
+  }
+</style>

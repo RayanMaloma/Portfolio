@@ -1,0 +1,125 @@
+---
+// One flagship project block (IA §3.4).
+// DOM order is constant (media → content) so tablet/mobile always read:
+// media, metadata, title, summary, link. Desktop alternation is grid-only.
+import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
+import ui from '../../content/ui.json';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+}
+const { project, index } = Astro.props;
+const d = project.data;
+const num = String(index + 1).padStart(2, '0');
+const flip = index % 2 === 1; // 02 D Shopper: content left, media right
+---
+
+<article
+  class:list={['pb', { 'pb--flip': flip }]}
+  data-project={project.id}
+  data-work-block
+>
+  <div class="pb__media" data-block-media>
+    {d.frame === 'browser' ? (
+      <BrowserFrame media={d.media} alt={d.mediaAlt} label={d.frameLabel} />
+    ) : (
+      <PhoneFrame media={d.media} alt={d.mediaAlt} />
+    )}
+  </div>
+
+  <div class="pb__content">
+    <p class="pb__meta t-meta" data-block-reveal>
+      <span class="pb__num" aria-hidden="true">{num}</span>
+      <span>{d.role}</span>
+      <span class="pb__dot" aria-hidden="true">·</span>
+      <span>{d.year}</span>
+      {d.status === 'in-progress' && <span class="pb__status">{ui.work.inProgress}</span>}
+    </p>
+    <h3 class="pb__title t-display">
+      <span class="pb__title-mask"><span class="pb__title-text" data-block-title>{d.title}</span></span>
+    </h3>
+    <p class="pb__client t-meta" data-block-reveal>{d.client}</p>
+    <p class="pb__summary" data-block-reveal>{d.summary}</p>
+    <a class="pb__link" href={`/work/${project.id}/`} data-block-reveal>
+      <span class="pb__link-text">{ui.work.viewCase}</span>
+      <span class="pb__arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .pb {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: center;
+  }
+  .pb__media { grid-column: 1 / span 7; }
+  .pb__content { grid-column: 9 / span 4; }
+  .pb--flip .pb__media { grid-column: 6 / span 7; grid-row: 1; }
+  .pb--flip .pb__content { grid-column: 1 / span 4; grid-row: 1; }
+
+  .pb__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .pb__num {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--accent-deep, var(--coral-deep));
+  }
+  .pb__dot { color: var(--muted); }
+  .pb__status {
+    color: var(--accent-deep, var(--coral-deep));
+    border: 1px solid currentColor;
+    border-radius: var(--r-pill);
+    padding: 1px var(--space-3);
+  }
+
+  .pb__title { font-size: var(--text-display); margin-block-start: var(--space-4); }
+  .pb__title-mask { display: block; overflow: hidden; }
+  .pb__title-text { display: block; }
+
+  .pb__client { margin-block-start: var(--space-2); color: var(--muted); }
+  .pb__summary {
+    margin-block-start: var(--space-4);
+    color: var(--ink-soft);
+    max-inline-size: 44ch;
+  }
+
+  .pb__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block-start: var(--space-5);
+    font-weight: 550;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .pb__link-text {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1.5px;
+    transition: background-size var(--dur-2) var(--ease-out);
+    padding-block-end: 2px;
+  }
+  .pb:hover .pb__link-text,
+  .pb__link:focus-visible .pb__link-text { background-size: 100% 1.5px; }
+  .pb__arrow { transition: transform var(--dur-1) var(--ease-out); }
+  .pb:hover .pb__arrow, .pb__link:focus-visible .pb__arrow { transform: translateX(4px); }
+
+  @media (max-width: 1023px) {
+    .pb { display: flex; flex-direction: column; align-items: stretch; gap: var(--space-5); }
+    .pb__summary { max-inline-size: 60ch; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pb__link-text, .pb__arrow { transition: none; }
+  }
+</style>

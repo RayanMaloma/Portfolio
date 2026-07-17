@@ -1,37 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import SelectedWork from '../components/work/SelectedWork.astro';
 ---
 
 <Base>
   <Hero />
-
-  <!-- PLACEHOLDER: Selected Work (IA §3.4) builds here after its section approval. -->
-  <section class="work-placeholder" id="work" aria-label="Selected work (coming soon)">
-    <div class="container">
-      <p class="t-meta work-placeholder__label">Selected Work</p>
-      <p class="work-placeholder__note">Section pending approval — next in the build order.</p>
-    </div>
-  </section>
+  <SelectedWork />
 </Base>
 
 <script>
   import { initLenis } from '../scripts/lenis';
   initLenis();
 </script>
-
-<style>
-  .work-placeholder {
-    padding-block: var(--space-section);
-    background: var(--bg-base);
-  }
-  .work-placeholder__label { color: var(--coral-deep); }
-  .work-placeholder__note {
-    margin-block-start: var(--space-3);
-    color: var(--muted);
-    border: 1.5px dashed var(--border);
-    border-radius: var(--r-m);
-    padding: var(--space-6);
-    max-inline-size: 60ch;
-  }
-</style>

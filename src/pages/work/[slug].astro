@@ -1,0 +1,51 @@
+---
+// STUB case page — keeps /work/* links live before the case-study template
+// (implementation step 11) gets its own approval. Visibly labeled placeholder.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ui from '../../content/ui.json';
+import '../../styles/themes.css';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({ params: { slug: p.id }, props: { project: p } }));
+}
+
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const d = project.data;
+---
+
+<Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
+  <section class="case-stub" data-theme={project.id}>
+    <div class="container">
+      <a class="case-stub__back t-meta" href="/#work">{ui.work.backHome}</a>
+      <p class="t-meta case-stub__meta">{d.client} · {d.role} · {d.year}</p>
+      <h1 class="t-display case-stub__title">{d.title}</h1>
+      <p class="case-stub__summary">{d.summary}</p>
+      <p class="case-stub__pending">{ui.work.casePending}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .case-stub {
+    min-block-size: 70svh;
+    background: var(--wash, var(--bg-tint));
+    padding-block: calc(var(--space-9) + 40px) var(--space-9);
+  }
+  .case-stub__back { color: var(--ink-soft); text-decoration: none; }
+  .case-stub__back:hover { color: var(--accent-deep); }
+  .case-stub__meta { margin-block-start: var(--space-7); color: var(--ink-soft); }
+  .case-stub__title { font-size: var(--text-hero); color: var(--ink); margin-block-start: var(--space-3); }
+  .case-stub__summary { margin-block-start: var(--space-5); max-inline-size: 55ch; color: var(--ink-soft); font-size: var(--text-lead); }
+  .case-stub__pending {
+    display: inline-block;
+    margin-block-start: var(--space-7);
+    color: var(--ink-soft);
+    border: 1.5px dashed var(--accent-deep, var(--coral-deep));
+    border-radius: var(--r-s);
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface);
+  }
+</style>

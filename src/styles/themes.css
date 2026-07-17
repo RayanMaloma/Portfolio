@@ -1,0 +1,21 @@
+/* ─────────────────────────────────────────────────────────────
+   Project color worlds (approved values, DECISION_LOG #13).
+   A [data-theme] scope overrides three tokens; the page background
+   cross-fades between LIGHT WASHES only — never saturated accents.
+   Text stays on the global warm ink tokens in every world.
+   ───────────────────────────────────────────────────────────── */
+[data-theme='autorag'] {
+  --accent: #2B4BF2;
+  --accent-deep: #1E36BC;
+  --wash: #E8ECFF;
+}
+[data-theme='dshopper'] {
+  --accent: #0E8F62; /* fresh emerald — must not drift toward teal */
+  --accent-deep: #0A6B4A;
+  --wash: #E2F4EB;
+}
+[data-theme='csc'] {
+  --accent: #0A6E93; /* visibly bluer + darker than D Shopper's green */
+  --accent-deep: #08526E;
+  --wash: #E1F0F4;
+}
