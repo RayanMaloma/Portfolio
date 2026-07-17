@@ -1,0 +1,319 @@
+<meta charset="utf-8">
+<title>Hero Composition Options — Rayan Al-Omaireeni</title>
+<style>
+  :root{
+    --sand:#FAF6EF; --tint:#F2EBDE; --deep:#EDE3D2; --surface:#FFFDF9;
+    --ink:#221D16; --ink-soft:#57503F; --muted:#8E8474; --line:rgba(34,29,22,.14);
+    --coral:#FF7A50; --coral-soft:#FFC0A3; --coral-deep:#E1490F;
+    --cobalt:#2B4BF2; --cobalt-deep:#1E36BC;
+    --disp:"Arial Black","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --sand:#1D1712; --tint:#241D15; --deep:#2B2219; --surface:#171310;
+      --ink:#F2EADC; --ink-soft:#C9BEA9; --muted:#94897A; --line:rgba(242,234,220,.16);
+      --coral:#FF8A62; --coral-soft:#5A3423; --coral-deep:#FF9D7C;
+      --cobalt:#6C83FF; --cobalt-deep:#8FA1FF; }
+  }
+  :root[data-theme="dark"]{ --sand:#1D1712; --tint:#241D15; --deep:#2B2219; --surface:#171310;
+    --ink:#F2EADC; --ink-soft:#C9BEA9; --muted:#94897A; --line:rgba(242,234,220,.16);
+    --coral:#FF8A62; --coral-soft:#5A3423; --coral-deep:#FF9D7C;
+    --cobalt:#6C83FF; --cobalt-deep:#8FA1FF; }
+  :root[data-theme="light"]{ --sand:#FAF6EF; --tint:#F2EBDE; --deep:#EDE3D2; --surface:#FFFDF9;
+    --ink:#221D16; --ink-soft:#57503F; --muted:#8E8474; --line:rgba(34,29,22,.14);
+    --coral:#FF7A50; --coral-soft:#FFC0A3; --coral-deep:#E1490F;
+    --cobalt:#2B4BF2; --cobalt-deep:#1E36BC; }
+
+  *{box-sizing:border-box}
+  body{background:var(--sand);color:var(--ink);font-family:var(--body);margin:0;
+    font-size:16px;line-height:1.6;}
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 24px 96px}
+  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--coral-deep);font-weight:600}
+  h1{font-family:var(--disp);font-size:clamp(34px,5.5vw,58px);line-height:.98;letter-spacing:-.02em;margin:.35em 0 .4em;text-wrap:balance}
+  .lede{max-width:62ch;color:var(--ink-soft);font-size:18px}
+  .note{max-width:62ch;font-size:13.5px;color:var(--muted);border-inline-start:3px solid var(--coral);padding:6px 0 6px 14px;margin-top:20px}
+  h2{font-family:var(--disp);font-size:clamp(22px,3vw,30px);letter-spacing:-.01em;line-height:1.05;margin:0}
+  .opt{margin-top:84px}
+  .opt-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .opt-tag{font-family:var(--disp);font-size:13px;color:var(--sand);background:var(--ink);border-radius:999px;padding:6px 14px;letter-spacing:.04em}
+  .opt-sub{color:var(--ink-soft);max-width:70ch;margin:8px 0 22px}
+
+  /* ---------- mockup canvas ---------- */
+  .mock{container-type:inline-size;position:relative;aspect-ratio:16/9.4;border-radius:18px;
+    overflow:hidden;background:var(--tint);border:1px solid var(--line)}
+  .m-nav{position:absolute;top:4.2cqw;left:50%;transform:translateX(-50%);display:flex;gap:1.4cqw;
+    background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:1.1cqw 2.2cqw;
+    font-size:1.5cqw;color:var(--ink-soft);z-index:6;white-space:nowrap}
+  .m-nav b{color:var(--coral-deep)}
+  .m-brand{position:absolute;top:4.6cqw;left:3.4cqw;font-size:1.5cqw;color:var(--muted);z-index:6}
+  .m-soc{position:absolute;top:4.6cqw;right:3.4cqw;font-size:1.5cqw;color:var(--muted);z-index:6}
+  .m-kick{font-size:1.8cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--cobalt-deep);font-weight:600}
+  .wordmark{font-family:var(--disp);letter-spacing:-.025em;line-height:.88;color:var(--ink)}
+  .photo-tag{position:absolute;background:var(--surface);border:1.5px dashed var(--coral-deep);border-radius:8px;
+    color:var(--ink-soft);font-size:1.35cqw;padding:.5cqw 1.2cqw;white-space:nowrap;font-weight:600;z-index:7}
+  .uicard{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:1.2cqw;
+    box-shadow:0 1.2cqw 3cqw rgba(34,29,22,.10);overflow:hidden}
+  .uicard .bar{height:22%;display:flex;align-items:center;gap:.7cqw;padding:0 1cqw}
+  .uicard .dot{width:.8cqw;height:.8cqw;border-radius:50%;background:rgba(255,255,255,.75)}
+  .uicard .row{height:.85cqw;border-radius:99px;background:var(--tint);margin:.9cqw 1cqw 0}
+  .uicard .row.w60{width:60%}.uicard .row.w80{width:80%}.uicard .row.w40{width:40%}
+  .m-scroll{position:absolute;bottom:3cqw;right:3.4cqw;font-size:1.5cqw;color:var(--muted);z-index:6}
+
+  /* option 1 — full-bleed photo, Juan treatment */
+  .o1 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%;
+    filter:saturate(.8) contrast(.96)}
+  .o1 .wash{position:absolute;inset:0;background:var(--coral);opacity:.30;mix-blend-mode:multiply;z-index:1}
+  .o1 .wash2{position:absolute;inset:0;background:#FFBC95;opacity:.22;mix-blend-mode:screen;z-index:1}
+  .o1 .m-kick{position:absolute;left:6cqw;top:22cqw;z-index:4;color:#FFD9C4}
+  .o1 .wm{position:absolute;bottom:2.5cqw;left:0;right:0;padding:0 3.2cqw;z-index:3;display:flex;flex-direction:column;gap:.6cqw}
+  .o1 .wm .l1{font-size:13.5cqw;display:flex;align-items:center;gap:2cqw;color:#FFD9C4}
+  .o1 .wm .l2{font-size:13.5cqw;text-align:right;color:#FFD9C4}
+  .o1 .card-a{position:static;width:15cqw;height:9cqw;transform:rotate(-3deg)}
+  .o1 .m-brand,.o1 .m-soc,.o1 .m-scroll{color:#F6E4D6}
+  .o1 .photo-tag{left:3.4cqw;bottom:26cqw;transform:rotate(-2deg)}
+
+  /* option 2 — layer stack with figure slab */
+  .o2 .stack{position:absolute;left:5cqw;top:13cqw;z-index:2;display:flex;flex-direction:column;gap:1cqw}
+  .o2 .stack div{font-size:12cqw}
+  .o2 .stack .front{position:relative;z-index:4}
+  .o2 .figure{position:absolute;width:26cqw;height:40cqw;right:8cqw;bottom:0;z-index:3;
+    border-radius:99cqw 99cqw 0 0;overflow:hidden;border:.35cqw solid var(--surface);border-bottom:none}
+  .o2 .figure img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+  .o2 .card-b{width:13cqw;height:8cqw;right:32cqw;bottom:16cqw;transform:rotate(6deg);z-index:2}
+  .o2 .card-c{width:11cqw;height:7cqw;right:4.5cqw;bottom:8cqw;transform:rotate(-5deg);z-index:4}
+  .o2 .field{position:absolute;left:0;right:0;bottom:0;height:24cqw;background:var(--coral);opacity:.9;z-index:1}
+  .o2 .m-kick{position:absolute;left:5.2cqw;top:9.4cqw;z-index:5}
+  .o2 .photo-tag{right:6cqw;bottom:41cqw;transform:rotate(2deg)}
+
+  /* option 3 — editorial split, photo in arch */
+  .o3 .col{position:absolute;left:6cqw;top:20cqw;max-width:42cqw;z-index:3}
+  .o3 .col .name{font-family:var(--disp);font-size:7.4cqw;line-height:.95;letter-spacing:-.02em;margin:1.4cqw 0}
+  .o3 .col .bio{font-size:1.9cqw;color:var(--ink-soft);max-width:36cqw}
+  .o3 .ctas{display:flex;gap:1.4cqw;margin-top:2.4cqw}
+  .o3 .btn{font-size:1.7cqw;border-radius:999px;padding:1cqw 2.4cqw;background:var(--ink);color:var(--sand)}
+  .o3 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .o3 .arch-echo{position:absolute;right:9.5cqw;bottom:0;width:33cqw;height:46cqw;background:var(--coral);
+    border-radius:99cqw 99cqw 0 0;z-index:1}
+  .o3 .arch{position:absolute;right:6cqw;bottom:0;width:33cqw;height:43cqw;
+    border-radius:99cqw 99cqw 0 0;z-index:2;overflow:hidden}
+  .o3 .arch img{width:100%;height:100%;object-fit:cover;object-position:64% 18%}
+  .o3 .card-d{width:12cqw;height:7.5cqw;right:33cqw;bottom:10cqw;transform:rotate(-6deg);z-index:3}
+  .o3 .badge{position:absolute;right:34cqw;top:7cqw;width:12cqw;height:12cqw;z-index:4}
+  .o3 .badge svg{width:100%;height:100%}
+  .o3 .badge text{font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;fill:var(--ink-soft)}
+  .o3 .photo-tag{right:8cqw;bottom:44.5cqw;transform:rotate(2deg)}
+
+  /* ---------- annotations ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:18px}
+  .cell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .cell h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-deep);margin:0 0 8px;font-weight:700}
+  .cell ul{margin:0;padding-inline-start:18px;color:var(--ink-soft);font-size:14.5px}
+  .cell li{margin:4px 0}
+  .cell .pend{color:var(--cobalt-deep);font-weight:600}
+
+  /* ---------- photo notes / comparison ---------- */
+  .photos-note{margin-top:90px;background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:28px}
+  .photos-note ul{color:var(--ink-soft);max-width:75ch}
+  .photos-note li{margin:8px 0}
+  .compare{margin-top:48px;background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:28px}
+  .tablewrap{overflow-x:auto;margin-top:14px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:14.5px}
+  th,td{text-align:start;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  td:first-child{color:var(--muted);white-space:nowrap}
+  .rec{margin-top:22px;border-inline-start:3px solid var(--cobalt);padding:4px 0 4px 16px;max-width:70ch}
+  .rec b{color:var(--cobalt-deep)}
+  a{color:var(--cobalt-deep)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Portfolio redesign · Phase 6 preview · Hero decision · v2 — with your photos</p>
+  <h1>Three hero compositions, your real image</h1>
+  <p class="lede">Same three structures as v1, now built with the photos you sent so you can judge the
+    actual chemistry between your image, the typography, and the Desert Coral palette. Each option uses the
+    photo whose character fits its structure — see the photo notes at the bottom before deciding.</p>
+  <p class="note">Type is still a stand-in for <b>Clash Display</b>, and every photo here is a <b>temporary
+    treatment</b> — the final hero uses a dedicated shoot per the photography brief (ASSET_MANIFEST.md §2).
+    Dashed tags mark what each photo is standing in for.</p>
+
+  <!-- ══════════ OPTION 1 ══════════ -->
+  <section class="opt" id="opt1">
+    <div class="opt-head"><span class="opt-tag">Option 1</span><h2>Inline Interruption</h2></div>
+    <p class="opt-sub">With a real environmental photo this becomes the closest thing to Juan Mora's actual
+      hero: full-bleed warm scene of you at work, coral-washed to merge with the palette, colossal peach
+      wordmark pinned to the bottom with a UI card living inside the type. The desk photo you sent fits this
+      structure perfectly.</p>
+
+    <div class="mock o1" role="img" aria-label="Wireframe of option 1 using the desk photo full-bleed under a coral wash, with a giant two-line peach wordmark and an inline UI card">
+      <img class="bg" src="__PHOTO_DESK__" alt="">
+      <div class="wash"></div><div class="wash2"></div>
+      <span class="m-brand">Rayan Al-Omaireeni</span>
+      <nav class="m-nav">Work · <b>✦</b> · About</nav>
+      <span class="m-soc">Email — in</span>
+      <span class="m-kick">Product Designer — UX · UI · AI</span>
+      <span class="photo-tag">TEMP PHOTO — desk scene (see photo notes)</span>
+      <div class="wm">
+        <div class="l1 wordmark">Rayan
+          <span class="uicard card-a"><span class="bar" style="background:var(--cobalt)"><i class="dot"></i><i class="dot"></i></span><span class="row w80"></span><span class="row w60"></span><span class="row w40"></span></span>
+        </div>
+        <div class="l2 wordmark">Al-Omaireeni</div>
+      </div>
+      <span class="m-scroll">Scroll ↓</span>
+    </div>
+
+    <div class="grid">
+      <div class="cell"><h3>Composition</h3><ul>
+        <li>Full-bleed environmental photo — you in your element, not a posed cutout</li>
+        <li>Coral wash (multiply + screen layers) fuses photo and palette into one world</li>
+        <li>Peach wordmark over the scene; UI card inline in line one</li></ul></div>
+      <div class="cell"><h3>Motion</h3><ul>
+        <li>Entrance: photo scales 1.06→1, lines mask up, card slots in</li>
+        <li>Scroll: photo fixed-feel parallax; type drifts <span class="pend">— pace pending Juan recording</span></li>
+        <li>Cursor: card tilt only</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Photo recomposes (portrait crop on your face/hands)</li>
+        <li>Wordmark 3 lines, card between lines 2–3</li></ul></div>
+      <div class="cell"><h3>Tradeoffs</h3><ul>
+        <li>+ Strongest atmosphere; photo quality demands lowest (wash hides flaws)</li>
+        <li>+ No cutout needed at all</li>
+        <li>− Most literally Juan of the three</li>
+        <li>− Your face reads smaller — identity carried by mood, not features</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ══════════ OPTION 2 ══════════ -->
+  <section class="opt" id="opt2">
+    <div class="opt-head"><span class="opt-tag">Option 2</span><h2>Layer Stack</h2></div>
+    <p class="opt-sub">The name stacks in three lines; your figure stands in an arch-topped slab on the
+      coral field, sliced between the lines — "AL-" runs in front of your shoulder. The selfie stands in for
+      the final figure; the real version uses a proper waist-up cutout from the shoot (pose 3), edges
+      meeting the type directly.</p>
+
+    <div class="mock o2" role="img" aria-label="Wireframe of option 2 with three stacked name lines, the selfie in an arch-topped slab woven between the lines, coral field and two UI cards">
+      <span class="m-brand">Rayan Al-Omaireeni</span>
+      <nav class="m-nav">Work · <b>✦</b> · About</nav>
+      <span class="m-soc">Email — in</span>
+      <span class="m-kick">Product Designer — UX · UI · AI</span>
+      <div class="field"></div>
+      <span class="uicard card-b"><span class="bar" style="background:var(--coral)"><i class="dot"></i><i class="dot"></i></span><span class="row w80"></span><span class="row w60"></span></span>
+      <div class="figure"><img src="__PHOTO_SELFIE__" alt=""></div>
+      <span class="photo-tag">TEMP PHOTO — final: waist-up cutout, pose 3</span>
+      <div class="stack wordmark">
+        <div>RAYAN</div>
+        <div class="front">AL-</div>
+        <div>OMAIREENI</div>
+      </div>
+      <span class="uicard card-c"><span class="bar" style="background:var(--cobalt)"><i class="dot"></i><i class="dot"></i></span><span class="row w60"></span><span class="row w40"></span></span>
+      <span class="m-scroll">Scroll ↓</span>
+    </div>
+
+    <div class="grid">
+      <div class="cell"><h3>Composition</h3><ul>
+        <li>Three-line stack turns the long surname into the backbone</li>
+        <li>Figure slab (final: true cutout) interleaved with type — real depth, no shadow tricks</li>
+        <li>Coral field grounds you; cobalt card counter-accents</li></ul></div>
+      <div class="cell"><h3>Motion</h3><ul>
+        <li>Entrance: lines slide from alternating sides, you rise through them</li>
+        <li>Scroll: the three layers separate at different speeds <span class="pend">— easing pending recordings</span></li>
+        <li>Cursor: cards micro-tilt; portrait static</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Stack stays vertical; figure drops behind all lines</li>
+        <li>One card docked to the coral field</li></ul></div>
+      <div class="cell"><h3>Tradeoffs</h3><ul>
+        <li>+ Most distinctive; the layer-separation scroll moment is yours alone</li>
+        <li>+ Face at full presence — strongest personal identity</li>
+        <li>− Demands the cleanest cutout of the three (shoot brief matters most here)</li>
+        <li>− Highest build care: z-order × responsive</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ══════════ OPTION 3 ══════════ -->
+  <section class="opt" id="opt3">
+    <div class="opt-head"><span class="opt-tag">Option 3</span><h2>Editorial Split</h2></div>
+    <p class="opt-sub">Text column left, portrait in a coral-rimmed arch right. Your traditional-dress
+      portrait changes what this option means: the arch + shemagh reads as a confident cultural statement —
+      premium, personal, and instantly unlike any Western reference site. Worth seeing even if you shoot a
+      new version later.</p>
+
+    <div class="mock o3" role="img" aria-label="Wireframe of option 3 with a text column on the left and the traditional-dress portrait inside a coral-rimmed arch on the right, plus circular badge and UI card">
+      <span class="m-brand">Rayan Al-Omaireeni</span>
+      <nav class="m-nav">Work · <b>✦</b> · About</nav>
+      <span class="m-soc">Email — in</span>
+      <div class="arch-echo"></div>
+      <div class="arch"><img src="__PHOTO_TRAD__" alt=""></div>
+      <span class="photo-tag">TEMP CROP — or reshoot in same style</span>
+      <span class="uicard card-d"><span class="bar" style="background:var(--cobalt)"><i class="dot"></i><i class="dot"></i></span><span class="row w80"></span><span class="row w40"></span></span>
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><defs><path id="c" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#c">PRODUCT DESIGNER ✦ UX ✦ UI ✦ AI ✦</textPath></text></svg>
+      </div>
+      <div class="col">
+        <span class="m-kick">Riyadh · Open to product roles</span>
+        <div class="name">Rayan<br>Al-Omaireeni</div>
+        <p class="bio">I design products end-to-end — from ambiguous idea to shipped interface.</p>
+        <div class="ctas"><span class="btn">See my work ↓</span><span class="btn ghost">About me</span></div>
+      </div>
+      <span class="m-scroll">Scroll ↓</span>
+    </div>
+
+    <div class="grid">
+      <div class="cell"><h3>Composition</h3><ul>
+        <li>Split de-templated by the arch echo, badge, and card breaking the frame</li>
+        <li>The arch shape + traditional dress = a motif no reference site has</li>
+        <li>Only option with bio + CTAs above the fold</li></ul></div>
+      <div class="cell"><h3>Motion</h3><ul>
+        <li>Entrance: arch scales from baseline, portrait rises within, badge rotates in</li>
+        <li>Scroll: badge spins with scroll velocity; arch parallax subtle</li>
+        <li>Cursor: card tilt only <span class="pend">— badge behavior pending Kevin recording</span></li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Column stacks above arch; arch becomes a wide dome</li>
+        <li>Badge shrinks to a corner stamp</li></ul></div>
+      <div class="cell"><h3>Tradeoffs</h3><ul>
+        <li>+ Most recruiter-legible; strongest cultural identity statement</li>
+        <li>+ Lowest build risk; photo needs no cutout, just a good crop</li>
+        <li>− Least expressive typographic moment</li>
+        <li>− Current photo is a candid side-glance — a reshoot facing camera would strengthen it</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ══════════ PHOTO NOTES ══════════ -->
+  <section class="photos-note">
+    <p class="eyebrow">About the photos you sent</p>
+    <h2>Honest photo assessment</h2>
+    <ul>
+      <li><b>Desk/lamp photo (Option 1):</b> the mood is exactly right for the Juan treatment. It appears to be
+        AI-generated or heavily AI-stylized (it arrived as a ChatGPT image file). My strong recommendation:
+        don't ship an AI-generated portrait as the face of a personal portfolio — if a reviewer suspects it,
+        it undermines exactly the authenticity a portfolio exists to prove. Recreating this exact setup as a
+        real photo is easy (desk, warm lamp, laptop, shot from slightly below) and I'd add it to the shoot list.</li>
+      <li><b>Night selfie (Option 2):</b> right framing instincts, but it's a low-angle night phone shot with mixed
+        street light — usable as a stand-in only. Pose 1/3 from the brief replaces it.</li>
+      <li><b>Traditional-dress portrait (Option 3):</b> genuinely strong — professional light, rich texture, real
+        presence. If you like Option 3's direction, a version of this looking at or near the camera would be
+        the finished asset; the current side-glance also works if we lean editorial.</li>
+      <li><b>Campfire photo (IMG_2776, fur hat):</b> not hero material, but it's a perfect About-page personality
+        shot — warm, candid, memorable. Earmarked for the About "personal layer" section.</li>
+    </ul>
+  </section>
+
+  <!-- ══════════ COMPARISON ══════════ -->
+  <section class="compare">
+    <p class="eyebrow">Side by side</p>
+    <h2>How they trade off</h2>
+    <div class="tablewrap"><table>
+      <tr><th></th><th>1 · Inline Interruption</th><th>2 · Layer Stack</th><th>3 · Editorial Split</th></tr>
+      <tr><td>First impression</td><td>Boldest atmosphere</td><td>Most distinctive</td><td>Clearest + most personal</td></tr>
+      <tr><td>Juan / Veronica / Kevin mix</td><td>75 / 15 / 10</td><td>50 / 35 / 15</td><td>30 / 20 / 50</td></tr>
+      <tr><td>Photo demands</td><td>Lowest (washed scene)</td><td>Highest (clean cutout)</td><td>Moderate (good crop)</td></tr>
+      <tr><td>Best photo you have today</td><td>Needs real reshoot of desk scene</td><td>Needs the brief shoot</td><td>Traditional portrait ≈ ready</td></tr>
+      <tr><td>Signature scroll moment</td><td>Card in type</td><td>Layers separating</td><td>Spinning badge</td></tr>
+      <tr><td>Build risk</td><td>Medium</td><td>Highest</td><td>Lowest</td></tr>
+      <tr><td>Risk of feeling referenced</td><td>Highest</td><td>Lowest</td><td>Low</td></tr>
+    </table></div>
+    <p class="rec"><b>Updated recommendation:</b> seeing your photos, it's now a genuine two-horse race.
+      <b>Option 2</b> remains the most distinctive design and best fulfills the approved brief — if you'll do
+      the shoot. But the traditional-dress portrait makes <b>Option 3</b> far stronger than it was as a
+      wireframe: it's the only option that's nearly production-ready with a photo you already own, and the
+      cultural statement is memorable in exactly the way references can't be. Option 1 works best if you
+      recreate the desk scene as a real photograph.</p>
+  </section>
+</div>

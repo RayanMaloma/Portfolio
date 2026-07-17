@@ -3,14 +3,22 @@
   "configurations": [
     {
       "name": "site",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5500"],
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5500"
+      ],
       "port": 5500
     },
     {
       "name": "preview",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5512"],
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5512"
+      ],
       "port": 5512
     }
   ]
