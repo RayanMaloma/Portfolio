@@ -1,0 +1,93 @@
+/* ─────────────────────────────────────────────────────────────
+   Base — reset, fonts, typography, layout primitives.
+   RTL-readiness rule: logical properties only (inline-start/end),
+   except deliberate full-bleed effects.
+   ───────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/ClashDisplay-Variable.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('/fonts/GeneralSans-Variable.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 430;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, svg { display: block; max-inline-size: 100%; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  z-index: calc(var(--z-loader) + 1);
+  background: var(--ink);
+  color: var(--bg-base);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--r-pill);
+  font-size: var(--text-meta);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+.container {
+  max-inline-size: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Type utilities */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+}
+.t-meta {
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Shared reveal primitive (motion.ts drives it; final state is the default) */
+[data-reveal] { opacity: 1; transform: none; }
+
+/* Reduced motion: kill smooth scrolling; scripts check the same query. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,135 @@
+---
+import { SITE } from '../config/site';
+import ui from '../content/ui.json';
+const path = Astro.url.pathname;
+---
+
+<header class="nav" data-nav>
+  <a class="nav__brand" href="/">
+    <span class="nav__brand-full">{SITE.name}</span>
+    <span class="nav__brand-short" aria-hidden="true">R.A.</span>
+  </a>
+
+  <nav class="nav__pill" aria-label="Primary">
+    <a href="/#work" class="nav__item">{ui.nav.work}</a>
+    <a href="/" class="nav__mark" aria-label="Home" aria-current={path === '/' ? 'page' : undefined}>✦</a>
+    <a href="/about" class="nav__item" aria-current={path.startsWith('/about') ? 'page' : undefined}>{ui.nav.about}</a>
+  </nav>
+
+  <div class="nav__links">
+    <a href={`mailto:${SITE.email}`}>{ui.nav.email}</a>
+    <a href={SITE.links.linkedin} target="_blank" rel="noopener">{ui.nav.linkedin}</a>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-nav);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--gutter);
+    pointer-events: none; /* children re-enable; lets clicks pass between groups */
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .nav.is-hidden { transform: translateY(-120%); }
+  .nav > * { pointer-events: auto; }
+
+  .nav__brand {
+    font-size: var(--text-meta);
+    font-weight: 550;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .nav__brand-short { display: none; }
+
+  .nav__pill {
+    position: absolute;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--r-pill);
+    border: 1px solid transparent;
+    transition: background var(--dur-2), border-color var(--dur-2), box-shadow var(--dur-2);
+  }
+  .nav.is-scrolled .nav__pill {
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    border-color: var(--border);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+  }
+  .nav__item {
+    font-size: var(--text-meta);
+    font-weight: 550;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--r-pill);
+    transition: background var(--dur-1);
+  }
+  .nav__item:hover { background: color-mix(in srgb, var(--coral-soft) 45%, transparent); }
+  .nav__mark {
+    color: var(--coral-deep);
+    text-decoration: none;
+    font-size: 1rem;
+    padding-inline: var(--space-2);
+  }
+  .nav__item[aria-current='page'],
+  .nav__mark[aria-current='page'] { position: relative; }
+
+  .nav__links {
+    display: flex;
+    gap: var(--space-5);
+    font-size: var(--text-meta);
+    font-weight: 500;
+  }
+  .nav__links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    transition: color var(--dur-1);
+  }
+  .nav__links a:hover { color: var(--coral-deep); }
+
+  @media (max-width: 767px) {
+    .nav__brand-full { display: none; }
+    .nav__brand-short { display: inline; }
+    .nav__links { display: none; } /* contact lives in the footer on mobile */
+  }
+</style>
+
+<script>
+  const nav = document.querySelector('[data-nav]');
+  if (nav) {
+    let lastY = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      nav.classList.toggle('is-scrolled', y > 40);
+      // Hide on down-scroll, reveal on up-scroll (never while near the top)
+      if (y > 160 && y > lastY + 4) nav.classList.add('is-hidden');
+      else if (y < lastY - 4 || y <= 160) nav.classList.remove('is-hidden');
+      lastY = y;
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
+</script>

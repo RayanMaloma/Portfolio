@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "work": "Work",
+    "about": "About",
+    "email": "Email",
+    "linkedin": "LinkedIn"
+  },
+  "hero": {
+    "kicker": "Product Designer — UX · UI · AI",
+    "firstName": "Rayan",
+    "lastName": "Al-Omaireeni",
+    "scrollCue": "Scroll to work ↓",
+    "tempPhotoLabel": "Temp photo — final per shoot brief",
+    "cardAlt": "AutoRAG interface preview"
+  },
+  "loader": {
+    "line": "warming up the coral"
+  },
+  "footer": {
+    "copyright": "© 2026 Rayan Al-Omaireeni"
+  }
+}

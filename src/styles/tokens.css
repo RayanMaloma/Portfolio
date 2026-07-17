@@ -1,0 +1,67 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — Desert Coral system
+   Single source of truth. See docs/redesign/VISUAL_DIRECTION.md
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Color — foundations */
+  --bg-base: #FAF6EF;
+  --bg-tint: #F2EBDE;
+  --bg-deep: #EDE3D2;
+  --surface: #FFFDF9;
+  --ink: #221D16;
+  --ink-soft: #57503F;
+  --muted: #8E8474;
+  --border: rgba(34, 29, 22, 0.14);
+
+  /* Color — accents */
+  --coral: #FF7A50;
+  --coral-soft: #FFC0A3;
+  --coral-deep: #E1490F;
+  --cobalt: #2B4BF2;
+  --cobalt-deep: #1E36BC;
+  --focus: var(--cobalt);
+
+  /* Over-photo tones (hero wash treatment) */
+  --on-photo: #FFD9C4;
+  --on-photo-soft: #F6E4D6;
+
+  /* Type */
+  --font-display: 'Clash Display', 'Arial Black', sans-serif;
+  --font-body: 'General Sans', system-ui, sans-serif;
+  --text-hero: clamp(3.4rem, 12.5vw, 11rem);
+  --text-display: clamp(2.5rem, 6vw, 5.5rem);
+  --text-h3: clamp(1.75rem, 3vw, 2.75rem);
+  --text-lead: clamp(1.125rem, 1.6vw, 1.5rem);
+  --text-body: clamp(1rem, 1.2vw, 1.125rem);
+  --text-meta: clamp(0.75rem, 0.9vw, 0.8125rem);
+
+  /* Space */
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px;  --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 128px;
+  --space-section: clamp(96px, 14vh, 176px);
+  --container: 1440px;
+  --gutter: clamp(16px, 2.5vw, 32px);
+
+  /* Radius */
+  --r-s: 10px;
+  --r-m: 18px;
+  --r-l: 28px;
+  --r-pill: 999px;
+
+  /* Elevation (near-invisible by design) */
+  --shadow-card: 0 1px 2px rgba(34, 29, 22, 0.06), 0 12px 40px rgba(34, 29, 22, 0.08);
+
+  /* Z-layers */
+  --z-nav: 100;
+  --z-loader: 200;
+  --z-toast: 300;
+
+  /* Motion */
+  --dur-1: 180ms;
+  --dur-2: 420ms;
+  --dur-3: 800ms;
+  --dur-4: 1200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout: cubic-bezier(0.83, 0, 0.17, 1);
+}

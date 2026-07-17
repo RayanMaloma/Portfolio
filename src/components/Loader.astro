@@ -1,0 +1,64 @@
+---
+// Branded micro-loader (IA §3.1). Renders only when <html data-loader="on">
+// (set pre-paint in Base head: first visit per session, motion-safe).
+// Hard cap 1.5s; exits early on window load.
+interface Props { line: string }
+const { line } = Astro.props;
+---
+
+<div class="loader" aria-hidden="true">
+  <span class="loader__bar"></span>
+  <span class="loader__mark t-display">Rayan <i>✦</i> Al-Omaireeni</span>
+  <span class="loader__line t-meta">{line}</span>
+</div>
+
+<style>
+  .loader { display: none; }
+
+  :global(html[data-loader='on']) .loader {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-loader);
+    background: var(--bg-base);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    transition: opacity var(--dur-2) var(--ease-out);
+  }
+  :global(html[data-loader='done']) .loader { opacity: 0; pointer-events: none; }
+
+  .loader__bar {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    block-size: 3px;
+    inline-size: 100%;
+    background: var(--coral);
+    transform-origin: 0 50%;
+    animation: load-bar 1.2s var(--ease-inout) forwards;
+  }
+  @keyframes load-bar {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  .loader__mark { font-size: 1.25rem; font-weight: 600; }
+  .loader__mark i { font-style: normal; color: var(--coral-deep); }
+  .loader__line { color: var(--muted); }
+</style>
+
+<script>
+  const html = document.documentElement;
+  if (html.getAttribute('data-loader') === 'on') {
+    const finish = () => {
+      if (html.getAttribute('data-loader') !== 'on') return;
+      html.setAttribute('data-loader', 'done');
+      try { sessionStorage.setItem('visited', '1'); } catch {}
+      setTimeout(() => html.removeAttribute('data-loader'), 600);
+    };
+    // Whichever comes first: real load or the 1.5s cap.
+    window.addEventListener('load', () => setTimeout(finish, 250), { once: true });
+    setTimeout(finish, 1500);
+  }
+</script>
