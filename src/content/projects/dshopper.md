@@ -1,11 +1,11 @@
 ---
 order: 2
 title: 'D Shopper'
-client: '[Client / context pending case-study interview]'
+client: 'Personal product concept'
 role: 'Product Design'
-year: '[Year pending confirmation]'
-status: 'shipped'
-summary: '[One-line project summary pending case-study interview]'
+year: 'Concept'
+status: 'concept'
+summary: 'A fashion-marketplace concept for Saudi boutiques — one app to discover local shops, browse their pieces, and get them delivered.'
 theme:
   accent: '#D95C84'
   accentDeep: '#B83E68'
@@ -16,8 +16,5 @@ media:
   - '/assets/work/dshopper-splash.webp'
   - '/assets/work/dshopper-map.webp'
 mediaAlt: 'D Shopper shopping app — product listing, splash screen, and location picker'
-gallery:
-  - { src: '/assets/work/dshopper-splash.webp', alt: 'Splash screen — Discover, Shop, Enjoy' }
-  - { src: '/assets/work/dshopper-products.webp', alt: 'Products list for a Saudi clothing shop' }
-  - { src: '/assets/work/dshopper-map.webp', alt: 'Pick-location screen with Riyadh map' }
+timeline: 'End-to-end concept · 28 screens'
 ---

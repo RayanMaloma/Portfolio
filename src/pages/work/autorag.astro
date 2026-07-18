@@ -1,9 +1,8 @@
 ---
-// AutoRAG case page — Option A "Persistent split screen" (P11, decision 23).
-// Product left (sticky live preview), story right (title, meta, gist, native
-// <details> accordions). Core experience ≈ 1–1.5 viewports; strictly the
-// AutoRAG world: cobalt accents on light cobalt wash, warm ink, neutral
-// surfaces. Overrides the generic template, which remains for dshopper/csc.
+// AutoRAG — flagship case page, Option A persistent split (decisions 23–24).
+// Left: sticky live prototype. Right: compact story — one-line lead, then the
+// full case inside accordions so every section is reachable on screen one.
+// Completed graduation project; strictly the cobalt world.
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ui from '../../content/ui.json';
@@ -15,14 +14,11 @@ const d = project.data;
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const next = all[(all.findIndex((p) => p.id === 'autorag') + 1) % all.length];
-
-const pending = ui.case.pendingSection;
 ---
 
 <Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
   <article class="ar" data-theme="autorag">
     <div class="container ar__grid">
-      <!-- Head first in DOM: mobile reads title → preview → story -->
       <header class="ar__head">
         <a class="ar__back t-meta" href="/#work">{ui.case.back}</a>
         <p class="ar__kicker t-meta">{d.client}</p>
@@ -30,11 +26,11 @@ const pending = ui.case.pendingSection;
         <ul class="ar__chips t-meta" role="list">
           <li>{d.role}</li>
           <li>{d.timeline}</li>
-          <li class="ar__chip-status">{ui.work.inProgress}</li>
+          <li class="ar__chip-status">Completed · {d.year}</li>
         </ul>
+        <p class="ar__lead">{d.summary}</p>
       </header>
 
-      <!-- The product, always on screen (sticky on desktop) -->
       <div class="ar__stage">
         <div class="ar__frame" data-proto data-proto-url={d.prototype?.url}>
           <div class="ar__bar">
@@ -55,43 +51,73 @@ const pending = ui.case.pendingSection;
         </div>
       </div>
 
-      <!-- The story, compact -->
       <div class="ar__col">
-        <ul class="ar__gist">
-          {d.gist?.map((g) => <li>{g}</li>)}
-        </ul>
-
         <div class="ar__details">
           <details open>
             <summary>Problem</summary>
-            <p>{d.context}</p>
+            <p>
+              A RAG system is only as good as its configuration — chunking, embeddings, retrieval
+              settings, language handling. Those choices sit far outside what most teams can make,
+              so they end up stuck between generic chatbots that answer from nowhere and developer
+              infrastructure they can't operate. AutoRAG's bet: capture that expertise once, and
+              let people configure it by describing their situation in plain language.
+            </p>
           </details>
           <details>
             <summary>My role</summary>
             <p>
-              UI/UX design and frontend development inside the graduation-project team — from the
-              8-question setup flow to the chat, document and team surfaces you can try in the live demo.
+              UI/UX design and frontend development inside the graduation-project team. I owned the
+              product surfaces end to end — the guided setup, chat, document workspaces and team
+              dashboard — designed them in Figma, then built the web frontend you can use in the
+              live demo. Teammates focused on the retrieval engine behind it.
             </p>
           </details>
           <details>
+            <summary>Constraints & research</summary>
+            <p>
+              A fixed academic timeline (04/2025 – 05/2026), a small team, and one hard requirement:
+              answers must stay explainable. We validated the setup flow the way the product would be
+              used — by putting non-technical peers in front of it and asking them to configure an
+              engine for their own documents, in Arabic or English, without help.
+            </p>
+          </details>
+          <details>
+            <summary>Process</summary>
+            <p>
+              I started from the full configuration space and worked backwards: which decisions
+              actually change retrieval quality, and which can be inferred? That mapping collapsed a
+              settings panel into eight plain-language questions. From there: flows and wireframes for
+              the four surfaces, a Figma system in the product's cobalt language, then the frontend
+              build — where the chat and citation patterns went through the heaviest iteration.
+            </p>
+          </details>
+          <details>
+            <summary>Design decisions</summary>
+            <ul class="ar__list">
+              <li><strong>A questionnaire, not a settings panel.</strong> Progressive questions with defaults beat exposing thirty parameters — the system holds the expertise, the user holds the context.</li>
+              <li><strong>Sourced answers by default.</strong> Every response cites its documents, and every file shows how often it's used in answers — trust is the product.</li>
+              <li><strong>Documents as a first-class workspace.</strong> Upload, indexing state and usage live in one place instead of hiding behind the chat.</li>
+              <li><strong>Bilingual from the first question.</strong> Arabic, English and mixed corpora are a setup choice, not an afterthought.</li>
+            </ul>
+          </details>
+          <details>
             <summary>What to explore in the demo</summary>
-            <ol class="ar__features">
+            <ol class="ar__list">
               {d.features?.map((f) => (
                 <li><strong>{f.title}.</strong> {f.desc}</li>
               ))}
             </ol>
           </details>
           <details>
-            <summary>Process</summary>
-            <p class="ar__pending">{pending}</p>
-          </details>
-          <details>
-            <summary>Key decisions</summary>
-            <p class="ar__pending">{pending}</p>
-          </details>
-          <details>
-            <summary>Impact</summary>
-            <p class="ar__pending">{pending}</p>
+            <summary>Impact & lessons</summary>
+            <p>
+              Delivered and defended as our Computer Information Systems graduation project at King
+              Saud University in 2026, with the working prototype — not slides — carrying the demo.
+              What it taught me: designing for trust in AI answers is interface work as much as model
+              work; progressive disclosure is a kindness, not a limitation; and building what you
+              design changes what you design. Made with Figma and a hand-built web frontend, deployed
+              on Netlify.
+            </p>
           </details>
         </div>
 
@@ -110,22 +136,23 @@ const pending = ui.case.pendingSection;
     padding-block: calc(var(--space-8) + 40px) var(--space-8);
   }
 
+  /* Head spans the story column; stage keeps its own lane — no overlap */
   .ar__grid {
     display: grid;
-    grid-template-columns: minmax(0, 58fr) minmax(0, 38fr);
+    grid-template-columns: minmax(0, 54fr) minmax(0, 43fr);
     grid-template-areas:
       'stage head'
       'stage col';
-    column-gap: var(--space-7);
+    column-gap: var(--space-8);
     align-items: start;
   }
   .ar__head { grid-area: head; }
   .ar__col { grid-area: col; }
 
-  /* ── Stage (left; frame sticks while the story scrolls) ── */
   .ar__stage { grid-area: stage; align-self: stretch; }
-  .ar__stage-sticky, .ar__frame { position: sticky; inset-block-start: 96px; }
   .ar__frame {
+    position: sticky;
+    inset-block-start: 96px;
     display: flex;
     flex-direction: column;
     background: var(--surface);
@@ -177,19 +204,18 @@ const pending = ui.case.pendingSection;
     transition: background var(--dur-1);
   }
   .ar__poster:hover .ar__poster-cta { background: var(--ink); }
+  .ar__poster[hidden] { display: none; } /* author display:flex must not defeat [hidden] */
   .ar__poster-hint { color: var(--ink-soft); }
 
-  /* ── Column (right) ── */
   .ar__back { color: var(--ink-soft); text-decoration: none; }
   .ar__back:hover { color: var(--accent-deep); }
   .ar__kicker { margin-block-start: var(--space-5); color: var(--ink-soft); }
-  .ar__col { margin-block-start: var(--space-5); }
   .ar__title {
-    font-size: clamp(3rem, 7.5vw, 6.5rem);
+    /* sized to live inside its own column — impact from weight + contrast,
+       not from crossing into the stage */
+    font-size: clamp(2.75rem, 5.6vw, 5.25rem);
     line-height: 0.95;
     margin-block-start: var(--space-2);
-    position: relative;
-    z-index: 2;
   }
   .ar__chips {
     list-style: none;
@@ -207,19 +233,15 @@ const pending = ui.case.pendingSection;
     padding: var(--space-1) var(--space-3);
   }
   .ar__chip-status { color: var(--accent-deep); border-color: currentColor !important; }
-
-  .ar__gist {
-    margin: var(--space-5) 0 0;
-    padding-inline-start: 1.1em;
-    display: grid;
-    gap: var(--space-2);
+  .ar__lead {
+    margin-block-start: var(--space-4);
     color: var(--ink);
-    font-size: var(--text-lead);
-    line-height: 1.45;
+    font-size: var(--text-body);
+    line-height: 1.55;
+    max-inline-size: 52ch;
   }
-  .ar__gist li::marker { color: var(--accent); }
 
-  .ar__details { margin-block-start: var(--space-6); }
+  .ar__col { margin-block-start: var(--space-5); }
   .ar__details details { border-block-start: 1px solid var(--border); }
   .ar__details details:last-of-type { border-block-end: 1px solid var(--border); }
   .ar__details summary {
@@ -228,7 +250,7 @@ const pending = ui.case.pendingSection;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-block: var(--space-4);
+    padding-block: var(--space-3);
     font-weight: 600;
     color: var(--ink);
   }
@@ -242,20 +264,13 @@ const pending = ui.case.pendingSection;
     transition: rotate var(--dur-1) var(--ease-out);
   }
   .ar__details details[open] summary::after { rotate: 45deg; }
-  .ar__details details > *:not(summary) { margin-block: 0 var(--space-5); color: var(--ink-soft); }
-  .ar__features { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
-  .ar__features strong { color: var(--ink); font-weight: 600; }
-  .ar__pending {
-    display: inline-block;
-    border: 1.5px dashed var(--accent-deep);
-    border-radius: var(--r-s);
-    background: var(--surface);
-    padding: var(--space-2) var(--space-4);
-  }
+  .ar__details details > *:not(summary) { margin-block: 0 var(--space-4); color: var(--ink-soft); }
+  .ar__list { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .ar__list strong { color: var(--ink); font-weight: 600; }
 
   .ar__next {
     display: block;
-    margin-block-start: var(--space-7);
+    margin-block-start: var(--space-6);
     text-decoration: none;
     color: var(--ink-soft);
   }
@@ -267,17 +282,10 @@ const pending = ui.case.pendingSection;
   }
   .ar__next:hover .ar__next-title { translate: 6px 0; color: var(--accent-deep); }
 
-  /* C-borrow: at wide widths the title crosses the gutter over the frame edge */
-  @media (min-width: 1280px) {
-    .ar__title { margin-inline-start: calc(var(--space-9) * -1); }
-  }
-
   @media (max-width: 1023px) {
     .ar { padding-block-start: calc(var(--space-7) + 40px); }
-    /* DOM order carries mobile: head → stage → col */
     .ar__grid { display: flex; flex-direction: column; gap: var(--space-6); }
     .ar__frame { position: static; block-size: auto; min-block-size: 0; aspect-ratio: 16 / 10.5; }
-    .ar__title { margin-inline-start: 0; }
     .ar__col { margin-block-start: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -287,7 +295,6 @@ const pending = ui.case.pendingSection;
 </style>
 
 <script>
-  // Lazy live prototype: iframe on demand; small screens open the real tab.
   const proto = document.querySelector<HTMLElement>('[data-proto]');
   if (proto) {
     const url = proto.dataset.protoUrl!;

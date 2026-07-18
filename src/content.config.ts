@@ -12,7 +12,7 @@ const projects = defineCollection({
     client: z.string(),
     role: z.string(),
     year: z.string(), // string so labeled placeholders are valid
-    status: z.enum(['shipped', 'in-progress']),
+    status: z.enum(['shipped', 'in-progress', 'concept']),
     summary: z.string(),
     theme: z.object({
       accent: z.string(),

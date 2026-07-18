@@ -1,0 +1,281 @@
+---
+// CSC Official Website — flagship case page in the split-screen family
+// (decision 24). Left: sticky frame embedding the REAL live site
+// (cscksu.com). Right: compact story with the full case. Warm-gray world.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ui from '../../content/ui.json';
+import '../../styles/themes.css';
+
+const project = await getEntry('projects', 'csc');
+if (!project) throw new Error('csc content entry missing');
+const d = project.data;
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const next = all[(all.findIndex((p) => p.id === 'csc') + 1) % all.length];
+---
+
+<Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
+  <article class="cs" data-theme="csc">
+    <div class="container cs__grid">
+      <header class="cs__head">
+        <a class="cs__back t-meta" href="/#work">{ui.case.back}</a>
+        <p class="cs__kicker t-meta">{d.client}</p>
+        <h1 class="cs__title t-display">CSC Website</h1>
+        <ul class="cs__chips t-meta" role="list">
+          <li>{d.role}</li>
+          <li>Head of Media Committee</li>
+          <li class="cs__chip-status">Live · {d.year}</li>
+        </ul>
+        <p class="cs__lead">{d.summary}</p>
+      </header>
+
+      <div class="cs__stage">
+        <div class="cs__frame" data-proto data-proto-url={d.prototype?.url}>
+          <div class="cs__bar">
+            <span class="cs__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="cs__url t-meta">{d.frameLabel}</span>
+            <span class="cs__live t-meta"><i></i>Live website</span>
+            <a class="cs__newtab t-meta" href={d.prototype?.url} target="_blank" rel="noopener">
+              {ui.case.openNewTab} ↗
+            </a>
+          </div>
+          <div class="cs__viewport" data-proto-viewport>
+            <button class="cs__poster" type="button" data-proto-launch>
+              <img class="cs__poster-shot" src="/assets/work/csc-home.webp" alt="" loading="eager" draggable="false" />
+              <span class="cs__poster-veil" aria-hidden="true"></span>
+              <span class="cs__poster-cta">Browse the live site →</span>
+              <span class="cs__poster-hint t-meta">The real production website, in place</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs__col">
+        <div class="cs__details">
+          <details open>
+            <summary>Problem</summary>
+            <p>
+              The Cultural & Social Club is one of KSU's most active student communities, but its
+              work lived only in scattered social posts — initiatives, workshops and visits with
+              real impact had no persistent home. The club needed a platform that could carry its
+              identity, archive its activity, and take event registration seriously.
+            </p>
+          </details>
+          <details>
+            <summary>My role</summary>
+            <p>
+              I led the UI/UX design while serving as Head of the club's Media Committee — which
+              meant owning both the interface and the visual voice it speaks with: information
+              architecture, the design system in Figma, and working alongside the club's
+              development team through build and launch.
+            </p>
+          </details>
+          <details>
+            <summary>Process & constraints</summary>
+            <p>
+              The constraints were the honest kind: volunteer developers, real deadlines around
+              semester events, and content that changes with every initiative. I structured the
+              site around the club's actual operating model — identity, values, initiatives,
+              events, partners — designed Arabic-first, and kept every template simple enough for
+              a student team to maintain after handoff.
+            </p>
+          </details>
+          <details>
+            <summary>Design decisions</summary>
+            <ul class="cs__list">
+              <li><strong>Arabic-first, RTL-native.</strong> Not a translated afterthought — typography, alignment and flow are designed in Arabic from the start.</li>
+              <li><strong>A dark, premium identity.</strong> Deliberately unlike the default student-club look; the club's sparkle mark and deep surfaces give it an institutional confidence.</li>
+              <li><strong>Initiatives and events as a system.</strong> Filterable event types (workshops, talks, visits), registration states and an "await what's next" rhythm instead of a static news page.</li>
+              <li><strong>Credibility surfaced.</strong> Impact numbers and partner logos — including stc — presented up front, because a club asking for members and partners must show its track record.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>The solution</summary>
+            <p>
+              A production platform at cscksu.com: identity and values, the initiative program,
+              filterable events with registration, impact stats and partners — the site embedded on
+              this page is the real thing, browsable without leaving the case study.
+            </p>
+          </details>
+          <details>
+            <summary>Impact & lessons</summary>
+            <p>
+              The platform is live and in use by the club and its community. Leading design inside
+              the organization I was designing for taught me the difference between decorating an
+              org and representing one — and that maintainability is a design requirement when your
+              "client" graduates every year. Designed in Figma; built and shipped with the club's
+              development team.
+            </p>
+          </details>
+        </div>
+
+        <a class="cs__next" href={`/work/${next.id}/`}>
+          <span class="t-meta">{ui.case.next}</span>
+          <span class="cs__next-title t-display">{next.data.title} →</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .cs { background: var(--wash); padding-block: calc(var(--space-8) + 40px) var(--space-8); }
+
+  .cs__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 54fr) minmax(0, 43fr);
+    grid-template-areas:
+      'stage head'
+      'stage col';
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+  .cs__head { grid-area: head; }
+  .cs__col { grid-area: col; }
+  .cs__stage { grid-area: stage; align-self: stretch; }
+
+  .cs__frame {
+    position: sticky;
+    inset-block-start: 96px;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    block-size: calc(100svh - 160px);
+    min-block-size: 480px;
+  }
+  .cs__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cs__dots { display: flex; gap: 5px; }
+  .cs__dots i { inline-size: 8px; block-size: 8px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 45%, var(--bg-tint)); }
+  .cs__url { color: var(--muted); background: var(--bg-tint); border-radius: var(--r-pill); padding: 2px var(--space-3); }
+  .cs__live { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-deep); }
+  .cs__live i { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--accent-deep); animation: cs-pulse 2s infinite; }
+  @keyframes cs-pulse { 50% { opacity: 0.35; } }
+  .cs__newtab { margin-inline-start: auto; color: var(--ink-soft); text-decoration: none; }
+  .cs__newtab:hover { color: var(--accent-deep); }
+  .cs__viewport { position: relative; flex: 1; min-block-size: 0; }
+  .cs__viewport iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
+  .cs__poster {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    border: 0;
+    cursor: pointer;
+    overflow: hidden;
+    background: var(--ink);
+    padding: 0;
+  }
+  .cs__poster-shot { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: top; opacity: 0.5; }
+  .cs__poster-veil { position: absolute; inset: 0; background: linear-gradient(to top, rgba(34,29,22,0.72), rgba(34,29,22,0.25)); }
+  .cs__poster-cta {
+    position: relative;
+    font-weight: 550;
+    color: var(--ink);
+    background: var(--surface);
+    border-radius: var(--r-pill);
+    padding: var(--space-3) var(--space-5);
+    transition: background var(--dur-1), color var(--dur-1);
+  }
+  .cs__poster:hover .cs__poster-cta { background: var(--accent-deep); color: var(--surface); }
+  .cs__poster[hidden] { display: none; } /* author display:flex must not defeat [hidden] */
+  .cs__poster-hint { position: relative; color: #EDE9E2; }
+
+  .cs__back { color: var(--ink-soft); text-decoration: none; }
+  .cs__back:hover { color: var(--accent-deep); }
+  .cs__kicker { margin-block-start: var(--space-5); color: var(--ink-soft); }
+  .cs__title { font-size: clamp(2.75rem, 5.6vw, 5.25rem); line-height: 0.95; margin-block-start: var(--space-2); }
+  .cs__chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin-block-start: var(--space-4);
+    color: var(--ink-soft);
+  }
+  .cs__chips li { border: 1px solid var(--border); border-radius: var(--r-pill); background: var(--surface); padding: var(--space-1) var(--space-3); }
+  .cs__chip-status { color: var(--accent-deep); border-color: currentColor !important; }
+  .cs__lead { margin-block-start: var(--space-4); color: var(--ink); line-height: 1.55; max-inline-size: 52ch; }
+
+  .cs__col { margin-block-start: var(--space-5); }
+  .cs__details details { border-block-start: 1px solid var(--border); }
+  .cs__details details:last-of-type { border-block-end: 1px solid var(--border); }
+  .cs__details summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-3);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .cs__details summary::-webkit-details-marker { display: none; }
+  .cs__details summary::after {
+    content: '+';
+    color: var(--accent-deep);
+    font-family: var(--font-display);
+    font-size: 1.2em;
+    line-height: 1;
+    transition: rotate var(--dur-1) var(--ease-out);
+  }
+  .cs__details details[open] summary::after { rotate: 45deg; }
+  .cs__details details > *:not(summary) { margin-block: 0 var(--space-4); color: var(--ink-soft); max-inline-size: 60ch; }
+  .cs__list { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .cs__list strong { color: var(--ink); font-weight: 600; }
+
+  .cs__next { display: block; margin-block-start: var(--space-6); text-decoration: none; color: var(--ink-soft); }
+  .cs__next-title { display: block; font-size: var(--text-h3); color: var(--ink); transition: translate var(--dur-2) var(--ease-out), color var(--dur-1); }
+  .cs__next:hover .cs__next-title { translate: 6px 0; color: var(--accent-deep); }
+
+  @media (max-width: 1023px) {
+    .cs { padding-block-start: calc(var(--space-7) + 40px); }
+    .cs__grid { display: flex; flex-direction: column; gap: var(--space-6); }
+    .cs__frame { position: static; block-size: auto; min-block-size: 0; aspect-ratio: 16 / 10.5; }
+    .cs__col { margin-block-start: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs__live i { animation: none; }
+    .cs__next-title, .cs__details summary::after { transition: none; }
+  }
+</style>
+
+<script>
+  const proto = document.querySelector<HTMLElement>('[data-proto]');
+  if (proto) {
+    const url = proto.dataset.protoUrl!;
+    const vp = proto.querySelector<HTMLElement>('[data-proto-viewport]')!;
+    const poster = proto.querySelector<HTMLButtonElement>('[data-proto-launch]')!;
+    let loaded = false;
+    poster.addEventListener('click', () => {
+      if (matchMedia('(max-width: 768px)').matches) {
+        window.open(url, '_blank', 'noopener');
+        return;
+      }
+      if (loaded) return;
+      loaded = true;
+      const frame = document.createElement('iframe');
+      frame.title = 'CSC live website';
+      frame.setAttribute('allow', 'clipboard-write; fullscreen');
+      frame.src = url;
+      frame.addEventListener('load', () => poster.setAttribute('hidden', ''));
+      vp.appendChild(frame);
+    });
+  }
+</script>

@@ -10,7 +10,6 @@
     "firstName": "Rayan",
     "lastName": "Al-Omaireeni",
     "scrollCue": "Scroll to work ↓",
-    "tempPhotoLabel": "Temp photo — final per shoot brief",
     "cardAlt": "AutoRAG interface preview"
   },
   "loader": {
@@ -20,9 +19,7 @@
     "label": "Selected Work",
     "hint": "Three projects, three worlds",
     "viewCase": "View case",
-    "inProgress": "In progress",
-    "casePending": "Full case study pending — content interview in progress.",
-    "backHome": "← Back home"
+    "concept": "Concept"
   },
   "positioning": {
     "label": "What I do",
@@ -68,17 +65,10 @@
   },
   "case": {
     "back": "← All work",
-    "gist": "The gist",
-    "context": "Context & problem",
-    "process": "Process",
-    "decisions": "Key decisions",
-    "solution": "The solution",
-    "impact": "Impact & lessons",
     "next": "Next case",
     "livePrototype": "Live prototype",
     "launchDemo": "Launch interactive demo",
-    "openNewTab": "Open in new tab",
-    "pendingSection": "[Pending case-study interview — structure in place, content to follow]"
+    "openNewTab": "Open in new tab"
   },
   "notFound": {
     "title": "This corner is empty.",

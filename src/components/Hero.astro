@@ -25,8 +25,6 @@ import ui from '../content/ui.json';
 
   <p class="hero__kicker t-meta" data-hero-kicker>{ui.hero.kicker}</p>
 
-  <span class="hero__temp-tag t-meta" data-hero-kicker>{ui.hero.tempPhotoLabel}</span>
-
   <h1 class="hero__wordmark t-display">
     <span class="hero__line hero__line--1">
       <span class="hero__mask"><span class="hero__text" data-hero-line>{ui.hero.firstName}</span></span>
@@ -82,19 +80,6 @@ import ui from '../content/ui.json';
     z-index: 3;
   }
 
-  .hero__temp-tag {
-    position: absolute;
-    inset-inline-start: var(--gutter);
-    inset-block-end: clamp(240px, 38vh, 420px);
-    z-index: 3;
-    color: var(--ink-soft);
-    background: var(--surface);
-    border: 1.5px dashed var(--coral-deep);
-    border-radius: var(--r-s);
-    padding: var(--space-1) var(--space-3);
-    transform: rotate(-2deg);
-  }
-
   .hero__wordmark {
     position: relative;
     z-index: 2;
@@ -137,7 +122,6 @@ import ui from '../content/ui.json';
   @media (max-width: 767px) {
     .hero__wordmark { font-size: clamp(3rem, 15.5vw, 5rem); }
     .hero__card { inline-size: clamp(72px, 20vw, 110px); }
-    .hero__temp-tag { inset-block-end: 34vh; }
     .hero__cue { display: none; } /* touch: scrolling needs no cue; avoids kicker collision */
   }
 </style>

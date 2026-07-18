@@ -1,0 +1,285 @@
+---
+// D Shopper — flagship case page in the split-screen family (decision 24).
+// The phone stage takes only the width a phone needs; the story leads.
+// Sticky code-native iPhone frame with a screen switcher; soft pink world.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ui from '../../content/ui.json';
+import '../../styles/themes.css';
+
+const project = await getEntry('projects', 'dshopper');
+if (!project) throw new Error('dshopper content entry missing');
+const d = project.data;
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const next = all[(all.findIndex((p) => p.id === 'dshopper') + 1) % all.length];
+
+const screens = [
+  { id: 'splash', src: '/assets/work/dshopper-splash.webp', label: 'Splash', alt: 'D Shopper splash screen — Discover, Shop, Enjoy' },
+  { id: 'auth', src: '/assets/work/dshopper-auth.webp', label: 'Onboarding', alt: 'Guest-first onboarding with mobile sign-in' },
+  { id: 'products', src: '/assets/work/dshopper-products.webp', label: 'Shop', alt: 'Products list for a Saudi boutique' },
+  { id: 'favourites', src: '/assets/work/dshopper-favourites.webp', label: 'Favourites', alt: 'Favourites grid with bottom navigation' },
+  { id: 'map', src: '/assets/work/dshopper-map.webp', label: 'Delivery', alt: 'Pick-location screen with Riyadh map' },
+];
+---
+
+<Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
+  <article class="ds" data-theme="dshopper">
+    <div class="container ds__grid">
+      <header class="ds__head">
+        <a class="ds__back t-meta" href="/#work">{ui.case.back}</a>
+        <p class="ds__kicker t-meta">{d.client}</p>
+        <h1 class="ds__title t-display">{d.title}</h1>
+        <ul class="ds__chips t-meta" role="list">
+          <li>{d.role}</li>
+          <li>{d.timeline}</li>
+          <li class="ds__chip-status">{ui.work.concept}</li>
+        </ul>
+        <p class="ds__lead">{d.summary}</p>
+      </header>
+
+      <div class="ds__stage">
+        <div class="ds__sticky">
+          <figure class="ds__phone">
+            <span class="ds__notch" aria-hidden="true"></span>
+            {screens.map((s, i) => (
+              <img
+                src={s.src}
+                alt={s.alt}
+                width="520"
+                height="1125"
+                loading={i === 2 ? 'eager' : 'lazy'}
+                decoding="async"
+                data-screen={s.id}
+                hidden={i !== 2}
+                draggable="false"
+              />
+            ))}
+          </figure>
+          <div class="ds__switch" role="tablist" aria-label="App screens">
+            {screens.map((s, i) => (
+              <button
+                class:list={['ds__switch-btn', 't-meta', { 'is-on': i === 2 }]}
+                type="button"
+                role="tab"
+                aria-selected={i === 2 ? 'true' : 'false'}
+                data-screen-btn={s.id}
+              >{s.label}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="ds__col">
+        <div class="ds__details">
+          <details open>
+            <summary>Problem</summary>
+            <p>
+              Small Saudi fashion boutiques mostly sell through Instagram and WhatsApp: discovery
+              happens in stories, ordering happens in DMs, payment happens wherever it happens.
+              For buyers that means hopping between accounts with no search, no favourites and no
+              order history; for shops it means a storefront that disappears with the next post.
+              D Shopper concepts one marketplace where local boutiques keep their identity and
+              buyers get a real shopping experience.
+            </p>
+          </details>
+          <details>
+            <summary>My role & constraints</summary>
+            <p>
+              Solo, end-to-end product design: research, flows, wireframes, the visual system and a
+              28-screen high-fidelity prototype in Figma. As a concept project it had no engineering
+              team behind it — which made the discipline the point: every screen had to earn its
+              place in a journey a real team could pick up and build.
+            </p>
+          </details>
+          <details>
+            <summary>Process</summary>
+            <p>
+              I started from how boutique shopping actually happens here — following shops, saving
+              posts, asking for prices, sending a location pin for delivery — and mapped that into
+              an app journey: discover → browse a shop → save → order → deliver. Wireframes locked
+              the flow, then a warm, product-photography-first visual system kept the clothes as the
+              hero and the interface quiet around them.
+            </p>
+          </details>
+          <details>
+            <summary>Design decisions</summary>
+            <ul class="ds__list">
+              <li><strong>Guest-first onboarding.</strong> Browse everything before creating an account; a phone number and a 4-digit code only when you're ready to buy — matching how people actually commit.</li>
+              <li><strong>Shops as first-class citizens.</strong> Boutiques get profile pages with their own identity and catalogue, not just rows in a feed — the loyalty is to the shop, the convenience is the platform's.</li>
+              <li><strong>Pin-drop delivery.</strong> A map-based location picker instead of address forms, because "send me your location" is already the local delivery language.</li>
+              <li><strong>Four-tab simplicity.</strong> Home, orders, favourites, profile — the whole app fits in the thumb's reach, with search and filters layered on top.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>The solution</summary>
+            <p>
+              A complete purchase journey across 28 screens: splash and guest-first onboarding, OTP
+              sign-in, boutique profiles and product listings priced in SAR, popular-search and
+              filtering, a favourites collection, and checkout with map-based delivery — the flow
+              you can page through in the phone on this screen.
+            </p>
+          </details>
+          <details>
+            <summary>Impact & lessons</summary>
+            <p>
+              D Shopper is where I crossed from graphic design into product thinking — my first
+              full journey designed as a system rather than a set of screens. It taught me to design
+              the unhappy paths (empty states, failed codes, guest limits), to respect platform
+              conventions before bending them, and that a marketplace is two products wearing one
+              interface. The seller side is the sequel it still deserves. Made entirely in Figma.
+            </p>
+          </details>
+        </div>
+
+        <a class="ds__next" href={`/work/${next.id}/`}>
+          <span class="t-meta">{ui.case.next}</span>
+          <span class="ds__next-title t-display">{next.data.title} →</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .ds { background: var(--wash); padding-block: calc(var(--space-8) + 40px) var(--space-8); }
+
+  /* Phone takes only the width a phone needs; the story leads */
+  .ds__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 30fr) minmax(0, 64fr);
+    grid-template-areas:
+      'stage head'
+      'stage col';
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+  .ds__head { grid-area: head; }
+  .ds__col { grid-area: col; }
+  .ds__stage { grid-area: stage; align-self: stretch; }
+  .ds__sticky { position: sticky; inset-block-start: 96px; }
+
+  .ds__phone {
+    position: relative;
+    margin: 0;
+    inline-size: min(100%, 330px);
+    margin-inline: auto;
+    border-radius: clamp(26px, 2.6vw, 38px);
+    border: 5px solid color-mix(in srgb, var(--ink) 82%, var(--accent));
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .ds__notch {
+    position: absolute;
+    inset-block-start: 9px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: 32%;
+    block-size: 9px;
+    border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--ink) 82%, var(--accent));
+    z-index: 2;
+  }
+  .ds__phone img { inline-size: 100%; block-size: auto; display: block; user-select: none; -webkit-user-drag: none; }
+  .ds__phone img[hidden] { display: none; } /* author display:block must not defeat [hidden] */
+
+  .ds__switch {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-4);
+  }
+  .ds__switch-btn {
+    font: inherit;
+    font-size: var(--text-meta);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1);
+  }
+  .ds__switch-btn:hover { border-color: var(--accent-deep); color: var(--accent-deep); }
+  .ds__switch-btn.is-on { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--surface); }
+
+  .ds__back { color: var(--ink-soft); text-decoration: none; }
+  .ds__back:hover { color: var(--accent-deep); }
+  .ds__kicker { margin-block-start: var(--space-5); color: var(--ink-soft); }
+  .ds__title { font-size: clamp(2.75rem, 5.6vw, 5.25rem); line-height: 0.95; margin-block-start: var(--space-2); }
+  .ds__chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin-block-start: var(--space-4);
+    color: var(--ink-soft);
+  }
+  .ds__chips li { border: 1px solid var(--border); border-radius: var(--r-pill); background: var(--surface); padding: var(--space-1) var(--space-3); }
+  .ds__chip-status { color: var(--accent-deep); border-color: currentColor !important; }
+  .ds__lead { margin-block-start: var(--space-4); color: var(--ink); line-height: 1.55; max-inline-size: 58ch; }
+
+  .ds__col { margin-block-start: var(--space-5); }
+  .ds__details details { border-block-start: 1px solid var(--border); }
+  .ds__details details:last-of-type { border-block-end: 1px solid var(--border); }
+  .ds__details summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-3);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ds__details summary::-webkit-details-marker { display: none; }
+  .ds__details summary::after {
+    content: '+';
+    color: var(--accent-deep);
+    font-family: var(--font-display);
+    font-size: 1.2em;
+    line-height: 1;
+    transition: rotate var(--dur-1) var(--ease-out);
+  }
+  .ds__details details[open] summary::after { rotate: 45deg; }
+  .ds__details details > *:not(summary) { margin-block: 0 var(--space-4); color: var(--ink-soft); max-inline-size: 66ch; }
+  .ds__list { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .ds__list strong { color: var(--ink); font-weight: 600; }
+
+  .ds__next { display: block; margin-block-start: var(--space-6); text-decoration: none; color: var(--ink-soft); }
+  .ds__next-title { display: block; font-size: var(--text-h3); color: var(--ink); transition: translate var(--dur-2) var(--ease-out), color var(--dur-1); }
+  .ds__next:hover .ds__next-title { translate: 6px 0; color: var(--accent-deep); }
+
+  @media (max-width: 1023px) {
+    .ds { padding-block-start: calc(var(--space-7) + 40px); }
+    .ds__grid { display: flex; flex-direction: column; gap: var(--space-6); }
+    .ds__sticky { position: static; }
+    .ds__phone { inline-size: min(72%, 300px); }
+    .ds__col { margin-block-start: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds__next-title, .ds__details summary::after, .ds__switch-btn { transition: none; }
+  }
+</style>
+
+<script>
+  // Screen switcher: swap the visible phone screen; keep tab semantics honest.
+  const btns = [...document.querySelectorAll<HTMLButtonElement>('[data-screen-btn]')];
+  const imgs = [...document.querySelectorAll<HTMLImageElement>('[data-screen]')];
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.screenBtn;
+      imgs.forEach((img) => { img.hidden = img.dataset.screen !== id; });
+      btns.forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    });
+  });
+</script>
