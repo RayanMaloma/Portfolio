@@ -10,10 +10,10 @@ import ui from '../content/ui.json';
       <img
         class="abt__sticker"
         src="/assets/memoji.webp"
-        alt="Memoji of Rayan wearing a shemagh"
+        alt="Rayan's memoji character"
         loading="lazy"
         decoding="async"
-        width="220"
+        width="320"
         data-reveal
       />
     </div>
@@ -34,8 +34,13 @@ import ui from '../content/ui.json';
 
 <style>
   .abt {
-    background: color-mix(in srgb, var(--coral-soft) 38%, var(--bg-base));
+    /* PROVISIONAL (recommended option C): sand + restrained cobalt tint.
+       Final color awaits Rayan's pick from the three-option comparison —
+       do not treat as approved. Options considered:
+       A cool blue-gray #E8EDF1 · B pale lavender #ECE9F4 · C this tint */
+    background: color-mix(in srgb, var(--cobalt) 5%, var(--bg-base));
     padding-block: var(--space-9);
+    overflow: visible;
   }
   .abt__grid {
     display: grid;
@@ -44,17 +49,17 @@ import ui from '../content/ui.json';
     align-items: center;
   }
 
-  .abt__sticker-wrap { grid-column: 2 / span 3; display: flex; justify-content: center; }
+  .abt__sticker-wrap { grid-column: 1 / span 4; display: flex; justify-content: center; }
+  /* Transparent cutout, not an avatar: no circle, no frame, no shadow box.
+     Larger, slightly overlapping the band so it feels placed in the layout. */
   .abt__sticker {
-    inline-size: clamp(140px, 16vw, 220px);
-    background: var(--surface);
-    border-radius: 50%;
-    border: 6px solid var(--surface);
-    box-shadow: var(--shadow-card);
+    inline-size: clamp(200px, 24vw, 320px);
     transform: rotate(-4deg);
+    margin-block: calc(var(--space-7) * -1) calc(var(--space-4) * -1);
+    filter: drop-shadow(0 12px 28px rgba(34, 29, 22, 0.14));
     transition: transform var(--dur-2) var(--ease-out);
   }
-  .abt:hover .abt__sticker { transform: rotate(0deg); }
+  .abt:hover .abt__sticker { transform: rotate(-1deg) translateY(-4px); }
 
   .abt__body { grid-column: 6 / span 6; }
   .abt__label { color: var(--coral-deep); }
@@ -103,7 +108,7 @@ import ui from '../content/ui.json';
 
   @media (max-width: 1023px) {
     .abt__grid { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
-    .abt__sticker { inline-size: 140px; }
+    .abt__sticker { inline-size: 180px; margin-block: calc(var(--space-6) * -1) 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .abt__sticker { transition: none; transform: none; }

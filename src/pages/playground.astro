@@ -32,7 +32,7 @@ const items = (await getCollection('playground')).sort((a, b) => a.data.order - 
     </div>
   </header>
 
-  {items.map((item, i) => (
+  {items.map((item) => (
     <section
       class="pg-proj"
       id={item.id}
@@ -41,7 +41,6 @@ const items = (await getCollection('playground')).sort((a, b) => a.data.order - 
     >
       <div class="container">
         <header class="pg-proj__head" data-reveal>
-          <span class="pg-proj__num t-display">{String(i + 1).padStart(2, '0')}</span>
           <h2 class="pg-proj__title t-display">{item.data.title}</h2>
           <p class="pg-proj__meta t-meta">
             {item.data.kind}{item.data.year && ` · ${item.data.year}`}
@@ -90,7 +89,6 @@ const items = (await getCollection('playground')).sort((a, b) => a.data.order - 
 
   .pg-proj { background: var(--wash); padding-block: var(--space-9); }
   .pg-proj__head { display: flex; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; }
-  .pg-proj__num { font-size: var(--text-meta); color: var(--accent); font-weight: 600; }
   .pg-proj__title { font-size: var(--text-display); }
   .pg-proj__meta { color: var(--ink-soft); }
   .pg-proj__intro {
@@ -104,6 +102,8 @@ const items = (await getCollection('playground')).sort((a, b) => a.data.order - 
     grid-template-columns: repeat(2, 1fr);
     gap: var(--gutter);
     margin-block-start: var(--space-6);
+    /* Cards must end where the artwork ends: no stretching to the row height */
+    align-items: start;
   }
   .pg-proj__item {
     margin: 0;
@@ -112,6 +112,7 @@ const items = (await getCollection('playground')).sort((a, b) => a.data.order - 
     border: 1px solid var(--border);
     background: var(--surface);
     box-shadow: var(--shadow-card);
+    font-size: 0; /* kill inline-image baseline gap inside the card */
   }
   .pg-proj__item--wide { grid-column: 1 / -1; }
   .pg-proj__item img { inline-size: 100%; block-size: auto; display: block; }
