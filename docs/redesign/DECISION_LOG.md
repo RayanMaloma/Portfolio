@@ -26,7 +26,11 @@
 | 18 | 2026-07-18 | Playground worlds use the actual brand palettes | RKNH deep green `#2E7D51`, Routine plum `#7A2260`, Tamakkan orange `#D95A25`, Mosbah gold `#B98045` — replacing VISUAL_DIRECTION's provisional set after inspecting the real assets. |
 | 19 | 2026-07-18 | V4 complete on `redesign/astro` | 7 routes, SEO layer, legacy redirects, QA passed (see QA_REPORT.md). Case-study process/decisions/impact sections ship as labeled pending chips until interviews. |
 
+| 20 | 2026-07-18 | Homepage/Playground revision round applied | Playground numeric prefixes removed; cards sized to intrinsic artwork ratios (page grid `align-items:start`, teaser `aspect-ratio` per image); drag-to-scroll marquee (hover pause, grab cursor, idle resume, no visible controls); homepage order now Hero→Work→What I Do→About teaser→Playground teaser→Footer; memoji = large transparent cutout, no avatar circle; footer credit = "Designed & built by Rayan". |
+
 ## Pending decisions (awaiting Rayan)
+- **P9:** About-teaser background — pick A cool blue-gray `#E8EDF1` / B pale lavender `#ECE9F4` / C sand + 5% cobalt tint (recommended; currently applied as PROVISIONAL).
+- **P10:** What I Do redesign — pick one of the three presented directions (editorial typographic / capability map / process-driven). Current numbered rows stay live until chosen.
 - **P2:** Hero availability microline — include? exact text?
 - **P3:** Project accent colors — confirm/replace provisional D Shopper green + CSC teal; AutoRAG cobalt OK?
 - **P4:** Positioning pillars — approve "Product & UX / Interface & Systems / AI-era design" framing.
