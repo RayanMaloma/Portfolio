@@ -22,7 +22,7 @@ timeline: '04/2025 – 05/2026'
 gist:
   - 'AI-powered platform enabling non-technical users to build customized RAG systems by answering 8 simple questions.'
   - 'I owned UI/UX design and frontend development within the graduation-project team.'
-  - 'In progress — the live prototype below is real and fully interactive.'
+  - 'In progress — this live prototype is real and fully interactive.'
 context: 'AutoRAG is a user-friendly AI system that allows users to ask high-level questions without technical knowledge. Instead of exposing embeddings, chunking and retrieval settings, the system automatically selects the most suitable RAG configuration and answers with sourced, contextually relevant responses.'
 features:
   - { title: 'Guided RAG setup', desc: 'A no-code questionnaire — 8 questions — configures the engine for you.' }

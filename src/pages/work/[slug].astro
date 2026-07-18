@@ -10,10 +10,13 @@ import '../../styles/themes.css';
 
 export async function getStaticPaths() {
   const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-  return projects.map((p, i) => ({
-    params: { slug: p.id },
-    props: { project: p, next: projects[(i + 1) % projects.length] },
-  }));
+  return projects
+    // autorag has its own Option A page (work/autorag.astro, decision 23)
+    .filter((p) => p.id !== 'autorag')
+    .map((p) => {
+      const i = projects.findIndex((x) => x.id === p.id);
+      return { params: { slug: p.id }, props: { project: p, next: projects[(i + 1) % projects.length] } };
+    });
 }
 
 interface Props {

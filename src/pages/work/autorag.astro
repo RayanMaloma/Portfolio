@@ -1,0 +1,312 @@
+---
+// AutoRAG case page — Option A "Persistent split screen" (P11, decision 23).
+// Product left (sticky live preview), story right (title, meta, gist, native
+// <details> accordions). Core experience ≈ 1–1.5 viewports; strictly the
+// AutoRAG world: cobalt accents on light cobalt wash, warm ink, neutral
+// surfaces. Overrides the generic template, which remains for dshopper/csc.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ui from '../../content/ui.json';
+import '../../styles/themes.css';
+
+const project = await getEntry('projects', 'autorag');
+if (!project) throw new Error('autorag content entry missing');
+const d = project.data;
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const next = all[(all.findIndex((p) => p.id === 'autorag') + 1) % all.length];
+
+const pending = ui.case.pendingSection;
+---
+
+<Base title={`${d.title} — Rayan Al-Omaireeni`} description={d.summary}>
+  <article class="ar" data-theme="autorag">
+    <div class="container ar__grid">
+      <!-- Head first in DOM: mobile reads title → preview → story -->
+      <header class="ar__head">
+        <a class="ar__back t-meta" href="/#work">{ui.case.back}</a>
+        <p class="ar__kicker t-meta">{d.client}</p>
+        <h1 class="ar__title t-display">{d.title}</h1>
+        <ul class="ar__chips t-meta" role="list">
+          <li>{d.role}</li>
+          <li>{d.timeline}</li>
+          <li class="ar__chip-status">{ui.work.inProgress}</li>
+        </ul>
+      </header>
+
+      <!-- The product, always on screen (sticky on desktop) -->
+      <div class="ar__stage">
+        <div class="ar__frame" data-proto data-proto-url={d.prototype?.url}>
+          <div class="ar__bar">
+            <span class="ar__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="ar__url t-meta">{d.frameLabel}</span>
+            <span class="ar__live t-meta"><i></i>{ui.case.livePrototype}</span>
+            <a class="ar__newtab t-meta" href={d.prototype?.url} target="_blank" rel="noopener">
+              {ui.case.openNewTab} ↗
+            </a>
+          </div>
+          <div class="ar__viewport" data-proto-viewport>
+            <button class="ar__poster" type="button" data-proto-launch>
+              <span class="ar__poster-word t-display">{d.title}</span>
+              <span class="ar__poster-cta">{ui.case.launchDemo} →</span>
+              <span class="ar__poster-hint t-meta">Real & fully interactive</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- The story, compact -->
+      <div class="ar__col">
+        <ul class="ar__gist">
+          {d.gist?.map((g) => <li>{g}</li>)}
+        </ul>
+
+        <div class="ar__details">
+          <details open>
+            <summary>Problem</summary>
+            <p>{d.context}</p>
+          </details>
+          <details>
+            <summary>My role</summary>
+            <p>
+              UI/UX design and frontend development inside the graduation-project team — from the
+              8-question setup flow to the chat, document and team surfaces you can try in the live demo.
+            </p>
+          </details>
+          <details>
+            <summary>What to explore in the demo</summary>
+            <ol class="ar__features">
+              {d.features?.map((f) => (
+                <li><strong>{f.title}.</strong> {f.desc}</li>
+              ))}
+            </ol>
+          </details>
+          <details>
+            <summary>Process</summary>
+            <p class="ar__pending">{pending}</p>
+          </details>
+          <details>
+            <summary>Key decisions</summary>
+            <p class="ar__pending">{pending}</p>
+          </details>
+          <details>
+            <summary>Impact</summary>
+            <p class="ar__pending">{pending}</p>
+          </details>
+        </div>
+
+        <a class="ar__next" href={`/work/${next.id}/`}>
+          <span class="t-meta">{ui.case.next}</span>
+          <span class="ar__next-title t-display">{next.data.title} →</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .ar {
+    background: var(--wash);
+    padding-block: calc(var(--space-8) + 40px) var(--space-8);
+  }
+
+  .ar__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 58fr) minmax(0, 38fr);
+    grid-template-areas:
+      'stage head'
+      'stage col';
+    column-gap: var(--space-7);
+    align-items: start;
+  }
+  .ar__head { grid-area: head; }
+  .ar__col { grid-area: col; }
+
+  /* ── Stage (left; frame sticks while the story scrolls) ── */
+  .ar__stage { grid-area: stage; align-self: stretch; }
+  .ar__stage-sticky, .ar__frame { position: sticky; inset-block-start: 96px; }
+  .ar__frame {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    block-size: calc(100svh - 160px);
+    min-block-size: 480px;
+  }
+  .ar__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .ar__dots { display: flex; gap: 5px; }
+  .ar__dots i { inline-size: 8px; block-size: 8px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 35%, var(--bg-tint)); }
+  .ar__url { color: var(--muted); background: var(--bg-tint); border-radius: var(--r-pill); padding: 2px var(--space-3); }
+  .ar__live { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-deep); }
+  .ar__live i { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--accent); animation: ar-pulse 2s infinite; }
+  @keyframes ar-pulse { 50% { opacity: 0.35; } }
+  .ar__newtab { margin-inline-start: auto; color: var(--ink-soft); text-decoration: none; }
+  .ar__newtab:hover { color: var(--accent-deep); }
+  .ar__viewport { position: relative; flex: 1; min-block-size: 0; }
+  .ar__viewport iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
+  .ar__poster {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    background: var(--wash);
+    border: 0;
+    cursor: pointer;
+  }
+  .ar__poster-word { font-size: var(--text-display); color: var(--accent-deep); }
+  .ar__poster-cta {
+    font-weight: 550;
+    color: var(--surface);
+    background: var(--accent-deep);
+    border-radius: var(--r-pill);
+    padding: var(--space-3) var(--space-5);
+    transition: background var(--dur-1);
+  }
+  .ar__poster:hover .ar__poster-cta { background: var(--ink); }
+  .ar__poster-hint { color: var(--ink-soft); }
+
+  /* ── Column (right) ── */
+  .ar__back { color: var(--ink-soft); text-decoration: none; }
+  .ar__back:hover { color: var(--accent-deep); }
+  .ar__kicker { margin-block-start: var(--space-5); color: var(--ink-soft); }
+  .ar__col { margin-block-start: var(--space-5); }
+  .ar__title {
+    font-size: clamp(3rem, 7.5vw, 6.5rem);
+    line-height: 0.95;
+    margin-block-start: var(--space-2);
+    position: relative;
+    z-index: 2;
+  }
+  .ar__chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin-block-start: var(--space-4);
+    color: var(--ink-soft);
+  }
+  .ar__chips li {
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    padding: var(--space-1) var(--space-3);
+  }
+  .ar__chip-status { color: var(--accent-deep); border-color: currentColor !important; }
+
+  .ar__gist {
+    margin: var(--space-5) 0 0;
+    padding-inline-start: 1.1em;
+    display: grid;
+    gap: var(--space-2);
+    color: var(--ink);
+    font-size: var(--text-lead);
+    line-height: 1.45;
+  }
+  .ar__gist li::marker { color: var(--accent); }
+
+  .ar__details { margin-block-start: var(--space-6); }
+  .ar__details details { border-block-start: 1px solid var(--border); }
+  .ar__details details:last-of-type { border-block-end: 1px solid var(--border); }
+  .ar__details summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-4);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ar__details summary::-webkit-details-marker { display: none; }
+  .ar__details summary::after {
+    content: '+';
+    color: var(--accent-deep);
+    font-family: var(--font-display);
+    font-size: 1.2em;
+    line-height: 1;
+    transition: rotate var(--dur-1) var(--ease-out);
+  }
+  .ar__details details[open] summary::after { rotate: 45deg; }
+  .ar__details details > *:not(summary) { margin-block: 0 var(--space-5); color: var(--ink-soft); }
+  .ar__features { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .ar__features strong { color: var(--ink); font-weight: 600; }
+  .ar__pending {
+    display: inline-block;
+    border: 1.5px dashed var(--accent-deep);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .ar__next {
+    display: block;
+    margin-block-start: var(--space-7);
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+  .ar__next-title {
+    display: block;
+    font-size: var(--text-h3);
+    color: var(--ink);
+    transition: translate var(--dur-2) var(--ease-out), color var(--dur-1);
+  }
+  .ar__next:hover .ar__next-title { translate: 6px 0; color: var(--accent-deep); }
+
+  /* C-borrow: at wide widths the title crosses the gutter over the frame edge */
+  @media (min-width: 1280px) {
+    .ar__title { margin-inline-start: calc(var(--space-9) * -1); }
+  }
+
+  @media (max-width: 1023px) {
+    .ar { padding-block-start: calc(var(--space-7) + 40px); }
+    /* DOM order carries mobile: head → stage → col */
+    .ar__grid { display: flex; flex-direction: column; gap: var(--space-6); }
+    .ar__frame { position: static; block-size: auto; min-block-size: 0; aspect-ratio: 16 / 10.5; }
+    .ar__title { margin-inline-start: 0; }
+    .ar__col { margin-block-start: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ar__live i { animation: none; }
+    .ar__next-title, .ar__details summary::after { transition: none; }
+  }
+</style>
+
+<script>
+  // Lazy live prototype: iframe on demand; small screens open the real tab.
+  const proto = document.querySelector<HTMLElement>('[data-proto]');
+  if (proto) {
+    const url = proto.dataset.protoUrl!;
+    const vp = proto.querySelector<HTMLElement>('[data-proto-viewport]')!;
+    const poster = proto.querySelector<HTMLButtonElement>('[data-proto-launch]')!;
+    let loaded = false;
+    poster.addEventListener('click', () => {
+      if (matchMedia('(max-width: 768px)').matches) {
+        window.open(url, '_blank', 'noopener');
+        return;
+      }
+      if (loaded) return;
+      loaded = true;
+      const frame = document.createElement('iframe');
+      frame.title = 'AutoRAG live prototype';
+      frame.setAttribute('allow', 'clipboard-write; fullscreen');
+      frame.src = url;
+      frame.addEventListener('load', () => poster.setAttribute('hidden', ''));
+      vp.appendChild(frame);
+    });
+  }
+</script>
