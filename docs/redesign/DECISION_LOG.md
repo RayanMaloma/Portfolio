@@ -28,6 +28,8 @@
 
 | 20 | 2026-07-18 | Homepage/Playground revision round applied | Playground numeric prefixes removed; cards sized to intrinsic artwork ratios (page grid `align-items:start`, teaser `aspect-ratio` per image); drag-to-scroll marquee (hover pause, grab cursor, idle resume, no visible controls); homepage order now Hero→Work→What I Do→About teaser→Playground teaser→Footer; memoji = large transparent cutout, no avatar circle; footer credit = "Designed & built by Rayan". |
 
+| 21 | 2026-07-18 | **Playground page removed — homepage band is the playground** | After iterating page structures (wash sections → masonry → scale rhythm → grouped rhythm), Rayan cut the page entirely. All 14 boards ride the homepage band in deck order: auto-drift left→right when the cursor is away, full stop + free drag on hover, native touch scroll, reduced-motion static grid. `/playground` and its content collection deleted; legacy redirects → `/#playground`. Sitemap = 6 routes. |
+
 ## Pending decisions (awaiting Rayan)
 - **P9:** About-teaser background — pick A cool blue-gray `#E8EDF1` / B pale lavender `#ECE9F4` / C sand + 5% cobalt tint (recommended; currently applied as PROVISIONAL).
 - **P10:** What I Do redesign — pick one of the three presented directions (editorial typographic / capability map / process-driven). Current numbered rows stay live until chosen.
