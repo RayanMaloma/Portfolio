@@ -36,8 +36,9 @@
 
 | 24 | 2026-07-19 | **Final production phase — full delegation** | Rayan delegated all remaining decisions. Applied under that mandate: **P9 → option C** (cobalt-tinted sand About band); **P10 → direction 1** (editorial typographic What I Do); AutoRAG marked **completed 2026** (per instruction); AutoRAG split refined (no title/frame overlap, 1-line lead, accordions on screen one); D Shopper + CSC rebuilt as bespoke flagship pages in the split family (phone-stage switcher / live cscksu.com embed); generic case template deleted; **all placeholder UI/copy removed**, including the hero temp-photo chip — the AI-generated desk scene ships unlabeled as an interim asset (replace via shoot brief, ASSET_MANIFEST §2); email/copy audit clean. Case copy written from repository evidence (CV, 40+ screens, live products); no quantitative claims invented. |
 
+| 25 | 2026-07-19 | **Hero finalized with Rayan's real photograph** (IMG_3793) + hero simplification | AI-interim asset era closed. Chat card + scroll cue removed (type-only hero); kicker in Clash Display; Email/LinkedIn as frosted glass circles (functional legibility over the photo — not decorative glassmorphism); loader upgraded to a readiness gate (fonts + 24 critical images decoded, min 0.9s/cap 3.5s, ScrollTrigger.refresh on exit) to eliminate scroll-reveal jank. About "off duty" section removed at Rayan's request (same session). |
+
 ## Pending (content, non-blocking)
-- Real hero portrait shoot (ASSET_MANIFEST §2) — replaces the interim AI-generated desk scene.
 - Rayan's interview answers (CASE_STUDY_CONTENT_REQUIREMENTS.md) — refine the written case copy with first-person specifics.
 - Hosting choice — unlocks sitemap.xml, canonical URLs, final OG URLs, then merge `redesign/astro` → `main` to launch.
 - **P2:** Hero availability microline — include? exact text?
