@@ -1,31 +1,38 @@
 ---
-// Playground teaser (IA §3.6 + revision 2026-07-18).
-// Cards derive height from each image's intrinsic aspect ratio (no fixed
-// heights, no stretched containers). Desktop: JS-driven auto-marquee over a
-// real scroll container — pauses on hover, drag-to-scroll (grab/grabbing),
-// resumes after idle. Touch: native horizontal scrolling, auto-motion pauses
-// on interaction. Reduced motion: static wrapped strip.
-// Intrinsic dimensions below are read from the actual generated -s.webp files.
+// Playground — homepage band ONLY (revision 2026-07-18: the /playground page
+// is removed; this section is the whole playground).
+// Behavior per Rayan's spec:
+//   · cursor outside the band → cards drift left → right automatically
+//   · cursor over the band   → motion stops; drag freely left or right
+// All 14 curated boards ride the band in PROJECT ORDER so each identity
+// deck still reads sequentially while dragging. Cards keep intrinsic ratios.
+// Touch: native horizontal scrolling. Reduced motion: static wrapped grid.
 import ui from '../content/ui.json';
 
 const cards = [
+  // RKNH — brand identity (deck order)
   { src: '/assets/playground/rknh-1-s.webp', alt: 'RKNH brand guidelines cover', r: -3, w: 640, h: 360 },
-  { src: '/assets/playground/routine-1-s.webp', alt: 'Routine App Store design preview', r: 2, w: 640, h: 438 },
-  { src: '/assets/playground/mosbah-1-s.webp', alt: 'Mosbah Omar calligraphic logo', r: -2, w: 640, h: 640 },
-  { src: '/assets/playground/tamakan-1-s.webp', alt: 'Tamakkan campaign poster', r: 3, w: 640, h: 480 },
-  { src: '/assets/playground/rknh-5-s.webp', alt: 'RKNH type specimen', r: 2, w: 640, h: 360 },
-  { src: '/assets/playground/routine-24-s.webp', alt: 'Routine coffee infographic', r: -2, w: 640, h: 898 },
-  { src: '/assets/playground/mosbah-3-s.webp', alt: 'Mosbah Omar packaging', r: 3, w: 640, h: 427 },
-  { src: '/assets/playground/tamakan-2-s.webp', alt: 'Tamakkan rollup banner', r: -3, w: 640, h: 640 },
-  { src: '/assets/playground/rknh-3-s.webp', alt: 'RKNH logo system', r: 2, w: 640, h: 360 },
-  { src: '/assets/playground/routine-8-s.webp', alt: 'Routine identity board', r: -2, w: 640, h: 400 },
+  { src: '/assets/playground/rknh-3-s.webp', alt: 'RKNH logo usage: vertical, horizontal, symbol', r: 2, w: 640, h: 360 },
+  { src: '/assets/playground/rknh-5-s.webp', alt: 'RKNH English type specimen', r: -2, w: 640, h: 360 },
+  { src: '/assets/playground/rknh-7-s.webp', alt: 'RKNH get-in-touch board', r: 3, w: 640, h: 360 },
+  // Routine — app brand & campaign content
+  { src: '/assets/playground/routine-1-s.webp', alt: 'Routine App Store design preview', r: -2, w: 640, h: 438 },
+  { src: '/assets/playground/routine-8-s.webp', alt: 'Routine identity board', r: 2, w: 640, h: 400 },
+  { src: '/assets/playground/routine-16-s.webp', alt: 'Routine brand patterns', r: -3, w: 640, h: 400 },
+  { src: '/assets/playground/routine-24-s.webp', alt: 'Routine coffee tips infographic', r: 2, w: 640, h: 898 },
+  // Tamakkan — campaign design
+  { src: '/assets/playground/tamakan-1-s.webp', alt: 'Tamakkan campaign poster', r: -2, w: 640, h: 480 },
+  { src: '/assets/playground/tamakan-2-s.webp', alt: 'Tamakkan rollup banner', r: 3, w: 640, h: 640 },
+  // Mosbah Omar — brand & packaging
+  { src: '/assets/playground/mosbah-1-s.webp', alt: 'Mosbah Omar calligraphic logo colorways', r: -3, w: 640, h: 640 },
+  { src: '/assets/playground/mosbah-3-s.webp', alt: 'Mosbah Omar Najdi-pattern packaging', r: 2, w: 640, h: 427 },
+  { src: '/assets/playground/mosbah-5-s.webp', alt: 'Mosbah Omar best-seller banner', r: -2, w: 640, h: 247 },
+  { src: '/assets/playground/mosbah-7-s.webp', alt: 'Mosbah Omar Ramadan banner', r: 2, w: 640, h: 247 },
 ];
 ---
 
-<section class="pgt" aria-label="Playground preview">
-  <a class="pgt__head-link" href="/playground/" aria-label="Open the playground">
-    <h2 class="pgt__word t-display" aria-hidden="true">{ui.playground.title.toUpperCase()}</h2>
-  </a>
+<section class="pgt" id="playground" aria-label="Playground — graphic design work">
+  <h2 class="pgt__word t-display" aria-hidden="true">{ui.playground.title.toUpperCase()}</h2>
 
   <div class="pgt__band" data-pgt-band tabindex="-1">
     <div class="pgt__track" data-pgt-track>
@@ -41,12 +48,7 @@ const cards = [
     </div>
   </div>
 
-  <p class="pgt__caption">
-    <a class="pgt__caption-link" href="/playground/">
-      <span class="pgt__caption-text">{ui.playground.teaserCaption}</span>
-      <span class="pgt__arrow" aria-hidden="true">→</span>
-    </a>
-  </p>
+  <p class="pgt__caption t-meta">{ui.playground.teaserCaption}</p>
 </section>
 
 <style>
@@ -54,8 +56,8 @@ const cards = [
     padding-block: var(--space-section);
     background: var(--bg-tint);
     overflow: hidden;
+    scroll-margin-block-start: 80px; /* legacy redirect target */
   }
-  .pgt__head-link { display: block; text-decoration: none; color: inherit; }
 
   .pgt__word {
     font-size: clamp(3rem, 11vw, 10rem);
@@ -81,7 +83,7 @@ const cards = [
   @media (pointer: fine) {
     .pgt__band { cursor: grab; }
     .pgt__band.is-dragging { cursor: grabbing; }
-    .pgt__band.is-dragging * { pointer-events: none; } /* no accidental interactions mid-drag */
+    .pgt__band.is-dragging * { pointer-events: none; }
   }
 
   .pgt__track { display: flex; width: max-content; }
@@ -99,36 +101,16 @@ const cards = [
     box-shadow: var(--shadow-card);
     transform: rotate(var(--r));
     transition: transform var(--dur-2) var(--ease-out);
-    margin-block: var(--space-6); /* room for rotation only — outside the card */
+    margin-block: var(--space-6); /* room for rotation only */
   }
   .pgt__card:hover { transform: rotate(0deg) translateY(-4px); }
   .pgt__card img { inline-size: 100%; block-size: 100%; display: block; }
 
   .pgt__caption {
-    display: flex;
-    justify-content: center;
+    text-align: center;
+    color: var(--ink-soft);
     margin-block-start: var(--space-5);
   }
-  .pgt__caption-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-weight: 550;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .pgt__caption-text {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0% 1.5px;
-    transition: background-size var(--dur-2) var(--ease-out);
-    padding-block-end: 2px;
-  }
-  .pgt__caption-link:hover .pgt__caption-text,
-  .pgt__caption-link:focus-visible .pgt__caption-text { background-size: 100% 1.5px; }
-  .pgt__arrow { transition: transform var(--dur-1) var(--ease-out); color: var(--coral-deep); }
-  .pgt__caption-link:hover .pgt__arrow { transform: translateX(4px); }
 
   /* Reduced motion: static wrapped strip, no auto-motion, no duplication */
   @media (prefers-reduced-motion: reduce) {
@@ -140,54 +122,54 @@ const cards = [
 </style>
 
 <script>
-  // Auto-marquee + drag on a real scroll container. Seamless loop via the
-  // duplicated group: wrap scrollLeft into [0, groupWidth).
+  // Auto-drift LEFT → RIGHT while the cursor is away; full stop while the
+  // pointer is over the band (drag/scroll freely); resume on leave.
   const band = document.querySelector<HTMLElement>('[data-pgt-band]');
   const group = document.querySelector<HTMLElement>('[data-pgt-group]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (band && group && !reduced) {
-    const SPEED = 42; // px/s auto-advance
-    const IDLE_RESUME = 2200; // ms after last interaction
-    let paused = false;
-    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const SPEED = 42; // px/s
+    let hovered = false;
+    let touched = false; // touch interaction parks auto-motion briefly
+    let touchTimer: ReturnType<typeof setTimeout> | undefined;
     let last = performance.now();
 
+    // Keep scrollLeft inside the first copy's range for a seamless loop
     const wrap = () => {
       const gw = group.offsetWidth;
       if (gw <= 0) return;
-      if (band.scrollLeft >= gw) band.scrollLeft -= gw;
-      else if (band.scrollLeft <= 0) band.scrollLeft += gw;
+      if (band.scrollLeft <= 0) band.scrollLeft += gw;
+      else if (band.scrollLeft > gw) band.scrollLeft -= gw;
     };
 
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
       last = now;
-      if (!paused && !document.hidden) {
-        band.scrollLeft += SPEED * dt;
+      if (!hovered && !touched && !document.hidden) {
+        band.scrollLeft -= SPEED * dt; // content travels left → right
         wrap();
       }
       requestAnimationFrame(tick);
     };
-    band.scrollLeft = 1; // off the 0 edge so backward wrap works immediately
+    band.scrollLeft = group.offsetWidth; // start at the seam so both directions wrap
     requestAnimationFrame(tick);
 
-    const interact = () => {
-      paused = true;
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => { paused = false; last = performance.now(); }, IDLE_RESUME);
-    };
-
-    // Hover pause (fine pointers)
-    band.addEventListener('pointerenter', () => { paused = true; clearTimeout(idleTimer); });
-    band.addEventListener('pointerleave', () => interact());
-    // Any manual scrolling (trackpad, touch, drag) pauses + wraps for the loop
+    // Pointer presence = full stop (per spec); resume when it leaves
+    band.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovered = true; });
+    band.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hovered = false; last = performance.now(); } });
     band.addEventListener('scroll', () => wrap(), { passive: true });
-    band.addEventListener('wheel', interact, { passive: true });
-    band.addEventListener('touchstart', interact, { passive: true });
-    band.addEventListener('touchmove', interact, { passive: true });
 
-    // Mouse drag-to-scroll (touch uses native scrolling)
+    // Touch: pause during interaction, resume shortly after
+    const touchPause = () => {
+      touched = true;
+      clearTimeout(touchTimer);
+      touchTimer = setTimeout(() => { touched = false; last = performance.now(); }, 2200);
+    };
+    band.addEventListener('touchstart', touchPause, { passive: true });
+    band.addEventListener('touchmove', touchPause, { passive: true });
+
+    // Mouse drag-to-scroll
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
@@ -196,21 +178,17 @@ const cards = [
       dragging = true;
       startX = e.clientX;
       startScroll = band.scrollLeft;
-      interact();
     });
     window.addEventListener('pointermove', (e) => {
       if (!dragging) return;
       const dx = e.clientX - startX;
       if (Math.abs(dx) > 4) band.classList.add('is-dragging');
       band.scrollLeft = startScroll - dx;
-      interact();
     });
     window.addEventListener('pointerup', () => {
       if (!dragging) return;
       dragging = false;
-      // Delay class removal so a click released after dragging stays suppressed
       requestAnimationFrame(() => band.classList.remove('is-dragging'));
-      interact();
     });
   }
 </script>

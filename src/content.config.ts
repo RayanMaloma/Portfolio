@@ -38,18 +38,7 @@ const projects = defineCollection({
   }),
 });
 
-const playground = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/playground' }),
-  schema: z.object({
-    order: z.number(),
-    title: z.string(),
-    kind: z.string(), // e.g. "Brand identity", "App campaign"
-    year: z.string().optional(),
-    intro: z.string(),
-    accent: z.string(), // from the actual brand's own palette
-    wash: z.string(),
-    images: z.array(z.object({ src: z.string(), alt: z.string() })).min(1),
-  }),
-});
-
-export const collections = { projects, playground };
+// Note: the former `playground` collection was removed 2026-07-18 — the
+// playground now lives solely as the homepage band (PlaygroundTeaser.astro);
+// its curated card list is defined there.
+export const collections = { projects };

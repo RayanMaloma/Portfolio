@@ -50,9 +50,7 @@
   },
   "playground": {
     "title": "Playground",
-    "teaserCaption": "Where I let the graphic designer out",
-    "pageIntro": "Identities, campaigns and visual systems — the graphic-design work that trained my eye before product design put it to work.",
-    "backHome": "← Back home"
+    "teaserCaption": "Where I let the graphic designer out — drag to explore"
   },
   "aboutTeaser": {
     "label": "About",
