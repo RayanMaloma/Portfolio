@@ -14,12 +14,13 @@ const d = project.data;
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const next = all[(all.findIndex((p) => p.id === 'dshopper') + 1) % all.length];
 
+// The journey, in order — the slider steps through it start to finish.
 const screens = [
-  { id: 'splash', src: '/assets/work/dshopper-splash.webp', label: 'Splash', alt: 'D Shopper splash screen — Discover, Shop, Enjoy' },
-  { id: 'auth', src: '/assets/work/dshopper-auth.webp', label: 'Onboarding', alt: 'Guest-first onboarding with mobile sign-in' },
-  { id: 'products', src: '/assets/work/dshopper-products.webp', label: 'Shop', alt: 'Products list for a Saudi boutique' },
-  { id: 'favourites', src: '/assets/work/dshopper-favourites.webp', label: 'Favourites', alt: 'Favourites grid with bottom navigation' },
-  { id: 'map', src: '/assets/work/dshopper-map.webp', label: 'Delivery', alt: 'Pick-location screen with Riyadh map' },
+  { src: '/assets/work/dshopper-splash.webp', label: 'Splash', alt: 'D Shopper splash screen — Discover, Shop, Enjoy' },
+  { src: '/assets/work/dshopper-auth.webp', label: 'Onboarding', alt: 'Guest-first onboarding with mobile sign-in' },
+  { src: '/assets/work/dshopper-products.webp', label: 'Shop', alt: 'Products list for a Saudi boutique' },
+  { src: '/assets/work/dshopper-favourites.webp', label: 'Favourites', alt: 'Favourites grid with bottom navigation' },
+  { src: '/assets/work/dshopper-map.webp', label: 'Delivery', alt: 'Pick-location screen with Riyadh map' },
 ];
 ---
 
@@ -40,39 +41,41 @@ const screens = [
 
       <div class="ds__stage">
         <div class="ds__sticky">
-          <figure class="ds__phone">
+          <figure class="ds__phone" data-slider aria-roledescription="carousel" aria-label="D Shopper app journey">
             <span class="ds__notch" aria-hidden="true"></span>
-            {screens.map((s, i) => (
-              <img
-                src={s.src}
-                alt={s.alt}
-                width="520"
-                height="1125"
-                loading={i === 2 ? 'eager' : 'lazy'}
-                decoding="async"
-                data-screen={s.id}
-                hidden={i !== 2}
-                draggable="false"
-              />
-            ))}
+            <div class="ds__track" data-slider-track>
+              {screens.map((s, i) => (
+                <img
+                  src={s.src}
+                  alt={s.alt}
+                  width="520"
+                  height="1125"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  data-critical
+                  draggable="false"
+                />
+              ))}
+            </div>
           </figure>
-          <div class="ds__switch" role="tablist" aria-label="App screens">
-            {screens.map((s, i) => (
-              <button
-                class:list={['ds__switch-btn', 't-meta', { 'is-on': i === 2 }]}
-                type="button"
-                role="tab"
-                aria-selected={i === 2 ? 'true' : 'false'}
-                data-screen-btn={s.id}
-              >{s.label}</button>
-            ))}
+          <div class="ds__nav">
+            <button class="ds__arrow" type="button" data-slider-prev aria-label="Previous screen" disabled>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="ds__status t-meta" aria-live="polite">
+              <span data-slider-label>{screens[0].label}</span>
+              <span class="ds__count"><span data-slider-num>1</span> / {screens.length}</span>
+            </p>
+            <button class="ds__arrow" type="button" data-slider-next aria-label="Next screen">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
       </div>
 
       <div class="ds__col">
         <div class="ds__details">
-          <details open>
+          <details>
             <summary>Problem</summary>
             <p>
               Small Saudi fashion boutiques mostly sell through Instagram and WhatsApp: discovery
@@ -169,7 +172,11 @@ const screens = [
     overflow: hidden;
     background: var(--surface);
     box-shadow: var(--shadow-card);
+    aspect-ratio: 520 / 1125;
+    touch-action: pan-y; /* horizontal swipes belong to the slider */
+    cursor: grab;
   }
+  .ds__phone.is-dragging { cursor: grabbing; }
   .ds__notch {
     position: absolute;
     inset-block-start: 9px;
@@ -181,31 +188,52 @@ const screens = [
     background: color-mix(in srgb, var(--ink) 82%, var(--accent));
     z-index: 2;
   }
-  .ds__phone img { inline-size: 100%; block-size: auto; display: block; user-select: none; -webkit-user-drag: none; }
-  .ds__phone img[hidden] { display: none; } /* author display:block must not defeat [hidden] */
-
-  .ds__switch {
+  .ds__track {
     display: flex;
+    block-size: 100%;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .ds__track img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: top;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  .ds__nav {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+    gap: var(--space-4);
     margin-block-start: var(--space-4);
   }
-  .ds__switch-btn {
-    font: inherit;
-    font-size: var(--text-meta);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
+  .ds__arrow {
+    display: grid;
+    place-items: center;
+    inline-size: 38px;
+    block-size: 38px;
+    border-radius: 50%;
+    color: var(--ink);
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--r-pill);
-    padding: var(--space-1) var(--space-3);
     cursor: pointer;
-    transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1);
+    transition: background var(--dur-1), color var(--dur-1), border-color var(--dur-1), opacity var(--dur-1);
   }
-  .ds__switch-btn:hover { border-color: var(--accent-deep); color: var(--accent-deep); }
-  .ds__switch-btn.is-on { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--surface); }
+  .ds__arrow:hover:not(:disabled) { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--surface); }
+  .ds__arrow:disabled { opacity: 0.35; cursor: default; }
+  .ds__status {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--ink);
+    min-inline-size: 12ch;
+    justify-content: center;
+  }
+  .ds__count { color: var(--muted); font-variant-numeric: tabular-nums; }
 
   .ds__back { color: var(--ink-soft); text-decoration: none; }
   .ds__back:hover { color: var(--accent-deep); }
@@ -263,23 +291,69 @@ const screens = [
     .ds__col { margin-block-start: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ds__next-title, .ds__details summary::after, .ds__switch-btn { transition: none; }
+    .ds__next-title, .ds__details summary::after, .ds__arrow { transition: none; }
+    .ds__track { transition: none; }
   }
 </style>
 
 <script>
-  // Screen switcher: swap the visible phone screen; keep tab semantics honest.
-  const btns = [...document.querySelectorAll<HTMLButtonElement>('[data-screen-btn]')];
-  const imgs = [...document.querySelectorAll<HTMLImageElement>('[data-screen]')];
-  btns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.screenBtn;
-      imgs.forEach((img) => { img.hidden = img.dataset.screen !== id; });
-      btns.forEach((b) => {
-        const on = b === btn;
-        b.classList.toggle('is-on', on);
-        b.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
+  // Journey slider: arrows, drag/swipe, and keyboard step through the screens
+  // in order. Clamped at the ends (it's a sequence, not a loop).
+  const phone = document.querySelector<HTMLElement>('[data-slider]');
+  const track = document.querySelector<HTMLElement>('[data-slider-track]');
+  const prev = document.querySelector<HTMLButtonElement>('[data-slider-prev]');
+  const next = document.querySelector<HTMLButtonElement>('[data-slider-next]');
+  const labelEl = document.querySelector<HTMLElement>('[data-slider-label]');
+  const numEl = document.querySelector<HTMLElement>('[data-slider-num]');
+
+  if (phone && track && prev && next && labelEl && numEl) {
+    const slides = [...track.children] as HTMLElement[];
+    const labels = ['Splash', 'Onboarding', 'Shop', 'Favourites', 'Delivery'];
+    let index = 0;
+
+    const render = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      labelEl.textContent = labels[index];
+      numEl.textContent = String(index + 1);
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+    };
+    const go = (delta: number) => {
+      index = Math.min(slides.length - 1, Math.max(0, index + delta));
+      render();
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+
+    // Keyboard when the phone has focus
+    phone.setAttribute('tabindex', '0');
+    phone.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
     });
-  });
+
+    // Drag / swipe (mouse + touch via pointer events)
+    let startX = 0;
+    let dragging = false;
+    phone.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startX = e.clientX;
+      phone.classList.add('is-dragging');
+      phone.setPointerCapture(e.pointerId);
+    });
+    phone.addEventListener('pointerup', (e) => {
+      if (!dragging) return;
+      dragging = false;
+      phone.classList.remove('is-dragging');
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    });
+    phone.addEventListener('pointercancel', () => {
+      dragging = false;
+      phone.classList.remove('is-dragging');
+    });
+
+    render();
+  }
 </script>
