@@ -2,7 +2,6 @@
 // About — personal, colorful, credible (IA §1). All facts sourced from the
 // CV in assets/resume/ and approved copy; nothing invented.
 import Base from '../layouts/Base.astro';
-import { SITE } from '../config/site';
 
 const experience = [
   { role: 'Product Designer Intern', org: 'Nojom', period: '05/2026 — present · Riyadh',
@@ -86,22 +85,6 @@ const skills = [
     </div>
   </section>
 
-  <section class="ab-personal" aria-label="Off duty">
-    <div class="container ab-personal__grid">
-      <figure class="ab-personal__photo" data-reveal>
-        <img src="/assets/about/campfire.webp" alt="Rayan by a campfire at night, wearing a fur hat" loading="lazy" />
-      </figure>
-      <div class="ab-personal__body">
-        <img class="ab-personal__memoji" src="/assets/memoji.webp" alt="" width="96" aria-hidden="true" data-reveal />
-        <p class="ab-personal__line" data-reveal>
-          Off duty: desert nights, too much coffee, and redesigning apps I have no business redesigning.
-        </p>
-        <a class="ab-personal__resume" href={SITE.links.resume} target="_blank" rel="noopener" data-reveal>
-          Download my resume ↓
-        </a>
-      </div>
-    </div>
-  </section>
 </Base>
 
 <style>
@@ -164,30 +147,8 @@ const skills = [
     color: var(--ink);
   }
 
-  .ab-personal { padding-block: var(--space-9); }
-  .ab-personal__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); align-items: center; }
-  .ab-personal__photo { grid-column: 1 / span 5; margin: 0; }
-  .ab-personal__photo img {
-    inline-size: 100%;
-    border-radius: var(--r-l);
-    border: 1px solid var(--border);
-    transform: rotate(-2deg);
-  }
-  .ab-personal__body { grid-column: 7 / span 5; }
-  .ab-personal__memoji { transform: rotate(6deg); }
-  .ab-personal__line { margin-block-start: var(--space-4); font-size: var(--text-lead); color: var(--ink); max-inline-size: 34ch; }
-  .ab-personal__resume {
-    display: inline-block;
-    margin-block-start: var(--space-5);
-    font-weight: 550;
-    color: var(--ink);
-    text-decoration-color: var(--coral);
-    text-underline-offset: 4px;
-  }
-  .ab-personal__resume:hover { color: var(--coral-deep); }
-
   @media (max-width: 1023px) {
-    .ab-hero__grid, .ab-personal__grid, .ab-skills__grid { display: flex; flex-direction: column; align-items: stretch; }
+    .ab-hero__grid, .ab-skills__grid { display: flex; flex-direction: column; align-items: stretch; }
     .ab-hero__media { max-inline-size: 320px; }
     .ab-exp__row { grid-template-columns: 1fr; }
   }
