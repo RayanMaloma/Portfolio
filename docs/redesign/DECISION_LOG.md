@@ -34,9 +34,12 @@
 
 | 23 | 2026-07-18 | **P11 resolved: AutoRAG page = Option A persistent split screen** | Implemented as dedicated `work/autorag.astro`: sticky live preview left, compact story column right (gist + `<details>` accordions, Problem open), display title crossing the frame edge, strict cobalt world, ~1.5 viewports core, mobile = title→preview→story. Generic template stays for D Shopper/CSC. |
 
-## Pending decisions (awaiting Rayan)
-- **P9:** About-teaser background — pick A cool blue-gray `#E8EDF1` / B pale lavender `#ECE9F4` / C sand + 5% cobalt tint (recommended; currently applied as PROVISIONAL).
-- **P10:** What I Do redesign — pick one of the three presented directions (editorial typographic / capability map / process-driven). Current numbered rows stay live until chosen.
+| 24 | 2026-07-19 | **Final production phase — full delegation** | Rayan delegated all remaining decisions. Applied under that mandate: **P9 → option C** (cobalt-tinted sand About band); **P10 → direction 1** (editorial typographic What I Do); AutoRAG marked **completed 2026** (per instruction); AutoRAG split refined (no title/frame overlap, 1-line lead, accordions on screen one); D Shopper + CSC rebuilt as bespoke flagship pages in the split family (phone-stage switcher / live cscksu.com embed); generic case template deleted; **all placeholder UI/copy removed**, including the hero temp-photo chip — the AI-generated desk scene ships unlabeled as an interim asset (replace via shoot brief, ASSET_MANIFEST §2); email/copy audit clean. Case copy written from repository evidence (CV, 40+ screens, live products); no quantitative claims invented. |
+
+## Pending (content, non-blocking)
+- Real hero portrait shoot (ASSET_MANIFEST §2) — replaces the interim AI-generated desk scene.
+- Rayan's interview answers (CASE_STUDY_CONTENT_REQUIREMENTS.md) — refine the written case copy with first-person specifics.
+- Hosting choice — unlocks sitemap.xml, canonical URLs, final OG URLs, then merge `redesign/astro` → `main` to launch.
 - **P2:** Hero availability microline — include? exact text?
 - **P3:** Project accent colors — confirm/replace provisional D Shopper green + CSC teal; AutoRAG cobalt OK?
 - **P4:** Positioning pillars — approve "Product & UX / Interface & Systems / AI-era design" framing.

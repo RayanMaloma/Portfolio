@@ -1,5 +1,14 @@
 # QA Report — V4 completion pass
-_2026-07-18, branch `redesign/astro`._
+_2026-07-19 final production pass (supersedes 2026-07-18 numbers where they differ), branch `redesign/astro`._
+
+## Final production pass (2026-07-19)
+- 6 routes: `/`, `/work/autorag`, `/work/dshopper`, `/work/csc`, `/about`, `404` (+ legacy redirect stubs).
+- `astro check` 0 errors · build clean · dist **1.6 MB**.
+- Link crawl: 0 broken. Placeholder audit of built HTML: **0 hits** (no bracketed pending copy, no TEMP labels).
+- Overflow harness: 5 routes × 360–1440px → 0 horizontal overflow.
+- Live embeds verified: AutoRAG Netlify prototype and **cscksu.com render inside their frames** (headers checked: no X-Frame-Options/CSP blocks); posters hide correctly after load ([hidden] specificity bug found & fixed in three places).
+- D Shopper screen switcher verified (default Products; tab swap works; ARIA tabs).
+- Interim asset on record: hero desk scene is AI-generated, shipped unlabeled per decision 24 — replace via shoot brief.
 
 ## Build & checks
 
