@@ -8,9 +8,7 @@
   "hero": {
     "kicker": "Product Designer — UX · UI · AI",
     "firstName": "Rayan",
-    "lastName": "Al-Omaireeni",
-    "scrollCue": "Scroll to work ↓",
-    "cardAlt": "AutoRAG interface preview"
+    "lastName": "Al-Omaireeni"
   },
   "loader": {
     "line": "warming up the coral"
@@ -29,19 +27,31 @@
         "num": "01",
         "title": "Product Strategy & UX",
         "line": "Understanding the problem before drawing the screen.",
-        "subs": ["User research & requirements analysis", "Flows & information architecture", "Wireframing & prototyping"]
+        "subs": [
+          "User research & requirements analysis",
+          "Flows & information architecture",
+          "Wireframing & prototyping"
+        ]
       },
       {
         "num": "02",
         "title": "Interface & Design Systems",
         "line": "Interfaces that scale past the first screen.",
-        "subs": ["UI design", "Design systems", "Responsive craft"]
+        "subs": [
+          "UI design",
+          "Design systems",
+          "Responsive craft"
+        ]
       },
       {
         "num": "03",
         "title": "AI & Emerging Products",
         "line": "Product design for AI-era software — grounded in a Computer Information Systems degree, not buzzwords.",
-        "subs": ["AI product patterns — AutoRAG", "Bridging users, business & technology", "Design-to-build collaboration"]
+        "subs": [
+          "AI product patterns — AutoRAG",
+          "Bridging users, business & technology",
+          "Design-to-build collaboration"
+        ]
       }
     ]
   },
@@ -52,14 +62,22 @@
   "aboutTeaser": {
     "label": "About",
     "story": "I started in graphic design — identities, posters and campaigns for KSU clubs — and followed the questions into product design. Now I design products end-to-end, backed by a Computer Information Systems degree from King Saud University.",
-    "chips": ["CIS @ KSU · GPA 4.63", "Graphic → Product", "Riyadh"],
+    "chips": [
+      "CIS @ KSU · GPA 4.63",
+      "Graphic → Product",
+      "Riyadh"
+    ],
     "cta": "More about me"
   },
   "footer": {
     "headline": "Let's build something people remember.",
     "copyEmail": "Copy my email",
     "copied": "Copied!",
-    "links": { "linkedin": "LinkedIn", "whatsapp": "WhatsApp", "resume": "Resume ↓" },
+    "links": {
+      "linkedin": "LinkedIn",
+      "whatsapp": "WhatsApp",
+      "resume": "Resume ↓"
+    },
     "credits": "Designed & built by Rayan",
     "copyright": "© 2026 Rayan Al-Omaireeni"
   },

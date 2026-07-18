@@ -1,7 +1,7 @@
 ---
-// Branded micro-loader (IA §3.1). Renders only when <html data-loader="on">
-// (set pre-paint in Base head: first visit per session, motion-safe).
-// Hard cap 1.5s; exits early on window load.
+// Branded micro-loader + readiness gate (IA §3.1, revised decision 25).
+// Holds the curtain until fonts and every [data-critical] image are decoded,
+// so entrances and scroll reveals play on fully-ready pixels. Cap 3.5s.
 interface Props { line: string }
 const { line } = Astro.props;
 ---
@@ -37,7 +37,7 @@ const { line } = Astro.props;
     inline-size: 100%;
     background: var(--coral);
     transform-origin: 0 50%;
-    animation: load-bar 1.2s var(--ease-inout) forwards;
+    animation: load-bar 2.4s var(--ease-inout) forwards;
   }
   @keyframes load-bar {
     from { transform: scaleX(0); }
@@ -49,16 +49,33 @@ const { line } = Astro.props;
 </style>
 
 <script>
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
   const html = document.documentElement;
   if (html.getAttribute('data-loader') === 'on') {
+    const started = performance.now();
+    const MIN_SHOW = 900; // let the brand moment register
+    const CAP = 3500; // never hold the visitor hostage
+
     const finish = () => {
       if (html.getAttribute('data-loader') !== 'on') return;
       html.setAttribute('data-loader', 'done');
-      try { sessionStorage.setItem('visited', '1'); } catch {}
+      // Layout is final now (fonts + images sized) — recalibrate scroll triggers
+      requestAnimationFrame(() => ScrollTrigger.refresh());
       setTimeout(() => html.removeAttribute('data-loader'), 600);
     };
-    // Whichever comes first: real load or the 1.5s cap.
-    window.addEventListener('load', () => setTimeout(finish, 250), { once: true });
-    setTimeout(finish, 1500);
+
+    // Readiness = fonts + every critical image fetched AND decoded.
+    const criticals = Array.from(document.querySelectorAll<HTMLImageElement>('img[data-critical]'));
+    const ready = Promise.allSettled([
+      document.fonts?.ready ?? Promise.resolve(),
+      ...criticals.map((img) => img.decode().catch(() => {})),
+    ]);
+
+    ready.then(() => {
+      const elapsed = performance.now() - started;
+      setTimeout(finish, Math.max(0, MIN_SHOW - elapsed));
+    });
+    setTimeout(finish, CAP);
   }
 </script>

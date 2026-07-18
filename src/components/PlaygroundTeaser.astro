@@ -40,7 +40,7 @@ const cards = [
         <div class="pgt__group" aria-hidden={dup === 1 ? 'true' : undefined} data-pgt-group={dup === 0 ? '' : undefined}>
           {cards.map((c) => (
             <figure class="pgt__card" style={`--r:${c.r}deg; --ar:${c.w} / ${c.h};`}>
-              <img src={c.src} alt={dup === 0 ? c.alt : ''} loading="lazy" decoding="async" width={c.w} height={c.h} draggable="false" />
+              <img src={c.src} alt={dup === 0 ? c.alt : ''} loading="lazy" decoding="async" width={c.w} height={c.h} draggable="false" data-critical={dup === 0 ? '' : undefined} />
             </figure>
           ))}
         </div>

@@ -13,17 +13,17 @@ const [front, backLeft, backRight] = media;
 <div class="pf">
   {backLeft && (
     <div class="pf__phone pf__phone--left" aria-hidden="true">
-      <img src={backLeft} alt="" loading="lazy" decoding="async" />
+      <img src={backLeft} alt="" loading="lazy" decoding="async" data-critical />
     </div>
   )}
   {backRight && (
     <div class="pf__phone pf__phone--right" aria-hidden="true">
-      <img src={backRight} alt="" loading="lazy" decoding="async" />
+      <img src={backRight} alt="" loading="lazy" decoding="async" data-critical />
     </div>
   )}
   <div class="pf__phone pf__phone--front">
     <span class="pf__notch" aria-hidden="true"></span>
-    <img src={front} alt={alt} loading="lazy" decoding="async" />
+    <img src={front} alt={alt} loading="lazy" decoding="async" data-critical />
   </div>
 </div>
 

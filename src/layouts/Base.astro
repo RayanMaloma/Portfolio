@@ -42,12 +42,13 @@ const { title = `${SITE.name} — Product Designer`, description = SITE.descript
     )}
     <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeneralSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Loader gate: decide before first paint (first visit per session, motion-safe only) -->
+    <!-- Loader gate: decide before first paint. The loader now doubles as the
+         asset-readiness gate (fonts + critical images decoded) so entrance and
+         scroll animations run without decode jank. Motion-safe users only. -->
     <script is:inline>
       (function () {
         try {
-          var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduced && !sessionStorage.getItem('visited')) {
+          if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.setAttribute('data-loader', 'on');
           }
         } catch (e) {}

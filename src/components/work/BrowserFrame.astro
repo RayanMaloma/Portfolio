@@ -17,7 +17,7 @@ const [primary, backdrop, overlay] = media;
 <div class="bf">
   {backdrop && (
     <div class="bf__backdrop" aria-hidden="true">
-      <img src={backdrop} alt="" loading="lazy" decoding="async" />
+      <img src={backdrop} alt="" loading="lazy" decoding="async" data-critical />
     </div>
   )}
   <figure class="bf__window">
@@ -26,12 +26,12 @@ const [primary, backdrop, overlay] = media;
       {label && <span class="bf__url">{label}</span>}
     </figcaption>
     <div class="bf__viewport">
-      <img src={primary} alt={alt} loading="lazy" decoding="async" />
+      <img src={primary} alt={alt} loading="lazy" decoding="async" data-critical />
     </div>
   </figure>
   {overlay && (
     <div class="bf__overlay">
-      <img src={overlay} alt={overlayAlt} loading="lazy" decoding="async" />
+      <img src={overlay} alt={overlayAlt} loading="lazy" decoding="async" data-critical />
     </div>
   )}
 </div>

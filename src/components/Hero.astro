@@ -1,8 +1,7 @@
 ---
-// Hero — Option 1 "Inline Interruption" (approved 2026-07-17, DECISION_LOG P1).
-// Full-bleed environmental photo under a coral wash; two-line display wordmark
-// pinned to the bottom edge; a real project-UI card sits inline in line one.
-// PHOTO IS A LABELED TEMP ASSET — replace per ASSET_MANIFEST.md §2 shoot brief.
+// Hero — Option 1 "Inline Interruption" (decisions P1, 25).
+// Real photograph of Rayan at his desk under the coral wash; two-line display
+// wordmark pinned to the bottom edge. Type-only composition (card removed).
 import ui from '../content/ui.json';
 ---
 
@@ -13,8 +12,9 @@ import ui from '../content/ui.json';
       src="/assets/hero/hero-scene-1920.webp"
       srcset="/assets/hero/hero-scene-1080.webp 1080w, /assets/hero/hero-scene-1920.webp 1920w"
       sizes="100vw"
-      alt="Rayan working at a warmly lit desk"
+      alt="Rayan working at his desk at night, headphones on"
       fetchpriority="high"
+      data-critical
     />
   </picture>
   <div class="hero__wash hero__wash--multiply" aria-hidden="true"></div>
@@ -28,16 +28,11 @@ import ui from '../content/ui.json';
   <h1 class="hero__wordmark t-display">
     <span class="hero__line hero__line--1">
       <span class="hero__mask"><span class="hero__text" data-hero-line>{ui.hero.firstName}</span></span>
-      <span class="hero__card" data-hero-card>
-        <img src="/assets/hero/card-autorag.webp" alt={ui.hero.cardAlt} loading="eager" />
-      </span>
     </span>
     <span class="hero__line hero__line--2">
       <span class="hero__mask"><span class="hero__text" data-hero-line>{ui.hero.lastName}</span></span>
     </span>
   </h1>
-
-  <a class="hero__cue t-meta" href="#work" data-hero-kicker>{ui.hero.scrollCue}</a>
 </section>
 
 <style>
@@ -58,9 +53,9 @@ import ui from '../content/ui.json';
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    object-position: 50% 28%;
+    object-position: 62% 30%; /* subject sits right-of-center in the photograph */
   }
-  .hero__media img { filter: saturate(0.8) contrast(0.96); }
+  .hero__media img { filter: saturate(0.82) contrast(0.97); }
 
   .hero__wash { position: absolute; inset: 0; pointer-events: none; }
   .hero__wash--multiply { background: var(--coral); opacity: 0.3; mix-blend-mode: multiply; }
@@ -78,6 +73,12 @@ import ui from '../content/ui.json';
     inset-block-start: clamp(96px, 22vh, 220px);
     color: var(--on-photo);
     z-index: 3;
+    /* display face carries the role line — calmer tracking, more presence */
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1rem, 1.5vw, 1.375rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .hero__wordmark {
@@ -93,36 +94,13 @@ import ui from '../content/ui.json';
     line-height: 0.88;
     font-weight: 600;
   }
-  .hero__line { display: flex; align-items: center; gap: 0.18em; }
+  .hero__line { display: flex; align-items: center; }
   .hero__line--2 { justify-content: flex-end; }
   .hero__mask { overflow: hidden; display: inline-block; }
   .hero__text { display: inline-block; }
 
-  .hero__card {
-    display: inline-block;
-    inline-size: clamp(90px, 15vw, 240px);
-    border-radius: var(--r-s);
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    transform: rotate(-3deg);
-    flex-shrink: 0;
-  }
-  .hero__card img { inline-size: 100%; block-size: auto; }
-
-  .hero__cue {
-    position: absolute;
-    inset-inline-end: var(--gutter);
-    inset-block-start: clamp(96px, 22vh, 220px); /* mirrors the kicker */
-    z-index: 3;
-    color: var(--on-photo-soft);
-    text-decoration: none;
-  }
-  .hero__cue:hover { color: var(--on-photo); }
-
   @media (max-width: 767px) {
     .hero__wordmark { font-size: clamp(3rem, 15.5vw, 5rem); }
-    .hero__card { inline-size: clamp(72px, 20vw, 110px); }
-    .hero__cue { display: none; } /* touch: scrolling needs no cue; avoids kicker collision */
   }
 </style>
 
@@ -136,15 +114,13 @@ import ui from '../content/ui.json';
   // Entrance + parallax only for motion-safe users; final layout is the CSS default.
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const lines = gsap.utils.toArray<HTMLElement>('[data-hero-line]');
-    const card = document.querySelector('[data-hero-card]');
     const media = document.querySelector('[data-hero-media] img');
     const soft = gsap.utils.toArray<HTMLElement>('[data-hero-kicker]');
 
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
     tl.from(media, { scale: 1.06, duration: 1.4, ease: 'power2.out' }, 0)
       .from(lines, { yPercent: 110, duration: 0.9, stagger: 0.12 }, 0.15)
-      .from(card, { scale: 0, rotate: 8, duration: 0.6, ease: 'back.out(1.4)' }, 0.75)
-      .from(soft, { opacity: 0, y: 8, duration: 0.5, stagger: 0.08 }, 0.9);
+      .from(soft, { opacity: 0, y: 8, duration: 0.5, stagger: 0.08 }, 0.8);
 
     // Delay entrance until the loader finishes on first visit.
     if (document.documentElement.hasAttribute('data-loader')) {

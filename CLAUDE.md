@@ -31,6 +31,6 @@ Full redesign in progress on branch `redesign/astro` (V4). The V3 site is preser
 - English-only v1, but **RTL-ready**: CSS logical properties only; every UI string in `src/content/ui.json`; lang/dir from `src/config/site.ts`. Arabic dictionary archived in `docs/redesign/AR_CONTENT_ARCHIVE.md`.
 - `prefers-reduced-motion` honored everywhere; content never depends on JS animation.
 - Public contact email is `rayanomaireeni@gmail.com` — never the Nojom work email.
-- The hero desk photo is an interim AI-generated scene shipped without a visible label (decision 24, production phase); replace it with a real shoot per `docs/redesign/ASSET_MANIFEST.md` §2 when available.
+- The hero desk photo is Rayan's real photograph (IMG_3793, decision 25) — the AI-interim era is over; keep `object-position` tuned to the subject on the right.
 - Case-study copy is written from repository evidence (screens, CV, live products) — keep it honest; never fabricate quantitative results. Rayan's interview answers (`docs/redesign/CASE_STUDY_CONTENT_REQUIREMENTS.md`) refine it further when provided.
 - Do not touch `legacy/` except to read. Do not commit to `main` — redesign work stays on `redesign/astro` until launch.
