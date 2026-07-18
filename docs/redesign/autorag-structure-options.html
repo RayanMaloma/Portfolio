@@ -1,0 +1,311 @@
+<meta charset="utf-8">
+<title>AutoRAG Page — Structural Options</title>
+<style>
+  :root{
+    --sand:#FAF6EF; --tint:#F2EBDE; --surface:#FFFDF9;
+    --ink:#221D16; --ink-soft:#57503F; --muted:#8E8474; --line:rgba(34,29,22,.14);
+    --coral:#FF7A50; --coral-deep:#E1490F;
+    --cobalt:#2B4BF2; --cobalt-deep:#1E36BC; --wash:#E8ECFF;
+    --disp:"Arial Black","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --sand:#1D1712; --tint:#241D15; --surface:#171310;
+      --ink:#F2EADC; --ink-soft:#C9BEA9; --muted:#94897A; --line:rgba(242,234,220,.16);
+      --coral:#FF8A62; --coral-deep:#FF9D7C;
+      --cobalt:#6C83FF; --cobalt-deep:#8FA1FF; --wash:#232B4E; }
+  }
+  :root[data-theme="dark"]{ --sand:#1D1712; --tint:#241D15; --surface:#171310;
+    --ink:#F2EADC; --ink-soft:#C9BEA9; --muted:#94897A; --line:rgba(242,234,220,.16);
+    --coral:#FF8A62; --coral-deep:#FF9D7C;
+    --cobalt:#6C83FF; --cobalt-deep:#8FA1FF; --wash:#232B4E; }
+  :root[data-theme="light"]{ --sand:#FAF6EF; --tint:#F2EBDE; --surface:#FFFDF9;
+    --ink:#221D16; --ink-soft:#57503F; --muted:#8E8474; --line:rgba(34,29,22,.14);
+    --coral:#FF7A50; --coral-deep:#E1490F;
+    --cobalt:#2B4BF2; --cobalt-deep:#1E36BC; --wash:#E8ECFF; }
+
+  *{box-sizing:border-box}
+  body{background:var(--sand);color:var(--ink);font-family:var(--body);margin:0;font-size:16px;line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 24px 96px}
+  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--cobalt-deep);font-weight:600}
+  h1{font-family:var(--disp);font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacing:-.02em;margin:.35em 0 .4em;text-wrap:balance}
+  .lede{max-width:64ch;color:var(--ink-soft);font-size:18px}
+  h2{font-family:var(--disp);font-size:clamp(22px,3vw,30px);letter-spacing:-.01em;margin:0}
+  .opt{margin-top:84px}
+  .opt-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .opt-tag{font-family:var(--disp);font-size:13px;color:var(--sand);background:var(--cobalt);border-radius:999px;padding:6px 14px;letter-spacing:.04em}
+  .opt-sub{color:var(--ink-soft);max-width:72ch;margin:8px 0 22px}
+
+  /* mock canvas */
+  .mock{container-type:inline-size;position:relative;aspect-ratio:16/9.6;border-radius:18px;overflow:hidden;
+    background:var(--wash);border:1px solid var(--line)}
+  .m-label{position:absolute;inset-inline:0;bottom:1.6cqw;text-align:center;font-size:1.5cqw;color:var(--muted);z-index:9}
+  .frame{background:var(--surface);border:1px solid var(--line);border-radius:1.4cqw;overflow:hidden;
+    box-shadow:0 1cqw 3cqw rgba(34,29,22,.10);position:absolute;display:flex;flex-direction:column}
+  .frame .bar{display:flex;align-items:center;gap:.8cqw;padding:.9cqw 1.2cqw;border-bottom:1px solid var(--line);flex-shrink:0}
+  .frame .dots{display:flex;gap:.5cqw}
+  .frame .dots i{width:.7cqw;height:.7cqw;border-radius:50%;background:var(--wash);display:block}
+  .frame .url{font-size:1.1cqw;color:var(--muted);background:var(--tint);border-radius:99px;padding:.15cqw 1cqw}
+  .frame .live{font-size:1cqw;color:var(--cobalt-deep);margin-left:auto;display:flex;align-items:center;gap:.4cqw}
+  .frame .live i{width:.6cqw;height:.6cqw;border-radius:50%;background:var(--cobalt);display:inline-block}
+  .frame .view{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1cqw;background:var(--wash)}
+  .frame .word{font-family:var(--disp);font-size:2.6cqw;color:var(--cobalt-deep)}
+  .frame .cta{font-size:1.2cqw;color:var(--surface);background:var(--cobalt-deep);border-radius:99px;padding:.7cqw 1.8cqw}
+  .t{font-family:var(--disp);letter-spacing:-.02em;color:var(--ink)}
+  .meta-chips{display:flex;gap:.7cqw;flex-wrap:wrap}
+  .chip{font-size:1cqw;border:1px solid var(--line);border-radius:99px;padding:.25cqw 1cqw;color:var(--ink-soft);background:var(--surface)}
+  .txtline{height:.8cqw;border-radius:99px;background:var(--line);margin-top:.8cqw}
+  .txtline.w80{width:80%}.txtline.w60{width:60%}.txtline.w90{width:90%}.txtline.w40{width:40%}
+  .acc{border-top:1px solid var(--line);padding:1cqw 0;font-size:1.3cqw;color:var(--ink);display:flex;justify-content:space-between}
+  .acc span:last-child{color:var(--cobalt-deep)}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:1.2cqw;padding:1.2cqw;position:absolute;box-shadow:0 1cqw 2.6cqw rgba(34,29,22,.12)}
+  .panel .ph{font-size:1.2cqw;font-weight:700;color:var(--cobalt-deep);text-transform:uppercase;letter-spacing:.06em}
+
+  /* Option A — split */
+  .oA .frame{left:2.4cqw;top:2.4cqw;bottom:2.4cqw;width:55cqw}
+  .oA .col{position:absolute;left:60.4cqw;right:2.6cqw;top:2.6cqw}
+  .oA .col .t{font-size:4.6cqw}
+  .oA .col .kick{font-size:1.2cqw;color:var(--cobalt-deep);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6cqw}
+  .oA .accwrap{margin-top:1.6cqw}
+  .oA .scrollhint{position:absolute;right:2.6cqw;bottom:2.4cqw;font-size:1.1cqw;color:var(--muted)}
+
+  /* Option B — dashboard */
+  .oB .head{position:absolute;left:2.4cqw;right:2.4cqw;top:2.2cqw;display:flex;align-items:baseline;gap:1.6cqw}
+  .oB .head .t{font-size:3.4cqw}
+  .oB .head .pos{font-size:1.3cqw;color:var(--ink-soft)}
+  .oB .frame{left:2.4cqw;top:10.5cqw;bottom:2.4cqw;width:64cqw}
+  .oB .rail{position:absolute;left:68.8cqw;right:2.4cqw;top:10.5cqw;bottom:2.4cqw;background:var(--surface);
+    border:1px solid var(--line);border-radius:1.2cqw;padding:1.2cqw}
+  .oB .tab{font-size:1.2cqw;padding:.6cqw .9cqw;border-radius:.7cqw;color:var(--ink-soft)}
+  .oB .tab.on{background:var(--wash);color:var(--cobalt-deep);font-weight:700}
+
+  /* Option C — layered */
+  .oC .frame{left:12cqw;top:7cqw;right:4cqw;bottom:6cqw}
+  .oC .bigt{position:absolute;left:3cqw;top:2.6cqw;font-size:6.4cqw;z-index:5}
+  .oC .p1{left:3cqw;top:16cqw;width:20cqw;z-index:5}
+  .oC .p2{right:6cqw;top:10cqw;width:17cqw;z-index:5;transform:rotate(2deg)}
+  .oC .p3{left:6cqw;bottom:4cqw;width:23cqw;z-index:5;transform:rotate(-1.5deg)}
+  .oC .focus{position:absolute;right:5cqw;bottom:7.4cqw;font-size:1.1cqw;color:var(--cobalt-deep);z-index:6;
+    border:1px solid var(--cobalt-deep);border-radius:99px;padding:.4cqw 1.2cqw;background:var(--surface)}
+
+  /* Option D — slides */
+  .oD{display:flex;gap:1.2cqw;padding:2.4cqw;align-items:stretch}
+  .oD .slide{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:1.2cqw;padding:1.4cqw;position:relative}
+  .oD .slide.dim{opacity:.55}
+  .oD .num{font-size:1.1cqw;color:var(--cobalt-deep);font-weight:700}
+  .oD .st{font-family:var(--disp);font-size:1.9cqw;margin-top:.5cqw}
+  .oD .mini{margin-top:1cqw;background:var(--wash);border-radius:.8cqw;height:7cqw;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:1.4cqw;color:var(--cobalt-deep)}
+  .oD .arrows{position:absolute;inset-inline:0;bottom:.9cqw;display:flex;justify-content:center;gap:1cqw;font-size:1.4cqw;color:var(--ink-soft)}
+
+  /* annotations */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:18px}
+  .cell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .cell h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cobalt-deep);margin:0 0 8px;font-weight:700}
+  .cell ul{margin:0;padding-inline-start:18px;color:var(--ink-soft);font-size:14.5px}
+  .cell li{margin:4px 0}
+
+  .compare{margin-top:90px;background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:28px}
+  .tablewrap{overflow-x:auto;margin-top:14px}
+  table{border-collapse:collapse;width:100%;min-width:700px;font-size:14.5px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  td:first-child{color:var(--muted);white-space:nowrap}
+  .rec{margin-top:22px;border-inline-start:3px solid var(--coral);padding:4px 0 4px 16px;max-width:74ch}
+  .rec b{color:var(--coral-deep)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">AutoRAG case page · structural exploration · nothing implemented</p>
+  <h1>Four structures, one rule: the product leads</h1>
+  <p class="lede">All four kill the long-scroll report. The live prototype is a first-viewport citizen in every
+    option; narrative depth moves into compact interactive regions. Everything uses the approved AutoRAG world —
+    cobalt on light cobalt wash over the global sand, warm ink, neutral surfaces. Wireframe type is a stand-in
+    for Clash Display.</p>
+
+  <!-- OPTION A -->
+  <section class="opt">
+    <div class="opt-head"><span class="opt-tag">Option A</span><h2>Persistent split screen</h2></div>
+    <p class="opt-sub">Product left, story right. The live preview owns ~55% of the screen and stays put;
+      the right column carries title, meta chips, the three-line gist, then compact accordions
+      (Problem · My role · Process · Key decisions · Impact). Reading never takes you away from the product.</p>
+    <div class="mock oA">
+      <div class="frame">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">autorag.app</span><span class="live"><i></i>LIVE</span></div>
+        <div class="view"><span class="word">AutoRAG</span><span class="cta">Launch interactive demo →</span></div>
+      </div>
+      <div class="col">
+        <div class="kick">KSU Graduation Project — 2026</div>
+        <div class="t">AutoRAG</div>
+        <div class="meta-chips" style="margin-top:.8cqw"><span class="chip">UI/UX · Frontend</span><span class="chip">04/2025–05/2026</span><span class="chip">In progress</span></div>
+        <div class="txtline w90"></div><div class="txtline w80"></div><div class="txtline w60"></div>
+        <div class="accwrap">
+          <div class="acc"><span>Problem</span><span>−</span></div>
+          <div class="txtline w90"></div><div class="txtline w60"></div>
+          <div class="acc"><span>My role</span><span>+</span></div>
+          <div class="acc"><span>Process</span><span>+</span></div>
+          <div class="acc"><span>Key decisions</span><span>+</span></div>
+          <div class="acc"><span>Impact</span><span>+</span></div>
+        </div>
+      </div>
+      <div class="scrollhint">column scrolls ↓ · preview stays</div>
+      <div class="m-label">Desktop wireframe — one viewport; right column scrolls ~½ screen more</div>
+    </div>
+    <div class="grid">
+      <div class="cell"><h3>Placement</h3><ul>
+        <li>Preview: left 55%, sticky, visible from first paint</li>
+        <li>Title + meta: top of right column</li>
+        <li>Problem/role/process/decisions: accordions in the column (Problem open by default)</li></ul></div>
+      <div class="cell"><h3>Scroll & interaction</h3><ul>
+        <li>~1 viewport core; ~1.5 max with all accordions open</li>
+        <li>Accordions + click-to-load prototype; no novel gestures</li>
+        <li>Prototype directly usable while reading — the only option where both happen at once</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Stack: title → meta → preview (launch = new tab) → accordions</li>
+        <li>~2 screens; zero horizontal tricks</li></ul></div>
+      <div class="cell"><h3>Verdict</h3><ul>
+        <li>+ Simplest robust model; scales when interview content lands</li>
+        <li>+ Best accessibility/SEO story of the four</li>
+        <li>− Least theatrical; narrow column caps imagery</li>
+        <li>Reference: Kevin's product focus in Desert Coral skin</li></ul></div>
+    </div>
+  </section>
+
+  <!-- OPTION B -->
+  <section class="opt">
+    <div class="opt-head"><span class="opt-tag">Option B</span><h2>Product dashboard</h2></div>
+    <p class="opt-sub">The page borrows the product's own idiom: slim title band, big live preview, and a tabbed
+      side rail (Overview · Problem · Role · Decisions · Impact). One tab visible at a time; the page never grows.
+      Feels like being handed the app with a guided tour attached.</p>
+    <div class="mock oB">
+      <div class="head"><span class="t">AutoRAG</span><span class="pos">RAG systems for people who can't spell RAG — 8 questions, done.</span><span class="chip" style="margin-left:auto">In progress</span></div>
+      <div class="frame">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">autorag.app</span><span class="live"><i></i>LIVE</span></div>
+        <div class="view"><span class="word">AutoRAG</span><span class="cta">Launch interactive demo →</span></div>
+      </div>
+      <div class="rail">
+        <div class="tab on">Overview</div>
+        <div class="tab">Problem</div>
+        <div class="tab">My role</div>
+        <div class="tab">Key decisions</div>
+        <div class="tab">Impact</div>
+        <div class="txtline w90"></div><div class="txtline w80"></div><div class="txtline w60"></div><div class="txtline w80"></div>
+      </div>
+      <div class="m-label">Desktop wireframe — everything in one viewport; tabs swap the rail panel</div>
+    </div>
+    <div class="grid">
+      <div class="cell"><h3>Placement</h3><ul>
+        <li>Preview: center-left ~65%, first viewport</li>
+        <li>Title + one-line positioning + status: slim top band</li>
+        <li>All narrative: tabbed rail, Overview default (gist + problem digest)</li></ul></div>
+      <div class="cell"><h3>Scroll & interaction</h3><ul>
+        <li>~1 viewport — effectively no scrolling</li>
+        <li>Tabs (hash-linked, keyboard reachable); prototype click-to-load</li>
+        <li>Prototype directly usable, always visible</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Band → preview → tab chips row → active panel below</li>
+        <li>~1.5–2 screens</li></ul></div>
+      <div class="cell"><h3>Verdict</h3><ul>
+        <li>+ Shortest page; strongest "explore the product" feel; meta-fit for a SaaS project</li>
+        <li>− Most content behind clicks; risks app-chrome coldness if not styled warmly</li>
+        <li>− Tab panels must stay short or the rail scrolls internally</li>
+        <li>Reference: Kevin's technical polish + the product's own dashboard language</li></ul></div>
+    </div>
+  </section>
+
+  <!-- OPTION C -->
+  <section class="opt">
+    <div class="opt-head"><span class="opt-tag">Option C</span><h2>Layered editorial</h2></div>
+    <p class="opt-sub">The preview is the hero object; the display-scale title and three compact cards
+      (meta · problem · decisions) overlap its edges — the same layering language as your homepage hero.
+      A "focus" toggle slides the cards away for unobstructed product use. One compact band below holds
+      the feature list + next case.</p>
+    <div class="mock oC">
+      <div class="bigt t">AutoRAG</div>
+      <div class="frame">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">autorag.app</span><span class="live"><i></i>LIVE</span></div>
+        <div class="view"><span class="word">AutoRAG</span><span class="cta">Launch →</span></div>
+      </div>
+      <div class="panel p1"><div class="ph">Problem</div><div class="txtline w90"></div><div class="txtline w80"></div><div class="txtline w60"></div></div>
+      <div class="panel p2"><div class="ph">Meta</div><div class="txtline w80"></div><div class="txtline w60"></div></div>
+      <div class="panel p3"><div class="ph">Key decisions</div><div class="txtline w90"></div><div class="txtline w70 w80"></div></div>
+      <div class="focus">⤢ focus the product</div>
+      <div class="m-label">Desktop wireframe — hero viewport + ~½ screen band below</div>
+    </div>
+    <div class="grid">
+      <div class="cell"><h3>Placement</h3><ul>
+        <li>Preview: the hero, ~85% width, instantly visible</li>
+        <li>Title: display type overlapping the frame's top edge</li>
+        <li>Problem/meta/decisions: floating cards on the frame; role inside meta; process = expandable card</li></ul></div>
+      <div class="cell"><h3>Scroll & interaction</h3><ul>
+        <li>~1.5 viewports total</li>
+        <li>Focus toggle (cards slide out), card expanders, click-to-load</li>
+        <li>Prototype usable after focus toggle; partially obscured before</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Cards unstack under the preview in reading order</li>
+        <li>~2 screens; toggle removed (nothing overlaps)</li></ul></div>
+      <div class="cell"><h3>Verdict</h3><ul>
+        <li>+ Most expressive; visually continuous with hero + Selected Work</li>
+        <li>+ Product feels like an artifact being annotated</li>
+        <li>− Overlays partially cover the live app until dismissed</li>
+        <li>− Fiddliest z-index/iframe engineering; tablet is the hard case</li>
+        <li>Reference: Juan Mora layering + Veronica's card scatter</li></ul></div>
+    </div>
+  </section>
+
+  <!-- OPTION D -->
+  <section class="opt">
+    <div class="opt-head"><span class="opt-tag">Option D</span><h2>Slide-based story</h2></div>
+    <p class="opt-sub">Four controlled panels instead of a page: ① title + gist + preview poster,
+      ② problem & role, ③ the 8-questions idea & key decisions, ④ full-stage live product. Advance by
+      buttons, arrow keys, or swipe — never by hijacked scrolling. A numbered rail (01–04) shows position.</p>
+    <div class="mock oD">
+      <div class="slide"><span class="num">01</span><div class="st">AutoRAG</div><div class="txtline w80"></div><div class="txtline w60"></div><div class="mini">preview poster →</div></div>
+      <div class="slide dim"><span class="num">02</span><div class="st">Problem & role</div><div class="txtline w90"></div><div class="txtline w80"></div><div class="txtline w60"></div></div>
+      <div class="slide dim"><span class="num">03</span><div class="st">Idea & decisions</div><div class="txtline w90"></div><div class="txtline w70 w80"></div></div>
+      <div class="slide dim"><span class="num">04</span><div class="st">The product</div><div class="mini">LIVE demo stage</div></div>
+      <div class="arrows">←  01 / 04  →</div>
+      <div class="m-label">Desktop wireframe — zero vertical scroll; 4 horizontal steps</div>
+    </div>
+    <div class="grid">
+      <div class="cell"><h3>Placement</h3><ul>
+        <li>Preview: poster on slide 01 (one click from anywhere), full stage on slide 04</li>
+        <li>Title + meta: slide 01</li>
+        <li>Problem/role: 02 · idea/decisions: 03</li></ul></div>
+      <div class="cell"><h3>Scroll & interaction</h3><ul>
+        <li>No vertical scroll; 4 explicit steps (buttons/keys/swipe — not scroll-jacked)</li>
+        <li>Hash per slide; prototype fully usable on 04</li></ul></div>
+      <div class="cell"><h3>Mobile</h3><ul>
+        <li>Falls back to a compact 4-section vertical page (~2 screens) — horizontal paging fights touch scrolling</li></ul></div>
+      <div class="cell"><h3>Verdict</h3><ul>
+        <li>+ Total pacing control; presentation-grade confidence; zero fragmentation</li>
+        <li>− Fights browser habits (skim, find, back); worst SEO/print; heaviest a11y work</li>
+        <li>− Product is two contexts away from the story panels</li>
+        <li>− Closest cousin to the "cinematic behavior" you've banned elsewhere</li>
+        <li>Reference: Kevin's staged, deck-like storytelling</li></ul></div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="compare">
+    <p class="eyebrow">Side by side</p>
+    <h2>How they trade off</h2>
+    <div class="tablewrap"><table>
+      <tr><th></th><th>A · Split screen</th><th>B · Dashboard</th><th>C · Layered</th><th>D · Slides</th></tr>
+      <tr><td>Preview visibility</td><td>Always, from first paint</td><td>Always, from first paint</td><td>Hero itself</td><td>Poster on 01, stage on 04</td></tr>
+      <tr><td>Core scroll</td><td>~1–1.5 viewports</td><td>~1 viewport</td><td>~1.5 viewports</td><td>0 (4 steps)</td></tr>
+      <tr><td>Read + use product simultaneously</td><td><b>Yes</b></td><td>Yes</td><td>After focus toggle</td><td>No</td></tr>
+      <tr><td>Expressiveness</td><td>Medium</td><td>Medium-low</td><td><b>Highest</b></td><td>High</td></tr>
+      <tr><td>Build risk / a11y burden</td><td><b>Lowest</b></td><td>Medium</td><td>Medium-high</td><td>Highest</td></tr>
+      <tr><td>Content scalability (post-interview)</td><td><b>Best</b> (accordions grow)</td><td>Capped by rail</td><td>Capped by cards</td><td>Capped by slides</td></tr>
+      <tr><td>Site-language consistency</td><td>Good</td><td>Fair</td><td><b>Strongest</b></td><td>Weakest</td></tr>
+      <tr><td>Mobile story</td><td>Clean stack</td><td>Clean stack</td><td>Clean stack</td><td>Different paradigm</td></tr>
+    </table></div>
+    <p class="rec"><b>Recommendation: Option A, borrowing C's title treatment.</b> A is the only structure where
+      someone can read your reasoning <em>while operating the live product</em> — which is AutoRAG's whole pitch.
+      It hits the 1–2 viewport target, degrades gracefully on mobile, and its accordions absorb the interview
+      content later without redesign. To keep it from feeling like documentation, lift one move from C: let the
+      display-scale "AutoRAG" title overlap the preview frame's edge, in the cobalt world. B is the runner-up if
+      you want maximum product-tool feeling; C if expressiveness outranks unobstructed product use; D only if you
+      want a deliberate deck-style statement piece.</p>
+  </section>
+</div>

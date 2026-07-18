@@ -30,7 +30,10 @@
 
 | 21 | 2026-07-18 | **Playground page removed — homepage band is the playground** | After iterating page structures (wash sections → masonry → scale rhythm → grouped rhythm), Rayan cut the page entirely. All 14 boards ride the homepage band in deck order: auto-drift left→right when the cursor is away, full stop + free drag on hover, native touch scroll, reduced-motion static grid. `/playground` and its content collection deleted; legacy redirects → `/#playground`. Sitemap = 6 routes. |
 
+| 22 | 2026-07-18 | **AutoRAG case page: long-scroll structure REJECTED** | The IA §4 vertical template is not approved for AutoRAG. New requirement: compact product-first page (~1–2 viewports), live preview immediate and central, narrative in compact interactive regions, strict AutoRAG world colors. Four structural options presented (artifact: autorag-structure-options.html) — choice pending (P11). Current template remains only as an interim state and for D Shopper/CSC until told otherwise. |
+
 ## Pending decisions (awaiting Rayan)
+- **P11:** AutoRAG page structure — A persistent split / B product dashboard / C layered editorial / D slide-based (recommended: A with C's title treatment).
 - **P9:** About-teaser background — pick A cool blue-gray `#E8EDF1` / B pale lavender `#ECE9F4` / C sand + 5% cobalt tint (recommended; currently applied as PROVISIONAL).
 - **P10:** What I Do redesign — pick one of the three presented directions (editorial typographic / capability map / process-driven). Current numbered rows stay live until chosen.
 - **P2:** Hero availability microline — include? exact text?
