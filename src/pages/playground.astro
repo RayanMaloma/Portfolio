@@ -9,31 +9,35 @@ import Base from '../layouts/Base.astro';
 import ui from '../content/ui.json';
 
 const projects = (await getCollection('playground')).sort((a, b) => a.data.order - b.data.order);
+const byId = Object.fromEntries(projects.map((p) => [p.id, p]));
 
-// Round-robin interleave so no project clumps together
-type Item = {
-  src: string; alt: string; title: string; kind: string;
-  accent: string; anchor?: string;
-};
-const queues = projects.map((p) =>
-  p.data.images.map((img, i) => ({
-    src: img.src,
-    alt: img.alt,
-    title: p.data.title,
-    kind: p.data.kind,
-    accent: p.data.accent,
-    anchor: i === 0 ? p.id : undefined,
-  }))
-);
-const items: Item[] = [];
-let remaining = true;
-while (remaining) {
-  remaining = false;
-  for (const q of queues) {
-    const next = q.shift();
-    if (next) { items.push(next); remaining = true; }
-  }
-}
+// Scale rhythm (approved 2026-07-18): full-width showcase → pair → repeat.
+// Wide boards take FULL slots; tall/square pieces sit in PAIRs. Curated order
+// gives every project a big moment; first occurrence carries the legacy anchor.
+type Ref = [string, number]; // [project id, index into its images array]
+const sequence: { layout: 'full' | 'pair'; refs: Ref[] }[] = [
+  { layout: 'full', refs: [['rknh', 0]] },
+  { layout: 'pair', refs: [['routine', 3], ['mosbah', 0]] },
+  { layout: 'full', refs: [['routine', 0]] },
+  { layout: 'pair', refs: [['tamakan', 0], ['rknh', 2]] },
+  { layout: 'full', refs: [['mosbah', 1]] },
+  { layout: 'pair', refs: [['rknh', 1], ['routine', 1]] },
+  { layout: 'full', refs: [['rknh', 3]] },
+  { layout: 'pair', refs: [['routine', 2], ['tamakan', 1]] },
+  { layout: 'full', refs: [['mosbah', 2]] },
+  { layout: 'full', refs: [['mosbah', 3]] },
+];
+const seen = new Set<string>();
+const groups = sequence.map((g) => ({
+  layout: g.layout,
+  items: g.refs.map(([id, idx]) => {
+    const p = byId[id];
+    const img = p.data.images[idx];
+    const anchor = seen.has(id) ? undefined : id;
+    seen.add(id);
+    return { src: img.src, alt: img.alt, title: p.data.title, kind: p.data.kind, accent: p.data.accent, anchor };
+  }),
+}));
 ---
 
 <Base
@@ -58,18 +62,20 @@ while (remaining) {
 
   <section class="pg-board" aria-label="Selected graphic design work">
     <div class="container">
-      <div class="pg-board__masonry">
-        {items.map((item) => (
-          <figure class="pg-card" id={item.anchor} data-reveal>
-            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-            <figcaption class="pg-card__meta t-meta">
-              <i class="pg-card__dot" style={`background:${item.accent}`} aria-hidden="true"></i>
-              <span class="pg-card__title">{item.title}</span>
-              <span class="pg-card__kind">{item.kind}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
+      {groups.map((g) => (
+        <div class:list={['pg-row', `pg-row--${g.layout}`]}>
+          {g.items.map((item) => (
+            <figure class="pg-card" id={item.anchor} data-reveal>
+              <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+              <figcaption class="pg-card__meta t-meta">
+                <i class="pg-card__dot" style={`background:${item.accent}`} aria-hidden="true"></i>
+                <span class="pg-card__title">{item.title}</span>
+                <span class="pg-card__kind">{item.kind}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ))}
     </div>
   </section>
 </Base>
@@ -118,11 +124,20 @@ while (remaining) {
 
   .pg-board { background: var(--bg-tint); padding-block: var(--space-6) var(--space-section); }
 
-  /* Masonry via columns: natural aspect ratios, mixed heights, no stretching */
-  .pg-board__masonry { columns: 3 320px; column-gap: var(--gutter); }
+  /* Scale rhythm: full-width showcase rows alternate with 2-up pairs.
+     Cards always follow the artwork's natural aspect ratio. */
+  .pg-row { margin-block-end: var(--space-8); }
+  .pg-row--pair {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gutter);
+    align-items: start;
+  }
+  /* slight vertical offset on the pair's second piece — editorial stagger */
+  .pg-row--pair .pg-card:nth-child(2) { margin-block-start: var(--space-7); }
+
   .pg-card {
-    margin: 0 0 var(--gutter);
-    break-inside: avoid;
+    margin: 0;
     scroll-margin-block-start: 120px; /* legacy #anchors land below the fixed nav */
   }
   .pg-card img {
@@ -153,7 +168,9 @@ while (remaining) {
   .pg-card__kind { color: var(--muted); }
 
   @media (max-width: 767px) {
-    .pg-board__masonry { columns: 1; }
+    .pg-row--pair { grid-template-columns: 1fr; }
+    .pg-row--pair .pg-card:nth-child(2) { margin-block-start: 0; }
+    .pg-row { margin-block-end: var(--space-6); }
   }
   @media (prefers-reduced-motion: reduce) {
     .pg-card img { transition: none; }
