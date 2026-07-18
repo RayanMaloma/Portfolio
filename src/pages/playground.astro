@@ -11,33 +11,31 @@ import ui from '../content/ui.json';
 const projects = (await getCollection('playground')).sort((a, b) => a.data.order - b.data.order);
 const byId = Object.fromEntries(projects.map((p) => [p.id, p]));
 
-// Scale rhythm (approved 2026-07-18): full-width showcase → pair → repeat.
-// Wide boards take FULL slots; tall/square pieces sit in PAIRs. Curated order
-// gives every project a big moment; first occurrence carries the legacy anchor.
-type Ref = [string, number]; // [project id, index into its images array]
-const sequence: { layout: 'full' | 'pair'; refs: Ref[] }[] = [
-  { layout: 'full', refs: [['rknh', 0]] },
-  { layout: 'pair', refs: [['routine', 3], ['mosbah', 0]] },
-  { layout: 'full', refs: [['routine', 0]] },
-  { layout: 'pair', refs: [['tamakan', 0], ['rknh', 2]] },
-  { layout: 'full', refs: [['mosbah', 1]] },
-  { layout: 'pair', refs: [['rknh', 1], ['routine', 1]] },
-  { layout: 'full', refs: [['rknh', 3]] },
-  { layout: 'pair', refs: [['routine', 2], ['tamakan', 1]] },
-  { layout: 'full', refs: [['mosbah', 2]] },
-  { layout: 'full', refs: [['mosbah', 3]] },
+// Scale rhythm WITHIN each project (revision 2026-07-18): every project's
+// boards are sequential deck pages, so they stay together and in order.
+// Groups flow on one shared background — a slim label separates them, never
+// a full chapter section. Layouts: full (wide showcase), pair (2-up),
+// poster (tall/square art centered at reduced width, uncropped).
+const projectRows: { id: string; rows: { layout: 'full' | 'pair' | 'poster'; refs: number[] }[] }[] = [
+  { id: 'rknh', rows: [ { layout: 'full', refs: [0] }, { layout: 'pair', refs: [1, 2] }, { layout: 'full', refs: [3] } ] },
+  { id: 'routine', rows: [ { layout: 'full', refs: [0] }, { layout: 'pair', refs: [1, 2] }, { layout: 'poster', refs: [3] } ] },
+  { id: 'tamakan', rows: [ { layout: 'pair', refs: [0, 1] } ] },
+  { id: 'mosbah', rows: [ { layout: 'pair', refs: [0, 1] }, { layout: 'full', refs: [2] }, { layout: 'full', refs: [3] } ] },
 ];
-const seen = new Set<string>();
-const groups = sequence.map((g) => ({
-  layout: g.layout,
-  items: g.refs.map(([id, idx]) => {
-    const p = byId[id];
-    const img = p.data.images[idx];
-    const anchor = seen.has(id) ? undefined : id;
-    seen.add(id);
-    return { src: img.src, alt: img.alt, title: p.data.title, kind: p.data.kind, accent: p.data.accent, anchor };
-  }),
-}));
+const groups = projectRows.map((g) => {
+  const p = byId[g.id];
+  return {
+    id: g.id,
+    title: p.data.title,
+    kind: p.data.kind,
+    year: p.data.year,
+    accent: p.data.accent,
+    rows: g.rows.map((r) => ({
+      layout: r.layout,
+      items: r.refs.map((idx) => p.data.images[idx]),
+    })),
+  };
+});
 ---
 
 <Base
@@ -63,16 +61,20 @@ const groups = sequence.map((g) => ({
   <section class="pg-board" aria-label="Selected graphic design work">
     <div class="container">
       {groups.map((g) => (
-        <div class:list={['pg-row', `pg-row--${g.layout}`]}>
-          {g.items.map((item) => (
-            <figure class="pg-card" id={item.anchor} data-reveal>
-              <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-              <figcaption class="pg-card__meta t-meta">
-                <i class="pg-card__dot" style={`background:${item.accent}`} aria-hidden="true"></i>
-                <span class="pg-card__title">{item.title}</span>
-                <span class="pg-card__kind">{item.kind}</span>
-              </figcaption>
-            </figure>
+        <div class="pg-group" id={g.id}>
+          <p class="pg-group__label t-meta" data-reveal>
+            <i class="pg-group__dot" style={`background:${g.accent}`} aria-hidden="true"></i>
+            <span class="pg-group__title">{g.title}</span>
+            <span class="pg-group__kind">{g.kind}{g.year && ` · ${g.year}`}</span>
+          </p>
+          {g.rows.map((row) => (
+            <div class:list={['pg-row', `pg-row--${row.layout}`]}>
+              {row.items.map((item) => (
+                <figure class="pg-card" data-reveal>
+                  <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                </figure>
+              ))}
+            </div>
           ))}
         </div>
       ))}
@@ -124,22 +126,38 @@ const groups = sequence.map((g) => ({
 
   .pg-board { background: var(--bg-tint); padding-block: var(--space-6) var(--space-section); }
 
-  /* Scale rhythm: full-width showcase rows alternate with 2-up pairs.
-     Cards always follow the artwork's natural aspect ratio. */
-  .pg-row { margin-block-end: var(--space-8); }
+  /* Projects stay together, in deck order; scale rhythm runs WITHIN a group.
+     Groups are separated by a slim label only — never a chapter section. */
+  .pg-group {
+    margin-block-end: var(--space-10);
+    scroll-margin-block-start: 120px; /* legacy #anchors land below the fixed nav */
+  }
+  .pg-group:last-child { margin-block-end: 0; }
+  .pg-group__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block-end: var(--space-4);
+    border-block-start: 1px solid var(--border);
+    padding-block-start: var(--space-4);
+  }
+  .pg-group__dot { inline-size: 10px; block-size: 10px; border-radius: 50%; flex-shrink: 0; }
+  .pg-group__title { color: var(--ink); font-weight: 600; }
+  .pg-group__kind { color: var(--muted); }
+
+  .pg-row { margin-block-end: var(--gutter); }
+  .pg-row:last-child { margin-block-end: 0; }
   .pg-row--pair {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--gutter);
     align-items: start;
   }
-  /* slight vertical offset on the pair's second piece — editorial stagger */
-  .pg-row--pair .pg-card:nth-child(2) { margin-block-start: var(--space-7); }
+  /* tall/square art gets a centered poster row — reduced width, never cropped */
+  .pg-row--poster { display: flex; justify-content: center; }
+  .pg-row--poster .pg-card { inline-size: min(520px, 72%); }
 
-  .pg-card {
-    margin: 0;
-    scroll-margin-block-start: 120px; /* legacy #anchors land below the fixed nav */
-  }
+  .pg-card { margin: 0; }
   .pg-card img {
     inline-size: 100%;
     block-size: auto;
@@ -151,26 +169,11 @@ const groups = sequence.map((g) => ({
     transition: transform var(--dur-2) var(--ease-out);
   }
   .pg-card:hover img { transform: translateY(-3px); }
-  .pg-card__meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-block-start: var(--space-2);
-    color: var(--muted);
-  }
-  .pg-card__dot {
-    inline-size: 9px;
-    block-size: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .pg-card__title { color: var(--ink-soft); font-weight: 600; }
-  .pg-card__kind { color: var(--muted); }
 
   @media (max-width: 767px) {
     .pg-row--pair { grid-template-columns: 1fr; }
-    .pg-row--pair .pg-card:nth-child(2) { margin-block-start: 0; }
-    .pg-row { margin-block-end: var(--space-6); }
+    .pg-row--poster .pg-card { inline-size: 100%; }
+    .pg-group { margin-block-end: var(--space-8); }
   }
   @media (prefers-reduced-motion: reduce) {
     .pg-card img { transition: none; }
