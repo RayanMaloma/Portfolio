@@ -40,7 +40,7 @@ const cards = [
         <div class="pgt__group" aria-hidden={dup === 1 ? 'true' : undefined} data-pgt-group={dup === 0 ? '' : undefined}>
           {cards.map((c) => (
             <figure class="pgt__card" style={`--r:${c.r}deg; --ar:${c.w} / ${c.h};`}>
-              <img src={c.src} alt={dup === 0 ? c.alt : ''} loading="lazy" decoding="async" width={c.w} height={c.h} />
+              <img src={c.src} alt={dup === 0 ? c.alt : ''} loading="lazy" decoding="async" width={c.w} height={c.h} draggable="false" />
             </figure>
           ))}
         </div>
@@ -104,7 +104,15 @@ const cards = [
     margin-block: var(--space-6); /* room for rotation only */
   }
   .pgt__card:hover { transform: rotate(0deg) translateY(-4px); }
-  .pgt__card img { inline-size: 100%; block-size: 100%; display: block; }
+  .pgt__card img {
+    inline-size: 100%;
+    block-size: 100%;
+    display: block;
+    /* the band scrolls — the artwork itself must never become a drag ghost */
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
 
   .pgt__caption {
     text-align: center;
@@ -169,7 +177,8 @@ const cards = [
     band.addEventListener('touchstart', touchPause, { passive: true });
     band.addEventListener('touchmove', touchPause, { passive: true });
 
-    // Mouse drag-to-scroll
+    // Mouse drag-to-scroll — suppress the browser's native image/content drag
+    band.addEventListener('dragstart', (e) => e.preventDefault());
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
