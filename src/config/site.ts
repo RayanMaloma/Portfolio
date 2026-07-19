@@ -10,7 +10,10 @@ export const SITE = {
   links: {
     linkedin: 'https://www.linkedin.com/in/rayan-omaireeni/',
     whatsapp: 'https://wa.me/966565759145',
-    resume: '/assets/resume/rayan-al-omaireeni-cv.pdf',
+    // Lives under /cv/ (not /assets/) — the legacy V3 repo keeps an assets/
+    // folder at the REPO ROOT, and Astro's dev route-guard 404s any browser
+    // navigation whose path matches a root file outside public/.
+    resume: '/cv/rayan-al-omaireeni-cv.pdf',
   },
   lang: 'en',
   dir: 'ltr',
