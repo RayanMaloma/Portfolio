@@ -44,7 +44,17 @@ const { line } = Astro.props;
     to { transform: scaleX(1); }
   }
   .loader__mark { font-size: 1.25rem; font-weight: 600; }
-  .loader__mark i { font-style: normal; color: var(--coral-deep); }
+  .loader__mark i {
+    font-style: normal;
+    color: var(--coral-deep);
+    /* The star turns while the page readies (loader is motion-safe-only by the
+       data-loader gate, so no reduced-motion override is needed here) */
+    display: inline-block;
+    animation: star-turn 1.6s linear infinite;
+  }
+  @keyframes star-turn {
+    to { rotate: 360deg; }
+  }
   .loader__line { color: var(--muted); }
 </style>
 
