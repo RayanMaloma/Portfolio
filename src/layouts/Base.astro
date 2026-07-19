@@ -27,7 +27,8 @@ const { title = `${SITE.name} — Product Designer`, description = SITE.descript
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {Astro.url.pathname === '/' && (
       <script type="application/ld+json" is:inline set:html={JSON.stringify({
         '@context': 'https://schema.org',
