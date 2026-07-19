@@ -11,6 +11,11 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 ---
 
 <section class="work" id="work" data-work aria-label="Selected work">
+  <!-- Wash cross-fade layers: opacity-only (compositor-friendly) — animating
+       background-color repainted the whole multi-viewport section every frame -->
+  <div class="work__washes" aria-hidden="true">
+    {projects.map((p) => <span class="work__wash" data-theme={p.id} data-wash={p.id}></span>)}
+  </div>
   <div class="container">
     <header class="work__head">
       <p class="t-meta work__label" data-block-reveal>{ui.work.label} (01–{String(projects.length).padStart(2, '0')})</p>
@@ -25,12 +30,23 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 
 <style>
   .work {
-    /* Wash cross-fade surface: --wash is set by the active [data-theme] scope */
-    background: var(--wash, var(--bg-base));
-    transition: background-color var(--dur-3) var(--ease-out);
+    position: relative;
+    background: var(--bg-base);
     padding-block: var(--space-section);
     overflow-x: clip; /* decorative frame overhangs must never scroll the page */
   }
+  .work > .container { position: relative; z-index: 1; }
+  /* Each layer resolves --wash from its own [data-theme] scope; the active one
+     fades in with opacity — GPU-composited, no per-frame section repaint */
+  .work__washes { position: absolute; inset: 0; pointer-events: none; }
+  .work__wash {
+    position: absolute;
+    inset: 0;
+    background: var(--wash);
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-out);
+  }
+  .work__wash.is-active { opacity: 1; }
   .work__head {
     display: flex;
     justify-content: space-between;
@@ -52,7 +68,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     margin-block-start: var(--space-8);
   }
   @media (prefers-reduced-motion: reduce) {
-    .work { transition: none; }
+    .work__wash { transition: none; }
   }
 </style>
 
@@ -63,16 +79,20 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 
   const section = document.querySelector<HTMLElement>('[data-work]');
   const blocks = gsap.utils.toArray<HTMLElement>('[data-work-block]');
+  const washes = gsap.utils.toArray<HTMLElement>('[data-wash]');
 
   // ── Wash cross-fade: discrete theme swap when a block dominates ──
   // Reduced-motion users get it too (it's information, transition is CSS-gated).
   if (section && blocks.length) {
+    const setTheme = (id: string | undefined) => {
+      if (id) section.dataset.theme = id;
+      else delete section.dataset.theme;
+      washes.forEach((w) => w.classList.toggle('is-active', w.dataset.wash === id));
+    };
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (e.isIntersecting) {
-            section.dataset.theme = (e.target as HTMLElement).dataset.project ?? '';
-          }
+          if (e.isIntersecting) setTheme((e.target as HTMLElement).dataset.project);
         }
       },
       // "Dominant" = block crosses the middle band of the viewport
@@ -82,7 +102,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 
     // Back to the base ground when the whole section leaves view
     const reset = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (!e.isIntersecting) delete section.dataset.theme; }),
+      (entries) => entries.forEach((e) => { if (!e.isIntersecting) setTheme(undefined); }),
       { threshold: 0 }
     );
     reset.observe(section);
@@ -100,7 +120,15 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
         defaults: { ease: 'power4.out' },
         scrollTrigger: { trigger: block, start: 'top 72%', once: true },
       });
-      tl.from(media, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8 }, 0)
+      // Curtain reveal with 20% outset margins: inset(0 ...) hard-clipped the
+      // card shadows and the overhanging supporting screens mid-animation
+      // (visible popping). clearProps removes the clip (and layer hint) at rest.
+      tl.fromTo(
+        media,
+        { clipPath: 'inset(-20% -20% 115% -20%)', willChange: 'clip-path' },
+        { clipPath: 'inset(-20% -20% -20% -20%)', duration: 0.8, clearProps: 'clipPath,willChange' },
+        0
+      )
         .from(title, { yPercent: 110, duration: 0.7 }, 0.15)
         .from(rest, { opacity: 0, y: 10, duration: 0.45, stagger: 0.06 }, 0.3);
     });
