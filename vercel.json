@@ -1,0 +1,16 @@
+{
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/pages/autorag.html", "destination": "/work/autorag/", "permanent": true },
+    { "source": "/pages/dshopper.html", "destination": "/work/dshopper/", "permanent": true },
+    { "source": "/pages/csc.html", "destination": "/work/csc/", "permanent": true },
+    { "source": "/pages/rknh.html", "destination": "/#playground", "permanent": true },
+    { "source": "/pages/routine.html", "destination": "/#playground", "permanent": true },
+    { "source": "/pages/tamakan.html", "destination": "/#playground", "permanent": true },
+    { "source": "/pages/mosbah.html", "destination": "/#playground", "permanent": true },
+    { "source": "/playground", "destination": "/#playground", "permanent": true },
+    { "source": "/playground/", "destination": "/#playground", "permanent": true }
+  ]
+}
