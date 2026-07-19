@@ -38,6 +38,7 @@ import ui from '../content/ui.json';
 <style>
   .hero {
     position: relative;
+    isolation: isolate; /* keep the blend-mode washes scoped to the hero's own layers */
     min-block-size: 100svh;
     overflow: hidden;
     display: flex;
@@ -55,7 +56,12 @@ import ui from '../content/ui.json';
     object-fit: cover;
     object-position: 62% 30%; /* subject sits right-of-center in the photograph */
   }
-  .hero__media img { filter: saturate(0.82) contrast(0.97); }
+  .hero__media img {
+    filter: saturate(0.82) contrast(0.97);
+    /* Scrubbed parallax target: keep it on its own compositor layer so the
+       filter rasterizes once instead of on every scroll frame */
+    will-change: transform;
+  }
 
   .hero__wash { position: absolute; inset: 0; pointer-events: none; }
   .hero__wash--multiply { background: var(--coral); opacity: 0.3; mix-blend-mode: multiply; }
@@ -93,6 +99,7 @@ import ui from '../content/ui.json';
     font-size: var(--text-hero);
     line-height: 0.88;
     font-weight: 600;
+    will-change: transform; /* scrubbed parallax target */
   }
   .hero__line { display: flex; align-items: center; }
   .hero__line--2 { justify-content: flex-end; }
